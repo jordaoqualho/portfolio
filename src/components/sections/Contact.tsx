@@ -26,14 +26,12 @@ export function Contact() {
               </a>
               <a
                 className="text-link"
-                href={
-                  profile.resumePath ||
-                  `mailto:${profile.email}?subject=Resume%20request`
-                }
-                target={profile.resumePath ? "_blank" : undefined}
+                href={profile.resumePath}
+                download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
+                target="_blank"
                 rel="noopener noreferrer"
               >
-                {profile.resumePath ? "Resume" : "Request resume"}
+                Resume
                 <ArrowUpRight size={15} />
               </a>
             </div>

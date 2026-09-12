@@ -35,7 +35,7 @@ export const profile = {
   core: ["Node.js", "TypeScript", "React", "AWS", "GCP"],
   intro:
     "6+ years building and operating production systems, with deeper experience in backend engineering, APIs, cloud infrastructure, reliability and production debugging.",
-  resumePath: process.env.NEXT_PUBLIC_RESUME_PATH || null,
+  resumePath: "/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
 };
 export const navigation = [
   { label: "Work", href: "/#work" },

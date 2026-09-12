@@ -42,11 +42,7 @@ Next.js 16 App Router (static export), TypeScript, Tailwind CSS, Geist, Lucide. 
 
 ## Resume
 
-Until an approved PDF is added, “Request resume” opens an email instead of a broken file.
-
-1. Place the CV at `public/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf`
-2. Set `NEXT_PUBLIC_RESUME_PATH=/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf`
-3. Rebuild
+The CV is at `public/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf`. Header and contact **Resume** links download that file.
 
 ## Deploy
 

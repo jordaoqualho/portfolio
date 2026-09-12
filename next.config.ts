@@ -4,5 +4,6 @@ const config: NextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   devIndicators: false,
+  agentRules: false,
 };
 export default config;

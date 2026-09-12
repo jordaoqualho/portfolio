@@ -39,14 +39,12 @@ export function Header() {
         <div className="header-actions">
           <a
             className="header-resume"
-            href={
-              profile.resumePath ||
-              `mailto:${profile.email}?subject=Resume%20request`
-            }
-            target={profile.resumePath ? "_blank" : undefined}
+            href={profile.resumePath}
+            download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
+            target="_blank"
             rel="noopener noreferrer"
           >
-            {profile.resumePath ? "Resume" : "Request resume"}
+            Resume
             <ArrowUpRight size={14} />
           </a>
           <span className="header-divider" />
