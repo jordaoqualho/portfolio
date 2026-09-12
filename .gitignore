@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+.vercel/
+.env*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+artifacts/
+.openai/
+
+/Jordao_Qualho_Senior_Software_Engineer_CV.pdf
+mycv.md
+spec.md
+image.png
