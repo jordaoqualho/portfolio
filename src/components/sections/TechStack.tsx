@@ -7,7 +7,7 @@ export function TechStack() {
           <div>
             <span className="eyebrow">03 / TECHNICAL STACK</span>
             <h2>
-              Tools I work with<span className="accent">.</span>
+              What I use in production<span className="accent">.</span>
             </h2>
           </div>
         </div>

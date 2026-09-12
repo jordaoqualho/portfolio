@@ -7,7 +7,7 @@ export function Footer() {
       <p>
         © {new Date().getFullYear()} {profile.name}
       </p>
-      <span>Brazil · Working across borders</span>
+      <span>Brazil · Remote international</span>
       <MotionPreferences />
       <a href={profile.github} target="_blank" rel="noopener noreferrer">
         GitHub <ArrowUpRight size={14} />

@@ -11,7 +11,7 @@ export function EngineeringCases() {
               Selected Engineering Cases<span className="accent">.</span>
             </h2>
             <p>
-              Real production problems, investigation, decisions and outcomes.
+              Production problems: what broke, how I investigated, and what changed.
             </p>
           </div>
           <span className="section-note">03 CASE STUDIES</span>

@@ -7,9 +7,9 @@ export function About() {
           <div>
             <span className="eyebrow">04 / ABOUT</span>
             <h2>
-              Engineering beyond
+              Based in Brazil.
               <br />
-              the ticket<span className="accent">.</span>
+              Working in English<span className="accent">.</span>
             </h2>
           </div>
         </div>

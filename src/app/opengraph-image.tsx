@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 export const alt =
-  "Jordão Qualho — Senior Software Engineer. Reliable systems. Real production problems.";
+  "Jordão Qualho, Senior Software Engineer. Full Stack with backend depth. Brazil, open to remote.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const dynamic = "force-static";
@@ -48,7 +48,7 @@ export default function Image() {
           marginTop: 30,
         }}
       >
-        Node.js · TypeScript · React · AWS
+        Node.js · TypeScript · React · AWS · GCP
       </div>
       <div
         style={{
@@ -60,8 +60,8 @@ export default function Image() {
           fontSize: 25,
         }}
       >
-        <span>Reliable systems.</span>
-        <span>Real production problems.</span>
+        <span>Full Stack · Backend depth</span>
+        <span>Brazil · Open to remote</span>
       </div>
     </div>,
     size,
