@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowUpRight, Download, Menu, Moon, Sun, X } from "lucide-react";
 import { navigation, profile } from "@/data/profile";
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -38,14 +38,14 @@ export function Header() {
         </nav>
         <div className="header-actions">
           <a
-            className="header-resume"
+            className="header-resume header-cv"
             href={profile.resumePath}
             download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Resume
-            <ArrowUpRight size={14} />
+            Download CV
+            <Download size={14} aria-hidden="true" />
           </a>
           <span className="header-divider" />
           <button

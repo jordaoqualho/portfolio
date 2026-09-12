@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SiteLoader } from "@/components/layout/SiteLoader";
 import { profile } from "@/data/profile";
 import { siteUrl, siteTitle, siteDescription } from "@/lib/site";
 import "./globals.css";
@@ -9,7 +10,7 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: siteTitle, template: "%s — Jordão Qualho" },
+  title: { default: siteTitle, template: "%s · Jordão Qualho" },
   description: siteDescription,
   keywords: [
     "Senior Software Engineer",
@@ -40,6 +41,8 @@ export const metadata: Metadata = {
   },
 };
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.motion=localStorage.getItem('motion')==='paused'?'paused':'enabled';document.documentElement.dataset.theme=t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})()`;
+// Runs before paint; the timeout also releases the overlay if hydration fails.
+const loadingScript = `(function(){var r=document.documentElement;if(r.dataset.motion==='paused'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.dataset.loading='pending';setTimeout(function(){r.dataset.loading='ready';window.dispatchEvent(new Event('portfolio-ready'))},1500)})()`;
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -64,8 +67,10 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: loadingScript }} />
       </head>
       <body className={`${geist.variable} ${mono.variable}`}>
+        <SiteLoader />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

@@ -137,10 +137,41 @@ h3 {
   gap: 18px;
 }
 .header-resume {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.8125rem;
+  gap: 7px;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.75rem;
+  font-weight: 550;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 180ms ease, background 180ms ease, border-color 180ms ease,
+    transform 180ms ease, box-shadow 180ms ease;
+}
+.header-cv:hover,
+.header-cv:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--background);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.header-cv:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.header-cv svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 220ms ease;
+}
+.header-cv:is(:hover, :focus-visible) svg {
+  transform: translateY(2px);
 }
 .header-divider {
   height: 20px;
@@ -1170,7 +1201,9 @@ h2 {
     font-size: 0.75rem;
   }
   .header-resume {
-    font-size: 0.75rem;
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: 0.6875rem;
   }
 }
 /* Ambient movement is isolated from text and clipped at the hero boundary. */
@@ -1543,4 +1576,132 @@ h2 {
   color: var(--muted);
   line-height: 1.7;
   margin: -4px 0 24px;
+}
+
+/* The intro is progressive enhancement: content stays usable without JavaScript. */
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--background);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 240ms ease, visibility 240ms;
+}
+[data-loading="pending"] .site-loader {
+  opacity: 1;
+  visibility: visible;
+}
+.loader-content {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+}
+.loader-content .wordmark {
+  font-size: 3.5rem;
+}
+.loader-track {
+  width: 96px;
+  height: 2px;
+  overflow: hidden;
+  background: var(--border);
+}
+.loader-track > span {
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: var(--accent);
+  animation: loading-sweep 900ms ease-in-out infinite;
+}
+.loader-label {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+@keyframes loading-sweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(330%); }
+}
+.resume-link {
+  position: relative;
+  isolation: isolate;
+}
+.button.resume-link {
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  color: var(--accent);
+}
+.resume-link svg {
+  transition: transform 220ms ease;
+}
+.resume-link:is(:hover, :focus-visible) svg {
+  transform: translateY(3px);
+}
+.button {
+  transition: color 180ms, background 180ms, border-color 180ms,
+    transform 220ms ease, box-shadow 220ms ease;
+}
+.button:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.desktop-nav a {
+  position: relative;
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+.desktop-nav a:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
+}
+.case-read svg,
+.case-next svg {
+  transition: transform 220ms ease;
+}
+.case-read:is(:hover, :focus-visible) svg,
+.case-next a:is(:hover, :focus-visible) svg {
+  transform: translate(2px, -2px);
+}
+.experience-content::before {
+  transition: background 220ms, border-color 220ms;
+}
+.experience-row:hover .experience-content::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+[data-motion="paused"] *,
+[data-motion="paused"] *::before,
+[data-motion="paused"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+[data-motion="paused"] .site-loader {
+  display: none;
+}
+[data-motion="paused"] .button,
+[data-motion="paused"] .resume-link svg,
+[data-motion="paused"] .case-read svg,
+[data-motion="paused"] .case-next svg {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-loader { display: none; }
+  .button,
+  .resume-link svg,
+  .case-read svg,
+  .case-next svg { transform: none !important; }
 }

@@ -1,4 +1,4 @@
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Download, Mail } from "lucide-react";
 import { contact, profile } from "@/data/profile";
 export function Contact() {
   return (
@@ -25,24 +25,25 @@ export function Contact() {
                 <ArrowUpRight size={16} />
               </a>
               <a
-                className="text-link"
+                className="text-link resume-link"
+                data-reveal="resume"
                 href={profile.resumePath}
                 download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Resume
-                <ArrowUpRight size={15} />
+                <Download size={15} aria-hidden="true" />
               </a>
             </div>
           </div>
           <div className="contact-details">
             <span className="availability">
               <span />
-              Open to remote opportunities
+              {profile.availability}
             </span>
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <p>Brazil · LATAM · International teams</p>
+            <p>Brazil (UTC−3) · LATAM · International teams</p>
           </div>
         </div>
       </div>

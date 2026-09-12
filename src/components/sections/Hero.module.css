@@ -1,0 +1,267 @@
+/* Scoped to the hero so shared buttons, status dots and sections stay intact. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: linear-gradient(
+    100deg,
+    transparent 48%,
+    color-mix(in srgb, var(--accent) 3%, transparent)
+  );
+}
+
+/* Atmosphere belongs behind the composition, never over the portrait. */
+.stage::before,
+.stage::after,
+.ambientLight {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.stage::before {
+  width: 720px;
+  height: 720px;
+  top: -160px;
+  right: max(-80px, calc((100vw - 1280px) / 2 - 80px));
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--accent) 17%, transparent),
+    transparent 68%
+  );
+  animation: lightDrift 24s ease-in-out infinite alternate;
+}
+
+.stage::after {
+  inset: 0 0 0 40%;
+  background-image:
+    linear-gradient(var(--accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.1;
+  mask-image: radial-gradient(ellipse at 60% 45%, #000 12%, transparent 72%);
+}
+
+.ambientLight {
+  width: 480px;
+  height: 400px;
+  left: max(-160px, calc((100vw - 1280px) / 2 - 180px));
+  bottom: -180px;
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--accent) 12%, transparent),
+    transparent 70%
+  );
+  animation: lightDrift 30s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes lightDrift {
+  from { transform: translate(-16px, 0); }
+  to { transform: translate(16px, 20px); }
+}
+
+.stage :global(.hero-topline),
+.stage :global(.hero-grid) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30%;
+  column-gap: clamp(2rem, 5vw, 5rem);
+}
+
+.stage :global(.availability) {
+  justify-self: center;
+  font-size: 0.8125rem;
+}
+
+.stage :global(.availability > span) {
+  box-shadow: none;
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+.stage :global(.hero-copy) {
+  min-width: 0;
+}
+
+.stage :global(.hero-ctas .button) {
+  min-height: 48px;
+  transform: none;
+  box-shadow: none;
+}
+
+.stage :global(.hero-ctas .primary) {
+  padding-inline: 20px;
+  font-weight: 550;
+  border-color: var(--foreground);
+}
+
+.stage :global(.hero-ctas .primary:is(:hover, :focus-visible)) {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.stage :global(.hero-ctas .button svg) {
+  flex-shrink: 0;
+  transition: transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.stage :global(.hero-ctas .primary:is(:hover, :focus-visible) svg) {
+  transform: translateY(2px);
+}
+
+.stage :global(.hero-ctas .secondary:is(:hover, :focus-visible) svg) {
+  transform: translate(2px, -2px);
+}
+
+.stage :global(.github-link) {
+  opacity: 0.72;
+  color: var(--foreground);
+  transition: opacity 450ms ease;
+}
+
+.stage :global(.github-link:is(:hover, :focus-visible)) {
+  opacity: 1;
+}
+
+.stage :global(.profile-aside) {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  align-self: center;
+  padding-top: 0;
+}
+
+.portraitAtmosphere {
+  position: relative;
+  isolation: isolate;
+}
+
+.portraitBlend {
+  position: relative;
+  aspect-ratio: 448 / 500;
+}
+
+.portraitImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: none;
+  /* Keep the supplied portrait completely untouched, including its original backdrop. */
+  filter: none;
+  transform-origin: 55% 42%;
+  transition: none;
+}
+
+.stage :global(.portrait-caption) {
+  position: relative;
+  margin-top: 4px;
+  padding-inline: 10px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.stage :global(.portrait-caption > span:first-child) {
+  font-weight: 450;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .stage :global(.hero-topline),
+  .stage :global(.hero-grid) {
+    grid-template-columns: minmax(0, 1fr) 28%;
+    column-gap: 2rem;
+  }
+
+  .stage :global(.availability) {
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  .stage :global(.portrait-caption) {
+    padding-inline: 0;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .stage {
+    background: none;
+  }
+
+  .stage::after {
+    inset-inline-start: 25%;
+    background-size: 56px 56px;
+    opacity: 0.065;
+  }
+
+  .stage :global(.hero) {
+    padding-top: 32px;
+  }
+
+  .stage :global(.hero-topline),
+  .stage :global(.hero-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stage :global(.hero-topline) {
+    gap: 12px;
+  }
+
+  .stage :global(.availability) {
+    justify-self: start;
+  }
+
+  .stage :global(.hero-grid) {
+    padding-top: 28px;
+    row-gap: 28px;
+  }
+
+  .stage :global(.profile-aside) {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    max-width: 320px;
+  }
+
+  .stage :global(.portrait-caption) {
+    margin: 0;
+    padding: 0;
+    gap: 6px;
+  }
+
+}
+
+:global([data-motion="paused"]) .stage :global(.availability > span) {
+  animation: none;
+}
+
+:global([data-motion="paused"]) .stage::before,
+:global([data-motion="paused"]) .ambientLight {
+  animation: none;
+}
+
+:global([data-motion="paused"]) .stage .portraitImage,
+:global([data-motion="paused"]) .stage :global(.hero-ctas .button svg) {
+  transform: none;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage :global(.availability > span) {
+    animation: none;
+  }
+
+  .stage :global(.hero-ctas .button svg) {
+    transform: none;
+    transition: none;
+  }
+}

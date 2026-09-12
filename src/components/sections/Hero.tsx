@@ -1,17 +1,18 @@
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight, Github, MapPin } from "lucide-react";
 import { profile, stats } from "@/data/profile";
+import styles from "./Hero.module.css";
 export function Hero() {
   return (
     <>
-      <div className="hero-stage">
-        <div className="hero-orb" aria-hidden="true" />
+      <div className={styles.stage}>
+        <div className={styles.ambientLight} aria-hidden="true" />
         <section className="hero container" aria-labelledby="hero-title">
           <div className="hero-topline">
             <span className="eyebrow">JORDÃO QUALHO / ENGINEERING PROFILE</span>
             <span className="availability">
-              <span />
-              Open to remote opportunities
+              <span aria-hidden="true" />
+              {profile.availability}
             </span>
           </div>
           <div className="hero-grid">
@@ -28,15 +29,16 @@ export function Hero() {
               <p className="core-stack">{profile.core.join(" · ")}</p>
               <div className="hero-ctas">
                 <a className="button primary" href="#work">
-                  View engineering cases <ArrowDown size={17} />
+                  View engineering cases <ArrowDown size={17} aria-hidden="true" />
                 </a>
                 <a
                   className="button secondary"
                   href={profile.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="LinkedIn (opens in a new tab)"
                 >
-                  LinkedIn <ArrowUpRight size={16} />
+                  LinkedIn <ArrowUpRight size={16} aria-hidden="true" />
                 </a>
                 <a
                   className="github-link"
@@ -45,23 +47,28 @@ export function Hero() {
                   rel="noopener noreferrer"
                   aria-label="GitHub (opens in a new tab)"
                 >
-                  <Github size={20} />
+                  <Github size={20} aria-hidden="true" />
                 </a>
               </div>
             </div>
             <aside className="profile-aside">
-              <Image
-                className="portrait"
-                src="/portrait.webp"
-                alt="Jordão Qualho"
-                width={224}
-                height={250}
-                priority
-              />
+              <div className={styles.portraitAtmosphere}>
+                <div className={styles.portraitBlend}>
+                  <Image
+                    className={styles.portraitImage}
+                    src="/working.png"
+                    alt="Jordão Qualho"
+                    width={448}
+                    height={500}
+                    sizes="(max-width: 767px) 96px, (max-width: 1024px) 27vw, 336px"
+                    priority
+                  />
+                </div>
+              </div>
               <div className="portrait-caption">
                 <span>{profile.name}</span>
                 <span>
-                  <MapPin size={13} />
+                  <MapPin size={13} aria-hidden="true" />
                   {profile.location}
                 </span>
               </div>
