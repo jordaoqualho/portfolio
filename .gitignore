@@ -10,3 +10,4 @@ artifacts/
 .openai/
 AGENTS.md
 CLAUDE.md
+.env.local
