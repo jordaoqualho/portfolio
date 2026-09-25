@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SiteLoader } from "@/components/layout/SiteLoader";
+import { MotionController } from "@/components/motion/MotionController";
 import { profile } from "@/data/profile";
 import { siteUrl, siteTitle, siteDescription } from "@/lib/site";
 import "./globals.css";
@@ -41,8 +42,9 @@ export const metadata: Metadata = {
   },
 };
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.motion=localStorage.getItem('motion')==='paused'?'paused':'enabled';document.documentElement.dataset.theme=t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})()`;
-// Runs before paint; the timeout also releases the overlay if hydration fails.
-const loadingScript = `(function(){var r=document.documentElement;if(r.dataset.motion==='paused'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.dataset.loading='pending';setTimeout(function(){r.dataset.loading='ready';window.dispatchEvent(new Event('portfolio-ready'))},1500)})()`;
+// Runs before paint. The intro plays once per session; the timeout releases the
+// overlay even if hydration never happens.
+const loadingScript = `(function(){var r=document.documentElement;try{if(sessionStorage.getItem('intro-seen'))return}catch(e){}if(r.dataset.motion==='paused'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.dataset.loading='pending';setTimeout(function(){if(r.dataset.loading!=='pending')return;r.dataset.loading='ready';window.dispatchEvent(new Event('portfolio-ready'))},4500)})()`;
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -71,6 +73,7 @@ export default function RootLayout({
       </head>
       <body className={`${geist.variable} ${mono.variable}`}>
         <SiteLoader />
+        <MotionController />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

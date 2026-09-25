@@ -17,10 +17,15 @@ export function Hero() {
           </div>
           <div className="hero-grid">
             <div className="hero-copy">
-              <h1 id="hero-title">
-                Senior Software
-                <br />
-                Engineer<span className="accent">.</span>
+              <h1 id="hero-title" className="hero-title">
+                <span className="hero-line">
+                  <span>Senior Software</span>
+                </span>{" "}
+                <span className="hero-line">
+                  <span>
+                    Engineer<span className="accent">.</span>
+                  </span>
+                </span>
               </h1>
               <p className="hero-focus">
                 Full Stack with strong <strong>Backend depth.</strong>
@@ -29,7 +34,8 @@ export function Hero() {
               <p className="core-stack">{profile.core.join(" · ")}</p>
               <div className="hero-ctas">
                 <a className="button primary" href="#work">
-                  View engineering cases <ArrowDown size={17} aria-hidden="true" />
+                  View engineering cases{" "}
+                  <ArrowDown size={17} aria-hidden="true" />
                 </a>
                 <a
                   className="button secondary"
@@ -53,7 +59,7 @@ export function Hero() {
             </div>
             <aside className="profile-aside">
               <div className={styles.portraitAtmosphere}>
-                <div className={styles.portraitBlend}>
+                <div className={styles.portraitBlend} data-portrait>
                   <Image
                     className={styles.portraitImage}
                     src="/working.png"

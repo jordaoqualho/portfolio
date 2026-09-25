@@ -5,16 +5,19 @@ import { Experience } from "@/components/sections/Experience";
 import { TechStack } from "@/components/sections/TechStack";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
+import { PageTransition } from "@/components/motion/PageTransition";
 export default function Home() {
   return (
-    <main id="main-content">
-      <Hero />
-      <Capabilities />
-      <EngineeringCases />
-      <Experience />
-      <TechStack />
-      <About />
-      <Contact />
-    </main>
+    <PageTransition>
+      <main id="main-content">
+        <Hero />
+        <Capabilities />
+        <EngineeringCases />
+        <Experience />
+        <TechStack />
+        <About />
+        <Contact />
+      </main>
+    </PageTransition>
   );
 }

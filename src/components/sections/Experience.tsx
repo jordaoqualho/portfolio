@@ -1,4 +1,5 @@
 import { experience } from "@/data/profile";
+import { Timeline } from "./Timeline";
 export function Experience() {
   return (
     <section id="experience" className="container section experience-section">
@@ -10,11 +11,12 @@ export function Experience() {
           </h2>
         </div>
       </div>
-      <div className="timeline">
+      <Timeline>
         {experience.map((role) => (
           <article className="experience-row" key={role.company}>
             <p className="experience-date">{role.dates}</p>
             <div className="experience-content">
+              <span className="timeline-node" aria-hidden="true" />
               <h3>{role.company}</h3>
               <p className="role-title">{role.title}</p>
               <p className="role-summary">{role.summary}</p>
@@ -27,7 +29,7 @@ export function Experience() {
             </div>
           </article>
         ))}
-      </div>
+      </Timeline>
     </section>
   );
 }

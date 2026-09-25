@@ -772,19 +772,7 @@ h2 {
 }
 .experience-content {
   position: relative;
-  border-left: 1px solid var(--border);
   padding-left: 32px;
-}
-.experience-content::before {
-  content: "";
-  position: absolute;
-  left: -4px;
-  top: 7px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--background);
-  border: 1px solid var(--muted);
 }
 .experience-content h3 {
   font-size: 1.1875rem;
@@ -1326,21 +1314,6 @@ h2 {
   position: relative;
   padding-block: 8px;
 }
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 2px;
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.desktop-nav a:hover::after,
-.desktop-nav a:focus-visible::after {
-  transform: scaleX(1);
-}
 .case-row {
   transition: border-color 0.22s ease;
 }
@@ -1578,53 +1551,6 @@ h2 {
   margin: -4px 0 24px;
 }
 
-/* The intro is progressive enhancement: content stays usable without JavaScript. */
-.site-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  display: grid;
-  place-items: center;
-  background: var(--background);
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 240ms ease, visibility 240ms;
-}
-[data-loading="pending"] .site-loader {
-  opacity: 1;
-  visibility: visible;
-}
-.loader-content {
-  display: grid;
-  justify-items: center;
-  gap: 24px;
-}
-.loader-content .wordmark {
-  font-size: 3.5rem;
-}
-.loader-track {
-  width: 96px;
-  height: 2px;
-  overflow: hidden;
-  background: var(--border);
-}
-.loader-track > span {
-  display: block;
-  width: 45%;
-  height: 100%;
-  background: var(--accent);
-  animation: loading-sweep 900ms ease-in-out infinite;
-}
-.loader-label {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-@keyframes loading-sweep {
-  from { transform: translateX(-110%); }
-  to { transform: translateX(330%); }
-}
 .resume-link {
   position: relative;
   isolation: isolate;
@@ -1676,13 +1602,6 @@ h2 {
 .case-next a:is(:hover, :focus-visible) svg {
   transform: translate(2px, -2px);
 }
-.experience-content::before {
-  transition: background 220ms, border-color 220ms;
-}
-.experience-row:hover .experience-content::before {
-  background: var(--accent);
-  border-color: var(--accent);
-}
 [data-motion="paused"] *,
 [data-motion="paused"] *::before,
 [data-motion="paused"] *::after {
@@ -1704,4 +1623,501 @@ h2 {
   .resume-link svg,
   .case-read svg,
   .case-next svg { transform: none !important; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion system. Everything here is progressive enhancement: without  */
+/* JavaScript, or with motion paused/reduced, the page is static.      */
+/* ------------------------------------------------------------------ */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Intro. CSS runs the first half so it animates before hydration. */
+@property --load {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+[data-loading="pending"] body {
+  overflow: hidden;
+}
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  visibility: hidden;
+}
+[data-loading="pending"] .site-loader {
+  visibility: visible;
+  animation: load-progress 1.25s var(--ease-out) 0.2s forwards;
+}
+.loader-panel,
+.loader-panel-accent {
+  position: absolute;
+  inset: 0;
+}
+.loader-panel-accent {
+  background: var(--accent);
+}
+.loader-panel {
+  display: grid;
+  place-items: center;
+  background: var(--background);
+}
+.loader-content {
+  display: grid;
+  gap: 20px;
+  width: min(340px, calc(100% - 64px));
+}
+.loader-mark {
+  display: flex;
+  overflow: hidden;
+  padding: 0 0.06em 0.14em;
+  margin-bottom: -0.14em;
+  font-size: clamp(4.5rem, 14vw, 7rem);
+  font-weight: 650;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+.loader-glyph {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: glyph-in 0.95s var(--ease-out) forwards;
+}
+.loader-glyph:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.loader-glyph:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.loader-dot {
+  color: var(--accent);
+}
+.loader-meter {
+  display: block;
+  height: 1px;
+  overflow: hidden;
+  background: var(--border);
+}
+.loader-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--foreground);
+  transform: scaleX(calc(var(--load) / 100));
+  transform-origin: left;
+}
+.loader-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loader-count::after {
+  counter-reset: load var(--load);
+  content: counter(load, decimal-leading-zero) "%";
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+@keyframes load-progress {
+  to {
+    --load: 86;
+  }
+}
+@keyframes glyph-in {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Hero title lines rise out of their own masks. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.hero-line > span,
+.hero-title .accent {
+  display: inline-block;
+}
+
+/* Held back until the element scrolls in, then revealed by script. */
+[data-reveal-pending] {
+  opacity: 0;
+}
+
+/* Header: glass once scrolled, reading progress along its edge. */
+.site-header {
+  view-transition-name: site-header;
+  transition: background-color 300ms ease;
+}
+.site-header[data-scrolled] {
+  background: color-mix(in srgb, var(--background) 84%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+}
+.header-progress {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* Scrollspy marker that glides between links. */
+.desktop-nav,
+.case-index nav {
+  position: relative;
+}
+.desktop-nav::before,
+.case-index nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 550ms var(--ease-out),
+    width 550ms var(--ease-out),
+    height 550ms var(--ease-out),
+    opacity 300ms ease;
+}
+.desktop-nav::before {
+  width: var(--spy-w, 0);
+  height: 1px;
+  transform: translate(var(--spy-x, 0), calc(var(--spy-y, 0) + var(--spy-h, 0) + 5px));
+}
+.desktop-nav a {
+  transition: color 300ms ease;
+}
+.desktop-nav[data-spy-active] a:not([data-active]) {
+  color: var(--muted);
+}
+.desktop-nav[data-spy-active] a:hover {
+  color: var(--accent);
+}
+.desktop-nav a[data-active]::after {
+  opacity: 0;
+}
+.case-index nav {
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+.case-index nav::before {
+  left: -1px;
+  width: 2px;
+  height: var(--spy-h, 0);
+  transform: translateY(var(--spy-y, 0));
+}
+.case-index a[data-active] {
+  color: var(--foreground);
+}
+.desktop-nav[data-spy-active]::before,
+.case-index nav[data-spy-active]::before {
+  opacity: 1;
+}
+
+/* Magnetic actions follow the cursor slightly, then spring back. */
+.hero-ctas > a,
+.contact-actions > a,
+.case-read,
+.header-cv,
+.case-next a {
+  translate: var(--mag-x, 0) var(--mag-y, 0);
+  transition:
+    translate 500ms var(--ease-out),
+    color 180ms,
+    background 180ms,
+    border-color 180ms,
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    opacity 450ms ease;
+}
+
+/* Cursor spotlight on cards, cases and roles. */
+.case-row,
+.experience-row {
+  position: relative;
+  isolation: isolate;
+}
+@media (hover: hover) and (pointer: fine) {
+  .capability-grid > div::after,
+  .case-row::after,
+  .experience-row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in srgb, var(--accent) 7%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+  .capability-grid > div:hover::after,
+  .case-row:hover::after,
+  .experience-row:hover::after {
+    opacity: 1;
+  }
+  .case-row::after,
+  .experience-row::after {
+    inset: 0 -24px;
+  }
+}
+.case-number {
+  transition: color 300ms ease;
+}
+.case-row:is(:hover, :focus-within) .case-number {
+  color: var(--accent);
+}
+.case-body h3 a {
+  transition:
+    color 180ms,
+    transform 500ms var(--ease-out);
+}
+.case-row:hover .case-body h3 a {
+  transform: translateX(6px);
+}
+
+/* Experience timeline: a rail that fills with scroll and lights each role. */
+.timeline {
+  position: relative;
+}
+.timeline-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 280px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--border);
+  pointer-events: none;
+}
+.timeline-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--accent) 25%, transparent),
+    var(--accent)
+  );
+  transform: scaleY(var(--timeline-progress, 1));
+  transform-origin: top;
+}
+.timeline-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent),
+    0 0 22px 4px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translateY(var(--timeline-head, 0));
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.timeline[data-enhanced]:not([data-complete]) .timeline-head {
+  opacity: 1;
+}
+.timeline-node {
+  position: absolute;
+  top: 7px;
+  left: -4.5px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  background: var(--background);
+  transition:
+    background 400ms ease,
+    border-color 400ms ease,
+    box-shadow 400ms ease,
+    transform 600ms var(--ease-spring);
+}
+.timeline-node::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+}
+.experience-row[data-reached] .timeline-node {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.timeline[data-enhanced] .experience-row[data-reached] .timeline-node::after {
+  animation: node-ripple 1.1s var(--ease-out);
+}
+.timeline[data-enhanced] .experience-row[data-current] .timeline-node,
+.experience-row:hover .timeline-node {
+  transform: scale(1.35);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.timeline[data-enhanced] .experience-date,
+.timeline[data-enhanced] .experience-content > :not(.timeline-node) {
+  transition: opacity 600ms ease, color 400ms ease;
+}
+.timeline[data-enhanced] .experience-row:not([data-reached]) :is(.experience-date, .experience-content > :not(.timeline-node)) {
+  opacity: 0.4;
+}
+.timeline[data-enhanced] .experience-row[data-current] .experience-date {
+  color: var(--accent);
+}
+.timeline .tech-list li {
+  transition: border-color 400ms ease, color 400ms ease;
+}
+.timeline[data-enhanced] .experience-row[data-current] .tech-list li {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  color: var(--foreground);
+}
+@keyframes node-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4.5);
+  }
+}
+@media (max-width: 1024px) {
+  .timeline-rail {
+    left: 225px;
+  }
+}
+@media (max-width: 767px) {
+  .timeline-rail {
+    left: 3px;
+  }
+  /* The rail runs down the left edge, so the date shares the content's indent. */
+  .experience-date {
+    padding-left: 27px;
+  }
+  .case-index nav {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .case-index nav::before {
+    display: none;
+  }
+}
+
+/* Page transitions. Classes come from <PageTransition>; the movement itself
+   is scripted in its onEnter/onExit callbacks. */
+#main-content {
+  background: var(--background);
+}
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(.page-out-forward),
+::view-transition-old(.page-out-back),
+::view-transition-old(.page-out),
+::view-transition-new(.page-in-forward),
+::view-transition-new(.page-in-back),
+::view-transition-new(.page-in) {
+  animation: none;
+}
+/* Going back, the case page slides away on top of the page it returns to. */
+::view-transition-group(.page-out-back) {
+  z-index: 2;
+}
+/* The case title morphs between the list and the case page. */
+::view-transition-group(.case-morph) {
+  z-index: 50;
+  animation-duration: 900ms;
+  animation-timing-function: var(--ease-in-out);
+}
+::view-transition-image-pair(.case-morph) {
+  animation: morph-blur 900ms var(--ease-in-out);
+}
+::view-transition-old(.case-morph),
+::view-transition-new(.case-morph) {
+  animation-duration: 900ms;
+  animation-timing-function: var(--ease-in-out);
+}
+@keyframes morph-blur {
+  40% {
+    filter: blur(3px);
+  }
+}
+/* Theme switch: only the root is captured so the circle covers everything. */
+[data-theme-switching] .site-header {
+  view-transition-name: none;
+}
+[data-theme-switching] *,
+[data-theme-switching] *::before,
+[data-theme-switching] *::after {
+  transition: none !important;
+}
+
+[data-motion="paused"] .hero-ctas > a,
+[data-motion="paused"] .contact-actions > a,
+[data-motion="paused"] .case-read,
+[data-motion="paused"] .header-cv,
+[data-motion="paused"] .case-next a {
+  translate: none;
+}
+[data-motion="paused"] .case-row .case-body h3 a {
+  transform: none;
+}
+:root[data-motion="paused"]::view-transition-group(*),
+:root[data-motion="paused"]::view-transition-image-pair(*),
+:root[data-motion="paused"]::view-transition-old(*),
+:root[data-motion="paused"]::view-transition-new(*) {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-ctas > a,
+  .contact-actions > a,
+  .case-read,
+  .header-cv,
+  .case-next a {
+    translate: none;
+  }
+  .case-row .case-body h3 a {
+    transform: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

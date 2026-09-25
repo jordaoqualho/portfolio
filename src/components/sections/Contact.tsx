@@ -26,7 +26,6 @@ export function Contact() {
               </a>
               <a
                 className="text-link resume-link"
-                data-reveal="resume"
                 href={profile.resumePath}
                 download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
                 target="_blank"

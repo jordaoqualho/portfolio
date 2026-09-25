@@ -16,7 +16,9 @@
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--accent) 4%, transparent), transparent 55%),
     var(--surface);
-  transition: border-color 220ms ease, background-color 220ms ease;
+  isolation: isolate;
+  transition: border-color 220ms ease, background-color 220ms ease,
+    transform 700ms var(--ease-out);
 }
 
 .card::before {
@@ -72,7 +74,30 @@
   color: var(--muted);
 }
 
+.icon {
+  transition: transform 600ms var(--ease-spring), background-color 300ms ease;
+}
+
+.card::before {
+  transform-origin: left;
+  transition: transform 600ms var(--ease-out), opacity 300ms ease;
+}
+
 @media (hover: hover) and (pointer: fine) {
+  /* The tilt angles are written by the pointer handler in MotionController. */
+  .grid .card {
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  }
+
+  .grid .card:hover .icon {
+    transform: translateY(-3px) rotate(-6deg);
+  }
+
+  .grid .card:hover::before {
+    opacity: 1;
+    transform: scaleX(2.2);
+  }
+
   .grid .card:hover {
     border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
     background-color: color-mix(in srgb, var(--accent) 3%, var(--surface));
@@ -103,5 +128,17 @@
 
   .meta {
     margin-bottom: 20px;
+  }
+}
+
+:global([data-motion="paused"]) .grid .card,
+:global([data-motion="paused"]) .grid .card .icon {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid .card,
+  .grid .card .icon {
+    transform: none !important;
   }
 }
