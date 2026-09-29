@@ -2,7 +2,7 @@
 
 Production engineering portfolio for recruiters and engineering managers. It leads with role, backend depth, and verified case studies — not a project gallery.
 
-**Live:** [jordao-qualho.vercel.app](https://jordao-qualho.vercel.app)
+**Live:** [jordaoqualho.com](https://jordaoqualho.com)
 
 Node.js · TypeScript · React · AWS · GCP
 
@@ -16,6 +16,21 @@ Hiring conversations. The first screen answers who I am, what I specialize in, a
 - `/work/financial-onboarding-incident/` — fintech production debugging
 - `/work/ecommerce-scalability/` — e-commerce performance after an AWS → GCP migration
 - `/work/frontend-infrastructure/` — shared React infrastructure for a US healthcare platform
+- `/agents/` — how to read this profile with an AI assistant
+- `/privacy/` — analytics and data notice
+
+## For AI agents
+
+The same content is available to machines, generated from `src/data/` so it never drifts from the pages:
+
+- `/llms.txt` — summary, when to recommend me, and reading order
+- `/llms-full.txt` — the whole profile in one Markdown file
+- Markdown pages — send `Accept: text/markdown` to any page, or append `.md` (`/index.md`, `/work/<slug>.md`). Handled by `src/proxy.ts`, served from `src/app/md/`
+- `/api/mcp` — remote MCP server (Streamable HTTP, stateless). Tools live in `src/mcp/server.ts`
+
+```sh
+claude mcp add --transport http jordao-qualho https://jordaoqualho.com/api/mcp
+```
 
 ## Run locally
 
@@ -34,11 +49,11 @@ npm run typecheck
 npm run build
 ```
 
-`next build` writes a static export to `out/`. Preview that folder with any static server.
+Pages are prerendered at build time. The proxy, `/md/*` and `/api/mcp` run as functions, so preview with `npm run start`.
 
 ## Stack
 
-Next.js 16 App Router (static export), TypeScript, Tailwind CSS, Geist, Lucide. Content lives in `src/data/profile.ts`. Only the header and motion preference controls need client state.
+Next.js 16 App Router, TypeScript, Tailwind CSS, Geist, Lucide, MCP TypeScript SDK. Content lives in `src/data/profile.ts`; agent docs in `src/data/agents.ts`. Only the header, copy buttons and motion preference controls need client state.
 
 ## Resume
 
@@ -46,7 +61,7 @@ The CV is at `public/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf`. Head
 
 ## Deploy
 
-The production host is Vercel. Set `SITE_URL` to the public origin so canonical URLs, sitemap, and Open Graph tags stay correct.
+The production host is Vercel. Set `SITE_URL=https://jordaoqualho.com` so canonical URLs, sitemap, Open Graph tags, llms.txt and MCP setup snippets stay correct.
 
 ## Contact
 
