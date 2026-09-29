@@ -1,7 +1,7 @@
 export const siteUrl = (
   process.env.SITE_URL ||
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://jordao-qualho.vercel.app"
+  "https://jordaoqualho.com"
 ).replace(/\/$/, "");
 export const siteTitle =
   "Jordão Qualho, Senior Software Engineer | Node.js, TypeScript & React";
