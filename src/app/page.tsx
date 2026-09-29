@@ -4,6 +4,7 @@ import { EngineeringCases } from "@/components/sections/EngineeringCases";
 import { Experience } from "@/components/sections/Experience";
 import { TechStack } from "@/components/sections/TechStack";
 import { About } from "@/components/sections/About";
+import { AgentAccess } from "@/components/sections/AgentAccess";
 import { Contact } from "@/components/sections/Contact";
 import { PageTransition } from "@/components/motion/PageTransition";
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <Experience />
         <TechStack />
         <About />
+        <AgentAccess />
         <Contact />
       </main>
     </PageTransition>

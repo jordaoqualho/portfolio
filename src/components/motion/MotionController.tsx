@@ -22,7 +22,7 @@ const LABELS =
 const HEADINGS =
   ".section-heading h2, .contact-grid h2, .case-detail-header h1, .not-found h1";
 const BLOCKS =
-  ".section-heading p, .contact-grid > div > p, .contact-actions, .contact-details, .case-detail-header > p, .case-detail-header > .tech-list, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .snapshot > div";
+  ".section-heading p, .contact-grid > div > p, .contact-actions, .contact-details, .case-detail-header > p, .case-detail-header > .tech-list, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .snapshot > div, .agent-audience, .agent-cta";
 const CARDS = ".capability-grid > div";
 const CASES = ".case-row";
 const ROLES = ".experience-row";

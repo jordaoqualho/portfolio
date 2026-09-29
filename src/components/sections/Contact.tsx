@@ -4,7 +4,7 @@ export function Contact() {
   return (
     <section id="contact" className="contact-section">
       <div className="container">
-        <span className="eyebrow">05 / LET’S TALK</span>
+        <span className="eyebrow">06 / LET’S TALK</span>
         <div className="contact-grid">
           <div>
             <h2>{contact.title}</h2>

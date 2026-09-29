@@ -42,6 +42,7 @@ export const navigation = [
   { label: "Experience", href: "/#experience" },
   { label: "Stack", href: "/#stack" },
   { label: "About", href: "/#about" },
+  { label: "AI Agents", href: "/#agents" },
   { label: "Contact", href: "/#contact" },
 ];
 export const stats = [

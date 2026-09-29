@@ -2121,3 +2121,119 @@ h2 {
     animation: none !important;
   }
 }
+/* Agent access: homepage section, /agents page and shared code blocks. */
+.agents-section {
+  border-top: 1px solid var(--border);
+}
+.agents-body {
+  min-width: 0;
+}
+/* The copy column is tall, so the heading stays in view beside it. */
+@media (min-width: 768px) {
+  .agents-section .section-heading {
+    position: sticky;
+    top: 112px;
+    align-self: start;
+    align-items: flex-start;
+  }
+}
+.agent-audience {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 36px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+}
+.agent-audience h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.agent-audience p {
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.agent-audience .tech-list {
+  margin-top: 6px;
+}
+.agent-audience .code-block {
+  margin-top: 6px;
+}
+.agent-example {
+  margin: 6px 0 0;
+  padding: 20px 24px;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+.agent-cta {
+  margin-top: 4px;
+}
+.code-block {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+}
+.code-block pre {
+  margin: 0;
+  padding: 14px 52px 14px 16px;
+  overflow-x: auto;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+.code-block .icon-button {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  color: var(--muted);
+}
+.code-block .icon-button:hover {
+  color: var(--foreground);
+  background: var(--background);
+}
+.case-prose code {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875em;
+  color: var(--foreground);
+}
+.case-prose .code-block {
+  margin-top: 20px;
+}
+/* Long code lines scroll inside their block instead of widening the grid column. */
+.case-prose {
+  min-width: 0;
+}
+.agent-client {
+  margin-top: 32px;
+}
+.agent-client h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.agent-tools {
+  margin: 0;
+}
+.agent-tools > div {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.agent-tools > div:first-child {
+  padding-top: 0;
+}
+.agent-tools dd {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.footer-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
