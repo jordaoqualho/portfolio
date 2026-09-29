@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "Brazil",
     "Remote Software Engineer",
   ],
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", types: { "text/markdown": "/index.md" } },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -53,7 +53,15 @@ export default function RootLayout({
     "@type": "Person",
     name: profile.name,
     jobTitle: profile.role,
+    description: siteDescription,
     url: siteUrl,
+    email: `mailto:${profile.email}`,
+    image: `${siteUrl}/portrait.webp`,
+    homeLocation: {
+      "@type": "Place",
+      address: { "@type": "PostalAddress", addressCountry: "BR" },
+    },
+    knowsLanguage: ["en", "pt-BR"],
     sameAs: [profile.linkedin, profile.github],
     knowsAbout: [
       "Node.js",
