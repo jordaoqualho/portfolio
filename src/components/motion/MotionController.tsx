@@ -21,7 +21,7 @@ const LABELS =
 const HEADINGS =
   ".section-heading h2, .contact-grid h2, .case-detail-header h1, .not-found h1";
 const BLOCKS =
-  ".section-heading p, .contact-grid > div > p, .contact-actions, .contact-details, .case-detail-header > p, .case-detail-header > .tech-list, .project-detail-links, .project-shot, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .agent-audience, .agent-cta, .project-card";
+  ".section-heading p, .contact-grid > div > p, .contact-details, .contact-panel, .case-detail-header > p, .case-detail-header > .tech-list, .project-detail-links, .project-shot, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .agent-audience, .agent-cta, .project-card";
 const CASES = ".case-row";
 const ROLES = ".experience-row";
 const STACK = ".stack-groups > div";
@@ -289,14 +289,16 @@ export function MotionController() {
     const start = () => {
       if (started || !motionAllowed()) return;
       started = true;
-      const hero = !clientNavigation && document.querySelector(".hero");
+      // A language switch reloads the page; its fade-in replaces the intro.
+      const switched = "localeEntering" in document.documentElement.dataset;
+      const hero = !clientNavigation && !switched && document.querySelector(".hero");
       if (hero) heroIntro(play);
       let index = 0;
       document.querySelectorAll<HTMLElement>(REVEAL).forEach((element) => {
         const box = element.getBoundingClientRect();
         if (box.bottom <= 0) return;
         if (box.top < window.innerHeight) {
-          if (!clientNavigation)
+          if (!clientNavigation && !switched)
             reveal(element, 200 + Math.min(index++, 6) * 70, play);
           return;
         }

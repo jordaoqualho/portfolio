@@ -1,36 +1,33 @@
-import { ArrowUpRight, Mail } from "lucide-react";
-import { contact, profile } from "@/data/profile";
-export function Contact() {
+import { getContent } from "@/data/content";
+import { ContactAlternatives } from "@/components/contact/ContactAlternatives";
+import { ContactForm } from "@/components/contact/ContactForm";
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
+export function Contact({ locale }: { locale: Locale }) {
+  const { contact, profile } = getContent(locale);
+  const t = ui(locale);
   return (
     <section id="contact" className="contact-section">
       <div className="container">
-        <div className="contact-grid">
-          <div>
+        <div className="contact-grid contact-layout">
+          <div className="contact-intro">
             <h2>{contact.title}</h2>
             <p>{contact.description}</p>
-            <div className="contact-actions">
-              <a className="button primary" href={`mailto:${profile.email}`}>
-                <Mail size={16} />
-                Let’s talk
-              </a>
-              <a
-                className="button secondary"
-                href={profile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-                <ArrowUpRight size={16} />
-              </a>
+            <div className="contact-details">
+              <span className="availability">
+                <span />
+                {profile.availability}
+              </span>
+              <p>{t.contact.timezone}</p>
             </div>
           </div>
-          <div className="contact-details">
-            <span className="availability">
-              <span />
-              {profile.availability}
-            </span>
-            <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <p>Brazil (UTC−3) · LATAM · International teams</p>
+          <div className="contact-panel">
+            <ContactForm email={profile.email} />
+            <ContactAlternatives
+              email={profile.email}
+              linkedin={profile.linkedin}
+              whatsapp={profile.whatsapp}
+            />
           </div>
         </div>
       </div>

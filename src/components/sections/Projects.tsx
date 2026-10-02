@@ -1,21 +1,31 @@
 import Link from "next/link";
 import { ArrowUpRight, Github } from "lucide-react";
-import { currentlyBuilding, projects } from "@/data/profile";
+import { getContent } from "@/data/content";
+import { ProjectIcon } from "@/components/work/ProjectIcon";
+import type { Locale } from "@/i18n/config";
+import { localePath } from "@/i18n/paths";
+import { ui } from "@/i18n/ui";
 import { FORWARD } from "@/lib/motion";
-export function Projects() {
+export function Projects({ locale }: { locale: Locale }) {
+  const { currentlyBuilding, projects } = getContent(locale);
+  const t = ui(locale).projects;
   return (
     <section id="projects" className="container section projects-section">
       <div className="section-heading">
         <div>
           <h2>
-            What I’m building outside work<span className="accent">.</span>
+            {t.title}
+            <span className="accent">.</span>
           </h2>
           <p>{currentlyBuilding}</p>
         </div>
       </div>
       <div className="project-grid">
         {projects.map((project) => {
-          const page = project.slug ? `/projects/${project.slug}/` : project.href;
+          const page = localePath(
+            locale,
+            project.slug ? `/projects/${project.slug}/` : (project.href ?? ""),
+          );
           const site =
             project.href?.startsWith("http") && project.href !== project.repo
               ? project.href
@@ -23,6 +33,7 @@ export function Projects() {
           return (
             <article className="project-card" key={project.name}>
               <div className="project-meta">
+                <ProjectIcon name={project.name} />
                 <span className="project-status">{project.status}</span>
               </div>
               <h3>
@@ -45,7 +56,7 @@ export function Projects() {
                 <p className="project-byline">{project.byline}</p>
               )}
               {project.stack && (
-                <ul className="tech-list" aria-label="Technologies">
+                <ul className="tech-list" aria-label={t.technologies}>
                   {project.stack.map((tech) => (
                     <li key={tech}>{tech}</li>
                   ))}
@@ -55,7 +66,7 @@ export function Projects() {
                 <div className="project-links">
                   {site && (
                     <a href={site} target="_blank" rel="noopener noreferrer">
-                      Live site <ArrowUpRight size={14} aria-hidden="true" />
+                      {t.liveSite} <ArrowUpRight size={14} aria-hidden="true" />
                     </a>
                   )}
                   {project.repo && (
@@ -64,7 +75,7 @@ export function Projects() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Github size={14} aria-hidden="true" /> Code
+                      <Github size={14} aria-hidden="true" /> {t.code}
                     </a>
                   )}
                 </div>

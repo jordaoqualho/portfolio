@@ -4,24 +4,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import { cases, projects } from "@/data/profile";
 import { BACK, FORWARD } from "@/lib/motion";
+import { localePath, stripLocale } from "@/i18n/paths";
+import { useLocale, useUi } from "@/i18n/provider";
+import { ProjectIcon } from "@/components/work/ProjectIcon";
 
-const featured = projects.filter((p) => p.slug || p.href);
-const projectHref = (p: (typeof projects)[number]) =>
-  p.slug ? `/projects/${p.slug}/` : p.href!;
+// Built on the server from the locale's content, so the client bundle does
+// not carry both languages' case and project text.
+export type WorkMenuItems = {
+  cases: { href: string; category: string; title: string }[];
+  projects: { href: string; name: string; line: string }[];
+};
 
 // "Work" in the header: one trigger for the engineering cases and side
 // projects, with direct links to every page. Hover opens it with a short
 // intent delay; click and keyboard work the same way.
-export function WorkMenu() {
+export function WorkMenu({ items }: { items: WorkMenuItems }) {
+  const t = useUi().workMenu;
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const timer = useRef<number>(0);
   const panelId = useId();
   const pathname = usePathname();
-  const back = pathname === "/" ? undefined : [BACK];
+  const back = stripLocale(pathname) === "/" ? undefined : [BACK];
 
   const schedule = (next: boolean, delay: number) => {
     window.clearTimeout(timer.current);
@@ -89,17 +96,17 @@ export function WorkMenu() {
           focusFirst();
         }}
       >
-        Work
+        {t.trigger}
         <ChevronDown size={14} aria-hidden="true" />
       </button>
       <div id={panelId} className="work-menu-panel">
         <div className="work-menu-column">
-          <p className="work-menu-label">Engineering cases</p>
+          <p className="work-menu-label">{t.cases}</p>
           <ul>
-            {cases.map((item) => (
-              <li key={item.slug}>
+            {items.cases.map((item) => (
+              <li key={item.href}>
                 <Link
-                  href={`/work/${item.slug}/`}
+                  href={item.href}
                   transitionTypes={[FORWARD]}
                   onClick={() => setOpen(false)}
                 >
@@ -111,38 +118,38 @@ export function WorkMenu() {
           </ul>
           <Link
             className="work-menu-all"
-            href="/#work"
+            href={localePath(locale, "/#work")}
             transitionTypes={back}
             onClick={() => setOpen(false)}
           >
-            All cases <ArrowRight size={13} aria-hidden="true" />
+            {t.allCases} <ArrowRight size={13} aria-hidden="true" />
           </Link>
         </div>
         <div className="work-menu-column">
-          <p className="work-menu-label">Side projects</p>
+          <p className="work-menu-label">{t.projects}</p>
           <ul>
-            {featured.map((project) => (
+            {items.projects.map((project) => (
               <li key={project.name}>
                 <Link
-                  href={projectHref(project)}
+                  className="work-menu-project"
+                  href={project.href}
                   transitionTypes={[FORWARD]}
                   onClick={() => setOpen(false)}
                 >
+                  <ProjectIcon name={project.name} size={15} />
                   <span className="work-menu-title">{project.name}</span>
-                  <span className="work-menu-meta">
-                    {project.detail?.tagline ?? project.description}
-                  </span>
+                  <span className="work-menu-meta">{project.line}</span>
                 </Link>
               </li>
             ))}
           </ul>
           <Link
             className="work-menu-all"
-            href="/#projects"
+            href={localePath(locale, "/#projects")}
             transitionTypes={back}
             onClick={() => setOpen(false)}
           >
-            All projects <ArrowRight size={13} aria-hidden="true" />
+            {t.allProjects} <ArrowRight size={13} aria-hidden="true" />
           </Link>
         </div>
       </div>

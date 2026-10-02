@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { stats } from "@/data/profile";
+import { useLocale, useUi } from "@/i18n/provider";
+import { localePath } from "@/i18n/paths";
 import { FORWARD, motionAllowed } from "@/lib/motion";
 import styles from "./ProofStrip.module.css";
 
@@ -40,15 +41,19 @@ function useCountUp(ref: React.RefObject<HTMLElement | null>) {
   }, [ref]);
 }
 
-export function ProofStrip() {
+type Stat = { value: number; suffix: string; label: string; detail: string; href: string };
+
+export function ProofStrip({ stats }: { stats: Stat[] }) {
+  const t = useUi().hero;
+  const locale = useLocale();
   const ref = useRef<HTMLElement>(null);
   useCountUp(ref);
   return (
-    <section ref={ref} className={`container ${styles.strip}`} aria-label="Track record">
+    <section ref={ref} className={`container ${styles.strip}`} aria-label={t.proof}>
       {stats.map((stat) => (
         <Link
           key={stat.label}
-          href={stat.href}
+          href={localePath(locale, stat.href)}
           className={styles.item}
           transitionTypes={stat.href.startsWith("/work") ? [FORWARD] : undefined}
         >

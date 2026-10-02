@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { BookOpen, ChessKnight, Dices, Music, Piano } from "lucide-react";
-import { facets } from "@/data/profile";
+import { useUi } from "@/i18n/provider";
 import { MOTION_CHANGE, motionAllowed } from "@/lib/motion";
 import styles from "./HeroFacets.module.css";
 
-const icons = {
+type Facet = { id: string; label: string };
+
+const icons: Record<string, typeof Music> = {
   violin: Music,
   theology: BookOpen,
   piano: Piano,
@@ -29,7 +31,8 @@ function subscribe(listener: () => void) {
 // Rotates through the non-engineering sides of me. Auto-advance stops on
 // hover, focus, reduced motion or the site's motion toggle; the segments
 // below let visitors pick a facet themselves.
-export function HeroFacets() {
+export function HeroFacets({ facets }: { facets: Facet[] }) {
+  const t = useUi().hero;
   const animate = useSyncExternalStore(subscribe, motionAllowed, () => false);
   const [active, setActive] = useState(0);
   const [held, setHeld] = useState(false);
@@ -42,7 +45,7 @@ export function HeroFacets() {
       INTERVAL,
     );
     return () => window.clearTimeout(id);
-  }, [running, active]);
+  }, [running, active, facets.length]);
 
   const summary = facets.map((f) => f.label).join(", ");
 
@@ -57,13 +60,15 @@ export function HeroFacets() {
       style={{ "--facet-interval": `${INTERVAL}ms` } as React.CSSProperties}
     >
       <p className={styles.line}>
-        <span className={styles.srOnly}>Also a {summary}.</span>
+        <span className={styles.srOnly}>
+          {t.facetsPrefix} {summary}.
+        </span>
         <span className={styles.prefix} aria-hidden="true">
-          Also a
+          {t.facetsPrefix}
         </span>{" "}
         <span className={styles.stack} aria-hidden="true">
           {facets.map((facet, i) => {
-            const Icon = icons[facet.id];
+            const Icon = icons[facet.id] ?? Music;
             const state =
               i === active
                 ? "active"
@@ -79,14 +84,14 @@ export function HeroFacets() {
           })}
         </span>
       </p>
-      <div className={styles.segments} role="group" aria-label="Outside work">
+      <div className={styles.segments} role="group" aria-label={t.facetsGroup}>
         {facets.map((facet, i) => (
           <button
             key={facet.id}
             type="button"
             className={styles.segment}
             data-active={i === active || undefined}
-            aria-label={`Show: ${facet.label}`}
+            aria-label={`${t.facetShow} ${facet.label}`}
             aria-pressed={i === active}
             onClick={() => setActive(i)}
           >

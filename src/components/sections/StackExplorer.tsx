@@ -5,22 +5,20 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { StackGroup } from "@/lib/stack";
 import { FORWARD } from "@/lib/motion";
+import { localePath } from "@/i18n/paths";
+import { useLocale, useUi } from "@/i18n/provider";
 import styles from "./StackExplorer.module.css";
 
 // Hover or focus previews a technology, click pins it. The panel answers
 // "where did you actually use this?" from the same data as the CV.
 export function StackExplorer({ groups }: { groups: StackGroup[] }) {
+  const t = useUi().stack;
+  const locale = useLocale();
   const all = groups.flatMap((g) => g.items);
   const [pinned, setPinned] = useState(all[0].name);
   const [preview, setPreview] = useState<string | null>(null);
   const current = all.find((item) => item.name === (preview ?? pinned))!;
 
-  const yearsLabel =
-    current.years === undefined
-      ? null
-      : current.years < 1
-        ? "under a year"
-        : `${current.years}+ year${current.years === 1 ? "" : "s"}`;
 
   return (
     <>
@@ -50,7 +48,7 @@ export function StackExplorer({ groups }: { groups: StackGroup[] }) {
                   {item.roles.length > 0 && (
                     <span
                       className={styles.count}
-                      aria-label={`, used in ${item.roles.length} roles`}
+                      aria-label={t.usedIn(item.roles.length)}
                     >
                       {item.roles.length}
                     </span>
@@ -68,8 +66,11 @@ export function StackExplorer({ groups }: { groups: StackGroup[] }) {
           {current.roles.length > 0 ? (
             <>
               <p className={styles.meta}>
-                {yearsLabel} across {current.roles.length} role
-                {current.roles.length === 1 ? "" : "s"} · since {current.since}
+                {t.across(
+                  t.years(current.years ?? 0),
+                  current.roles.length,
+                  current.since!,
+                )}
               </p>
               <ul className={styles.roles}>
                 {current.roles.map((role) => (
@@ -82,15 +83,17 @@ export function StackExplorer({ groups }: { groups: StackGroup[] }) {
             </>
           ) : (
             <p className={styles.meta}>
-              Part of my toolkit. Not tied to a featured role on this page; the
-              CV has the full detail.
+              {t.noEvidence}
             </p>
           )}
           {current.cases.length > 0 && (
-            <ul className={styles.cases} aria-label="Related cases">
+            <ul className={styles.cases} aria-label={t.relatedCases}>
               {current.cases.map((item) => (
                 <li key={item.slug}>
-                  <Link href={`/work/${item.slug}/`} transitionTypes={[FORWARD]}>
+                  <Link
+                    href={localePath(locale, `/work/${item.slug}/`)}
+                    transitionTypes={[FORWARD]}
+                  >
                     {item.title}
                     <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>

@@ -1,14 +1,19 @@
-import { about, principles, profile } from "@/data/profile";
-export function About() {
+import { getContent } from "@/data/content";
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
+export function About({ locale }: { locale: Locale }) {
+  const { about, principles, profile } = getContent(locale);
+  const t = ui(locale).about;
   return (
     <section id="about" className="container section about-section">
       <div className="editorial-grid">
         <div className="section-heading">
           <div>
             <h2>
-              Based in Brazil.
+              {t.title[0]}
               <br />
-              Working in English<span className="accent">.</span>
+              {t.title[1]}
+              <span className="accent">.</span>
             </h2>
           </div>
         </div>
@@ -20,7 +25,7 @@ export function About() {
         </div>
       </div>
       <div className="principles editorial-grid">
-        <h3>How I work</h3>
+        <h3>{t.howIWork}</h3>
         <ol>
           {principles.map((principle, i) => (
             <li key={principle.title}>

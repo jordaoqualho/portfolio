@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { Pause, Play } from "lucide-react";
 import { MOTION_CHANGE } from "@/lib/motion";
+import { useUi } from "@/i18n/provider";
 
 function subscribe(listener: () => void) {
   window.addEventListener(MOTION_CHANGE, listener);
@@ -12,6 +13,7 @@ const getSnapshot = () => document.documentElement.dataset.motion === "paused";
 const getServerSnapshot = () => false;
 
 export function MotionPreferences() {
+  const t = useUi().motion;
   const paused = useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -32,7 +34,7 @@ export function MotionPreferences() {
       type="button"
       data-motion-toggle
       className="motion-toggle"
-      aria-label={paused ? "Resume animations" : "Pause animations"}
+      aria-label={paused ? t.resumeLabel : t.pauseLabel}
       aria-pressed={paused}
       onClick={toggle}
     >
@@ -42,8 +44,8 @@ export function MotionPreferences() {
       <span className="motion-pause">
         <Pause aria-hidden="true" />
       </span>
-      <span className="motion-pause">Pause motion</span>
-      <span className="motion-play">Resume motion</span>
+      <span className="motion-pause">{t.pause}</span>
+      <span className="motion-play">{t.resume}</span>
     </button>
   );
 }

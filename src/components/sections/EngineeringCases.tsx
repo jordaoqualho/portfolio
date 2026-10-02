@@ -1,23 +1,25 @@
-import { cases } from "@/data/profile";
+import { getContent } from "@/data/content";
 import { CaseCard } from "@/components/work/CaseCard";
-export function EngineeringCases() {
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
+export function EngineeringCases({ locale }: { locale: Locale }) {
+  const t = ui(locale).work;
   return (
     <section className="section work-section" id="work">
       <div className="container">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">SELECTED WORK</span>
+            <span className="eyebrow">{t.eyebrow}</span>
             <h2>
-              Selected Engineering Cases<span className="accent">.</span>
+              {t.title}
+              <span className="accent">.</span>
             </h2>
-            <p>
-              Production problems: what broke, how I investigated, and what changed.
-            </p>
+            <p>{t.intro}</p>
           </div>
         </div>
         <div>
-          {cases.map((item) => (
-            <CaseCard key={item.slug} item={item} />
+          {getContent(locale).cases.map((item) => (
+            <CaseCard key={item.slug} item={item} locale={locale} />
           ))}
         </div>
       </div>

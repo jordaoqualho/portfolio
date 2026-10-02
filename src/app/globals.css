@@ -2724,3 +2724,596 @@ h2 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+/* Preferences: language and theme in one header popover. */
+.prefs {
+  position: relative;
+}
+.prefs-trigger {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  gap: 6px;
+  padding-inline: 8px;
+}
+.prefs-locale {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+}
+.prefs-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 6px;
+  width: 248px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+  box-shadow: 0 24px 48px -16px color-mix(in srgb, var(--foreground) 22%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 180ms ease,
+    transform 260ms var(--ease-out),
+    visibility 0s linear 260ms;
+}
+.prefs[data-open] .prefs-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 180ms ease,
+    transform 260ms var(--ease-out),
+    visibility 0s;
+}
+.prefs-label {
+  padding: 2px 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.prefs-label:not(:first-child) {
+  margin-top: 6px;
+}
+.prefs-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+.prefs-themes {
+  grid-template-columns: repeat(3, 1fr);
+}
+.prefs-options button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.prefs-options button:hover {
+  color: var(--foreground);
+}
+.prefs-options button:is([aria-pressed="true"], [aria-checked="true"]) {
+  background: var(--background);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+.prefs-options button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.prefs-options button svg {
+  color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .prefs-panel,
+  .prefs[data-open] .prefs-panel {
+    transition: visibility 0s;
+    transform: none;
+  }
+}
+/* Preferences panel sizing: never wider than the screen, and theme options
+   stack icon over label so "System"/"Sistema" fit three across. */
+.prefs-panel {
+  width: min(264px, calc(100vw - 24px));
+  box-sizing: border-box;
+}
+.prefs-options button {
+  min-width: 0;
+  white-space: nowrap;
+}
+.prefs-themes button {
+  flex-direction: column;
+  gap: 4px;
+  min-height: 52px;
+  padding: 8px 4px;
+  font-size: 0.75rem;
+}
+/* Language switch: content fades out before the reload and back in after it.
+   The background and theme are painted before first paint, so nothing flashes. */
+[data-locale-leaving] :is(#main-content, .footer, .header-inner > :not(.wordmark)) {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 220ms ease,
+    transform 240ms var(--ease-in-out);
+}
+[data-locale-entering] :is(#main-content, .footer, .header-inner > :not(.wordmark)) {
+  animation: locale-in 560ms var(--ease-out) both;
+}
+[data-locale-entering] #main-content {
+  animation-delay: 60ms;
+}
+@keyframes locale-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Scrollbars: thin, rounded, tinted to the theme; accent on hover. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 45%, transparent) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 45%, transparent) padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background-color: var(--accent);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Project marks: one icon per project in an accent-tinted tile. */
+.project-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.project-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+  transition:
+    transform 400ms var(--ease-out),
+    background-color 300ms ease;
+}
+.project-card:has(.project-link:is(:hover, :focus-visible)) .project-icon {
+  transform: rotate(-6deg) scale(1.06);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.project-detail-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+/* Project rows in the Work dropdown: icon column + text column. The selector
+   matches the base ".desktop-nav .work-menu-panel a" rule so its gap and
+   padding are actually overridden. */
+.desktop-nav .work-menu-panel a.work-menu-project {
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 8px 10px;
+}
+.work-menu-project .project-icon {
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+.work-menu-project .work-menu-title,
+.work-menu-project .work-menu-meta {
+  grid-column: 2;
+}
+.work-menu-project .work-menu-title {
+  align-self: end;
+}
+.work-menu-project .work-menu-meta {
+  align-self: start;
+}
+/* Contact: intro on the left, the form as the main channel on the right. */
+.contact-layout {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 6vw, 80px);
+  align-items: start;
+}
+.contact-intro .contact-details {
+  align-self: auto;
+  margin-top: 32px;
+  padding: 0;
+  border: 0;
+}
+.contact-intro .contact-details p {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.contact-form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+  scroll-margin-top: 110px;
+}
+.contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.field label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+.field-optional {
+  font-weight: 400;
+  color: var(--muted);
+}
+.field input,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--foreground);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 132px;
+  line-height: 1.55;
+}
+.field input:hover,
+.field textarea:hover {
+  border-color: color-mix(in srgb, var(--muted) 60%, var(--border));
+}
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  background: var(--background);
+}
+.field [aria-invalid="true"] {
+  border-color: #e5484d;
+}
+.field-error,
+.field-hint {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.field-error {
+  color: #e5484d;
+}
+:root[data-theme="dark"] .field-error,
+:root[data-theme="dark"] .field [aria-invalid="true"] {
+  color: #ff8589;
+  border-color: #ff8589;
+}
+:root[data-theme="dark"] .field input[aria-invalid="true"],
+:root[data-theme="dark"] .field textarea[aria-invalid="true"] {
+  color: var(--foreground);
+}
+.field-hint {
+  color: var(--muted);
+}
+.contact-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.contact-form-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+}
+.contact-form-footer .button[disabled] {
+  opacity: 0.75;
+  cursor: progress;
+}
+.contact-form-status:empty {
+  display: none;
+}
+.contact-form-status p {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.contact-form-status strong {
+  color: #e5484d;
+  font-weight: 500;
+}
+:root[data-theme="dark"] .contact-form-status strong {
+  color: #ff8589;
+}
+.contact-form-status a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.spin {
+  animation: spin 900ms linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.contact-form-done {
+  justify-items: start;
+  gap: 10px;
+  animation: locale-in 500ms var(--ease-out) both;
+}
+.contact-form-check {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+.contact-form-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.contact-form-done p:not(.contact-form-title) {
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.contact-form-done .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  cursor: pointer;
+}
+.contact-alternatives {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.contact-alternatives p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+}
+.contact-alternatives a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--foreground);
+  transition: color 160ms ease;
+}
+.contact-alternatives a:hover {
+  color: var(--accent);
+}
+.contact-whatsapp {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+  .contact-form-footer .button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin,
+  .contact-form-done {
+    animation: none;
+  }
+}
+/* Inline validation: a quiet check when a field is fine, a clear message
+   when it is not, a counter for the message. */
+.field-control {
+  position: relative;
+}
+.field-control input {
+  padding-right: 36px;
+}
+.field-ok {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6);
+  transition:
+    opacity 200ms ease,
+    transform 300ms var(--ease-spring);
+  pointer-events: none;
+}
+.field-control:has([data-valid]) .field-ok {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+.field [data-valid] {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.field-error {
+  animation: field-error-in 220ms var(--ease-out);
+}
+@keyframes field-error-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+.field-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.field-count {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.6875rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.field-count[data-near] {
+  color: #e5484d;
+}
+.field-suggestion button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.contact-form-shortcut {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+@media (hover: none) {
+  .contact-form-shortcut {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-ok,
+  .field-error {
+    transition: none;
+    animation: none;
+  }
+}
+/* Stable field layout: every field = label, control, one reserved message
+   line. Errors and hints swap inside that line, so validation never moves
+   the inputs, and the two-column row stays aligned. */
+.contact-form {
+  gap: 10px;
+}
+.contact-form-row {
+  align-items: start;
+  column-gap: 18px;
+  row-gap: 10px;
+}
+.contact-form .field {
+  gap: 0;
+}
+.contact-form .field label {
+  margin-bottom: 8px;
+}
+.field-message {
+  min-height: calc(0.75rem * 1.5);
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.field-message[data-tone="error"] {
+  color: #d93036;
+  animation: field-error-in 200ms var(--ease-out);
+}
+:root[data-theme="dark"] .field-message[data-tone="error"] {
+  color: #ff8589;
+}
+.field-meta {
+  align-items: baseline;
+  margin-top: 0;
+}
+.field-meta .field-message {
+  flex: 1;
+  min-width: 0;
+}
+.field-meta .field-count {
+  margin-top: 6px;
+}
+.field-suggestion button {
+  max-width: 100%;
+}
+.contact-form-footer {
+  margin-top: 8px;
+}
+@media (max-width: 520px) {
+  .contact-form-row {
+    row-gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-message[data-tone="error"] {
+    animation: none;
+  }
+}
