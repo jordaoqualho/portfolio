@@ -5,6 +5,12 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { ArrowUpRight, Download, Menu, Moon, Sun, X } from "lucide-react";
 import { navigation, profile } from "@/data/profile";
 import { BACK, ease, motionAllowed } from "@/lib/motion";
+import { WorkMenu } from "./WorkMenu";
+
+// Work and Projects live in the dropdown on desktop.
+const desktopLinks = navigation.filter(
+  (item) => item.href !== "/#work" && item.href !== "/#projects",
+);
 export function Header() {
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -100,7 +106,8 @@ export function Header() {
           className="desktop-nav"
           data-scrollspy
         >
-          {navigation.map((item) => (
+          <WorkMenu />
+          {desktopLinks.map((item) => (
             <Link key={item.label} href={item.href} transitionTypes={types}>
               {item.label}
             </Link>
