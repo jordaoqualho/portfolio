@@ -69,7 +69,7 @@
 }
 
 .stage :global(.availability) {
-  justify-self: center;
+  justify-self: start;
   font-size: 0.8125rem;
 }
 
@@ -180,7 +180,7 @@
   }
 
   .stage :global(.availability) {
-    justify-self: end;
+    justify-self: start;
     white-space: nowrap;
   }
 

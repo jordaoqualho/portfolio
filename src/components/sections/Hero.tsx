@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Github, MapPin } from "lucide-react";
+import { ArrowDown, Mail, MapPin } from "lucide-react";
 import { profile, stats } from "@/data/profile";
+import { HeroFacets } from "./HeroFacets";
 import styles from "./Hero.module.css";
 export function Hero() {
   return (
@@ -9,7 +10,6 @@ export function Hero() {
         <div className={styles.ambientLight} aria-hidden="true" />
         <section className="hero container" aria-labelledby="hero-title">
           <div className="hero-topline">
-            <span className="eyebrow">JORDÃO QUALHO / ENGINEERING PROFILE</span>
             <span className="availability">
               <span aria-hidden="true" />
               {profile.availability}
@@ -27,33 +27,19 @@ export function Hero() {
                   </span>
                 </span>
               </h1>
-              <p className="hero-focus">
-                Full Stack with strong <strong>Backend depth.</strong>
+              <HeroFacets />
+              <p className="hero-description">
+                6+ years building backend services, APIs and production
+                systems for fintech, e-commerce and SaaS. Remote, from Brazil.
               </p>
-              <p className="hero-description">{profile.intro}</p>
-              <p className="core-stack">{profile.core.join(" · ")}</p>
               <div className="hero-ctas">
-                <a className="button primary" href="#work">
-                  View engineering cases{" "}
+                <a className="button primary" href={`mailto:${profile.email}`}>
+                  <Mail size={16} aria-hidden="true" />
+                  Let’s talk
+                </a>
+                <a className="button secondary" href="#work">
+                  View cases
                   <ArrowDown size={17} aria-hidden="true" />
-                </a>
-                <a
-                  className="button secondary"
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn (opens in a new tab)"
-                >
-                  LinkedIn <ArrowUpRight size={16} aria-hidden="true" />
-                </a>
-                <a
-                  className="github-link"
-                  href={profile.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub (opens in a new tab)"
-                >
-                  <Github size={20} aria-hidden="true" />
                 </a>
               </div>
             </div>
