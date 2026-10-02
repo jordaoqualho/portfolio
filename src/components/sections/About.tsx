@@ -5,7 +5,6 @@ export function About() {
       <div className="editorial-grid">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">04 / ABOUT</span>
             <h2>
               Based in Brazil.
               <br />
@@ -24,9 +23,12 @@ export function About() {
         <h3>How I work</h3>
         <ol>
           {principles.map((principle, i) => (
-            <li key={principle}>
+            <li key={principle.title}>
               <span>0{i + 1}</span>
-              <p>{principle}</p>
+              <div>
+                <p>{principle.title}</p>
+                <p className="principle-detail">{principle.detail}</p>
+              </div>
             </li>
           ))}
         </ol>

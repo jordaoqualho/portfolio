@@ -5,9 +5,8 @@ export function Experience() {
     <section id="experience" className="container section experience-section">
       <div className="section-heading">
         <div>
-          <span className="eyebrow">02 / EXPERIENCE</span>
           <h2>
-            Production work. In context<span className="accent">.</span>
+            Where I’ve shipped<span className="accent">.</span>
           </h2>
         </div>
       </div>

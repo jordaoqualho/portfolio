@@ -10,7 +10,7 @@ export function AgentAccess() {
       <div className="container editorial-grid">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">05 / FOR AI AGENTS</span>
+            <span className="eyebrow">FOR AI AGENTS</span>
             <h2>
               Let your AI assistant check my fit<span className="accent">.</span>
             </h2>
@@ -24,22 +24,20 @@ export function AgentAccess() {
         </div>
         <div className="agents-body">
           <div className="agent-audience">
-            <span className="eyebrow">FOR RECRUITERS AND HIRING MANAGERS</span>
-            <h3>A straight answer, backed by real work</h3>
+            <h3>For recruiters: a straight answer, backed by real work</h3>
             <p>
-              Paste jordaoqualho.com into ChatGPT or Claude and ask anything.
-              Connect the MCP server and you can hand it your job description:
-              it checks the requirements against my projects and points to the
-              case that proves each match.
+              Give your AI assistant my portfolio URL, or connect directly to
+              the MCP server for structured access to my experience and
+              engineering cases. Hand it your job description: it maps the
+              requirements against my experience and points to the cases that
+              support each match.
             </p>
             <blockquote className="agent-example">
-              “Here’s our job description. Which requirements does Jordão
-              match, and with which project?”
+              “Here’s our job description. Which requirements does Jordão match?”
             </blockquote>
           </div>
           <div className="agent-audience">
-            <span className="eyebrow">FOR ENGINEERS</span>
-            <h3>A working MCP server, not a demo</h3>
+            <h3>For engineers: a working MCP server, not a demo</h3>
             <p>
               Streamable HTTP, stateless, no API key. {mcpTools.length}{" "}
               read-only tools over the same data that renders this site, plus
@@ -51,6 +49,13 @@ export function AgentAccess() {
               ))}
             </ul>
             <CopyCommand code={claudeCode.code} label="Claude Code command" />
+            <p className="agent-links">
+              Prefer REST?{" "}
+              <Link href="/developers/" transitionTypes={[FORWARD]}>
+                API docs
+              </Link>{" "}
+              · <a href="/openapi.json">OpenAPI spec</a>
+            </p>
           </div>
           <Link
             href="/agents/"

@@ -1891,9 +1891,8 @@ h2 {
     color 180ms,
     transform 500ms var(--ease-out);
 }
-.case-row:hover .case-body h3 a {
-  transform: translateX(6px);
-}
+/* No transform on the title link: it would become the containing block of
+   its stretched ::after and shrink the card's click area to the link. */
 
 /* Experience timeline: a rail that fills with scroll and lights each role. */
 .timeline {
@@ -2159,6 +2158,15 @@ h2 {
 .agent-audience .code-block {
   margin-top: 6px;
 }
+.agent-audience .agent-links {
+  font-size: 0.875rem;
+}
+.agent-links a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border);
+}
 .agent-example {
   margin: 6px 0 0;
   padding: 20px 24px;
@@ -2219,6 +2227,9 @@ h2 {
 .agent-tools {
   margin: 0;
 }
+.case-prose p + .agent-tools {
+  margin-top: 24px;
+}
 .agent-tools > div {
   padding: 18px 0;
   border-bottom: 1px solid var(--border);
@@ -2236,4 +2247,289 @@ h2 {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px 20px;
+}
+/* Recruiter-facing hero additions, "looking for" strip and side projects. */
+.hero-remote {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+.hero-profiles {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: 6px;
+  font-size: 0.875rem;
+}
+.hero-profiles a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+}
+.hero-profiles a:hover {
+  color: var(--foreground);
+}
+.looking-for {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 70px;
+  align-items: baseline;
+  padding-block: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.looking-for p {
+  max-width: 720px;
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.looking-for strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.projects-section {
+  border-top: 1px solid var(--border);
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.project-card {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.project-meta .eyebrow {
+  color: var(--accent);
+}
+.project-card h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.project-card h3 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-card p {
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+@media (max-width: 1024px) {
+  .looking-for {
+    grid-template-columns: 240px 1fr;
+    gap: 35px;
+  }
+}
+@media (max-width: 767px) {
+  .looking-for {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-profiles {
+    margin-left: 0;
+  }
+}
+/* UX pass: one primary action per hero, fewer eyebrows, quieter section starts. */
+.hero-description {
+  margin-top: 28px;
+  max-width: 460px;
+  font-size: 1.125rem;
+}
+.section-heading > div > h2:first-child {
+  margin-top: 0;
+}
+.section-heading > div > h2:first-child + p {
+  margin-top: 16px;
+}
+.project-status {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+.contact-looking {
+  margin-top: 16px;
+  max-width: 560px;
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.contact-looking strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.agent-audience h3 {
+  max-width: 28ch;
+}
+/* Whole case row is clickable: the title link's ::after covers the card. */
+.case-row {
+  isolation: isolate;
+}
+.case-link::after {
+  content: "";
+  position: absolute;
+  inset: 0 -24px;
+  z-index: 1;
+  border-radius: 8px;
+  transition: background-color 300ms ease;
+}
+.case-row:last-child .case-link::after {
+  bottom: calc(var(--block-space) * -0.5);
+}
+.case-row:has(.case-link:hover) .case-link::after {
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+.case-link:focus-visible {
+  outline: none;
+}
+.case-link:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.case-body h3 a {
+  transition: color 300ms ease;
+}
+.case-row:has(.case-link:is(:hover, :focus-visible)) h3 a {
+  color: var(--accent);
+}
+.case-read {
+  color: var(--muted);
+  transition: color 300ms ease;
+}
+.case-read svg {
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-row:has(.case-link:is(:hover, :focus-visible)) .case-read {
+  color: var(--foreground);
+}
+.case-row:has(.case-link:is(:hover, :focus-visible)) .case-read svg {
+  transform: translate(3px, -3px);
+}
+@media (max-width: 767px) {
+  .case-link::after {
+    inset: 0 -12px;
+  }
+}
+/* Stack explorer: heading and evidence panel left, technology chips right. */
+.stack-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  grid-template-areas:
+    "head groups"
+    "panel groups";
+  grid-template-rows: auto 1fr;
+  column-gap: 70px;
+}
+.stack-layout > .section-heading {
+  grid-area: head;
+}
+.stack-layout > .stack-groups {
+  grid-area: groups;
+}
+@media (max-width: 1024px) {
+  .stack-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "groups"
+      "panel";
+    grid-template-rows: auto;
+    row-gap: 32px;
+  }
+}
+/* Project cards: whole card opens the project page; site and code links stay clickable above. */
+.project-card {
+  position: relative;
+  transition: border-color 300ms ease, background-color 300ms ease;
+}
+.project-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.project-card:has(.project-link:is(:hover, :focus-visible)) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+}
+.project-link {
+  transition: color 300ms ease;
+}
+.project-card:has(.project-link:is(:hover, :focus-visible)) .project-link {
+  color: var(--accent);
+}
+.project-link:focus-visible {
+  outline: none;
+}
+.project-link:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.project-links {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+}
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  transition: color 200ms ease;
+}
+.project-links a:hover {
+  color: var(--foreground);
+}
+.project-detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+.project-credit {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.principles li p.principle-detail {
+  margin-top: 6px;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  line-height: var(--copy-leading);
+}
+.case-prose section > p + :is(ul, ol) {
+  margin-top: 14px;
+}
+.project-card p.project-byline {
+  font-size: 0.8125rem;
+  margin-top: -6px;
+}
+.case-prose section > ul + p {
+  margin-top: 16px;
+}
+/* Product screenshot on a project page: full width, the image carries its own frame. */
+.project-shot {
+  margin: 48px 0 0;
+}
+.project-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }

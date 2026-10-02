@@ -78,6 +78,18 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: loadingScript }} />
+        {/* RFC 8631 / RFC 9727 discovery for agents looking for the API. */}
+        <link
+          rel="service-desc"
+          type="application/vnd.oai.openapi+json"
+          href="/openapi.json"
+        />
+        <link rel="service-doc" type="text/html" href="/developers/" />
+        <link
+          rel="api-catalog"
+          type="application/linkset+json"
+          href="/.well-known/api-catalog"
+        />
       </head>
       <body className={`${geist.variable} ${mono.variable}`}>
         <SiteLoader />
