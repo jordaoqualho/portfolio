@@ -1,4 +1,10 @@
-import { cases, experience, skills } from "@/data/profile";
+import { cases as allCases, experience as allRoles, skills as allSkills } from "@/data/profile";
+
+type Source = {
+  cases: typeof allCases;
+  experience: typeof allRoles;
+  skills: { group: string; items: string[] }[];
+};
 
 // Skill labels that appear under a different name in roles and cases.
 const aliases: Record<string, string[]> = {
@@ -51,7 +57,15 @@ const yearSpan = (dates: string) => {
 
 // Links every listed skill to the roles and cases that mention it. Only what
 // the profile data states is used, so the evidence matches the CV.
-export function stackEvidence(): StackGroup[] {
+// Pass a locale's content for translated titles; matching always runs on the
+// English technology names, which both languages share.
+export function stackEvidence(
+  { cases, experience, skills }: Source = {
+    cases: allCases,
+    experience: allRoles,
+    skills: allSkills.map((g) => ({ group: g.group, items: [...g.items] })),
+  },
+): StackGroup[] {
   return skills.map(({ group, items }) => ({
     group,
     items: items.map((name) => {

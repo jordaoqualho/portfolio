@@ -26,7 +26,7 @@ export type EngineeringCase = {
 };
 const sectionText = (s?: CaseSection) =>
   s ? [s.body, ...(s.points ?? [])].filter(Boolean).join(" ") : undefined;
-function defineCase(
+export function defineCase(
   c: Pick<EngineeringCase, "number" | "slug" | "category" | "title" | "summary" | "technologies" | "sections">,
 ): EngineeringCase {
   const get = (...ids: string[]) => c.sections.find((s) => ids.includes(s.id));
@@ -58,6 +58,8 @@ export const profile = {
   email: "jordaoqualho@gmail.com",
   linkedin: "https://www.linkedin.com/in/jordao-qualho",
   github: "https://github.com/jordaoqualho",
+  // From the CV, in international format for wa.me links.
+  whatsapp: "554499700617",
   location: "Brazil",
   languages: "English C1 Advanced · Portuguese native",
   availability: "Open to select remote international opportunities",
