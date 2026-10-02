@@ -12,6 +12,7 @@ export function Footer() {
       <MotionPreferences />
       <nav aria-label="Footer" className="footer-links">
         <Link href="/agents/">For AI agents</Link>
+        <Link href="/developers/">Developers</Link>
         <Link href="/privacy/">Privacy</Link>
         <a href={profile.github} target="_blank" rel="noopener noreferrer">
           GitHub <ArrowUpRight size={14} />

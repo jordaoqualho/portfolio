@@ -1,7 +1,7 @@
 import { Hero } from "@/components/sections/Hero";
-import { Capabilities } from "@/components/sections/Capabilities";
 import { EngineeringCases } from "@/components/sections/EngineeringCases";
 import { Experience } from "@/components/sections/Experience";
+import { Projects } from "@/components/sections/Projects";
 import { TechStack } from "@/components/sections/TechStack";
 import { About } from "@/components/sections/About";
 import { AgentAccess } from "@/components/sections/AgentAccess";
@@ -12,9 +12,9 @@ export default function Home() {
     <PageTransition>
       <main id="main-content">
         <Hero />
-        <Capabilities />
         <EngineeringCases />
         <Experience />
+        <Projects />
         <TechStack />
         <About />
         <AgentAccess />
