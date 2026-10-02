@@ -9,6 +9,9 @@ const config: NextConfig = {
   images: { unoptimized: true },
   devIndicators: false,
   agentRules: false,
+  // The root layout sits under app/[lang], so unmatched URLs need a 404 that
+  // does not depend on it (app/global-not-found.tsx).
+  experimental: { globalNotFound: true },
   // Conventional docs URLs lead to the developer portal.
   async redirects() {
     const docs = ["/docs", "/docs/", "/developer", "/developer/"].map((source) => ({
