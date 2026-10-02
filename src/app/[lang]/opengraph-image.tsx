@@ -1,9 +1,13 @@
+import { locales } from "@/i18n/config";
 import { ImageResponse } from "next/og";
 export const alt =
   "Jordão Qualho, Senior Software Engineer. Full Stack with backend depth. Brazil, open to remote.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const dynamic = "force-static";
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
 export default function Image() {
   return new ImageResponse(
     <div

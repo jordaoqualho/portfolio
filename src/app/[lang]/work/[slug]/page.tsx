@@ -4,28 +4,32 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cases, profile } from "@/data/profile";
+import { getContent } from "@/data/content";
+import type { Locale } from "@/i18n/config";
+import { localeAlternates, ogLocale } from "@/i18n/metadata";
+import { localePath } from "@/i18n/paths";
+import { ui } from "@/i18n/ui";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK, FORWARD } from "@/lib/motion";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return cases.map((item) => ({ slug: item.slug }));
 }
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ lang: string; slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const item = cases.find((item) => item.slug === slug);
+  const { lang, slug } = await params;
+  const locale = lang as Locale;
+  const item = getContent(locale).cases.find((item) => item.slug === slug);
   if (!item) return {};
   return {
     title: item.title,
     description: item.summary,
-    alternates: {
-      canonical: `/work/${slug}/`,
-      types: { "text/markdown": `/work/${slug}.md` },
-    },
+    alternates: localeAlternates(locale, `/work/${slug}/`, `/work/${slug}.md`),
     openGraph: {
+      ...ogLocale(locale),
       title: item.title,
       description: item.summary,
-      url: `/work/${slug}/`,
+      url: localePath(locale, `/work/${slug}/`),
       type: "article",
     },
     twitter: {
@@ -36,21 +40,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 export default async function CasePage({ params }: Props) {
-  const { slug } = await params;
-  const item = cases.find((item) => item.slug === slug);
+  const { lang, slug } = await params;
+  const locale = lang as Locale;
+  const t = ui(locale).casePage;
+  const localized = getContent(locale).cases;
+  const item = localized.find((item) => item.slug === slug);
   if (!item) notFound();
-  const nextCase = cases[(cases.indexOf(item) + 1) % cases.length];
+  const nextCase = localized[(localized.indexOf(item) + 1) % localized.length];
   return (
     <PageTransition key={slug}>
       <main id="main-content" className="case-detail">
         <div className="container">
-          <Link href="/#work" className="back-link" transitionTypes={[BACK]}>
+          <Link
+            href={localePath(locale, "/#work")}
+            className="back-link"
+            transitionTypes={[BACK]}
+          >
             <ArrowLeft size={16} />
-            All engineering cases
+            {t.back}
           </Link>
           <header className="case-detail-header">
             <span className="eyebrow">
-              CASE {item.number} / {item.category}
+              {t.label} {item.number} / {item.category}
             </span>
             <ViewTransition
               name={`case-${item.slug}`}
@@ -63,7 +74,7 @@ export default async function CasePage({ params }: Props) {
               </h1>
             </ViewTransition>
             <p>{item.summary}</p>
-            <ul className="tech-list" aria-label="Technologies">
+            <ul className="tech-list" aria-label={t.technologies}>
               {item.technologies.map((tech) => (
                 <li key={tech}>{tech}</li>
               ))}
@@ -71,8 +82,8 @@ export default async function CasePage({ params }: Props) {
           </header>
           <div className="case-detail-grid">
             <aside className="case-index">
-              <span className="eyebrow">IN THIS CASE</span>
-              <nav aria-label="Case contents" data-scrollspy>
+              <span className="eyebrow">{t.contents}</span>
+              <nav aria-label={t.contentsNav} data-scrollspy>
                 {item.sections.map((section) => (
                   <a key={section.id} href={`#${section.id}`}>
                     {section.heading}
@@ -116,9 +127,11 @@ export default async function CasePage({ params }: Props) {
           </div>
           <div className="case-next">
             <div>
-              <span className="eyebrow">NEXT CASE / {nextCase.number}</span>
+              <span className="eyebrow">
+                {t.next} / {nextCase.number}
+              </span>
               <Link
-                href={`/work/${nextCase.slug}/`}
+                href={localePath(locale, `/work/${nextCase.slug}/`)}
                 transitionTypes={[FORWARD]}
               >
                 {nextCase.title}
@@ -126,7 +139,7 @@ export default async function CasePage({ params }: Props) {
               </Link>
             </div>
             <a className="text-link" href={`mailto:${profile.email}`}>
-              Discuss my experience
+              {t.discuss}
               <ArrowUpRight size={16} />
             </a>
           </div>

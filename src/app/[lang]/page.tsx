@@ -7,18 +7,20 @@ import { About } from "@/components/sections/About";
 import { AgentAccess } from "@/components/sections/AgentAccess";
 import { Contact } from "@/components/sections/Contact";
 import { PageTransition } from "@/components/motion/PageTransition";
-export default function Home() {
+import type { Locale } from "@/i18n/config";
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
+  const locale = (await params).lang as Locale;
   return (
     <PageTransition>
       <main id="main-content">
-        <Hero />
-        <EngineeringCases />
-        <Experience />
-        <Projects />
-        <TechStack />
-        <About />
-        <AgentAccess />
-        <Contact />
+        <Hero locale={locale} />
+        <EngineeringCases locale={locale} />
+        <Experience locale={locale} />
+        <Projects locale={locale} />
+        <TechStack locale={locale} />
+        <About locale={locale} />
+        <AgentAccess locale={locale} />
+        <Contact locale={locale} />
       </main>
     </PageTransition>
   );
