@@ -8,7 +8,6 @@ import {
   motionAllowed,
   MOTION_CHANGE,
   READY_EVENT,
-  scramble,
 } from "@/lib/motion";
 
 type Play = (
@@ -18,30 +17,25 @@ type Play = (
 ) => void;
 
 const LABELS =
-  ".section-heading .eyebrow, .capabilities > .eyebrow, .contact-section .container > .eyebrow, .case-detail-header > .eyebrow, .case-index > .eyebrow, .not-found .eyebrow";
+  ".section-heading .eyebrow, .contact-section .container > .eyebrow, .case-detail-header > .eyebrow, .case-index > .eyebrow, .not-found .eyebrow";
 const HEADINGS =
   ".section-heading h2, .contact-grid h2, .case-detail-header h1, .not-found h1";
 const BLOCKS =
-  ".section-heading p, .contact-grid > div > p, .contact-actions, .contact-details, .case-detail-header > p, .case-detail-header > .tech-list, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .snapshot > div, .agent-audience, .agent-cta, .looking-for, .project-card";
-const CARDS = ".capability-grid > div";
+  ".section-heading p, .contact-grid > div > p, .contact-actions, .contact-details, .case-detail-header > p, .case-detail-header > .tech-list, .project-detail-links, .project-shot, .back-link, .case-index nav, .case-prose section, .case-next, .about-copy > p, .principles h3, .principles li, .not-found p, .not-found .button, .agent-audience, .agent-cta, .project-card";
 const CASES = ".case-row";
 const ROLES = ".experience-row";
 const STACK = ".stack-groups > div";
-const REVEAL = [LABELS, HEADINGS, BLOCKS, CARDS, CASES, ROLES, STACK].join(
-  ", ",
-);
+const REVEAL = [LABELS, HEADINGS, BLOCKS, CASES, ROLES, STACK].join(", ");
 
 const fadeUp = (distance: number): Keyframe[] => [
   { opacity: 0, transform: `translateY(${distance}px)` },
   { opacity: 1, transform: "translateY(0)" },
 ];
 
-function reveal(
-  element: Element,
-  delay: number,
-  play: Play,
-  stop: (fn: () => void) => void,
-) {
+// One animation per element, transform and opacity only. Chips, numbers and
+// rows inside a block move with their block instead of on their own clocks,
+// so a fast scroll never queues dozens of competing animations.
+function reveal(element: Element, delay: number, play: Play) {
   if (element.matches(LABELS)) {
     play(
       element,
@@ -49,13 +43,8 @@ function reveal(
         { opacity: 0, transform: "translateX(-8px)" },
         { opacity: 1, transform: "none" },
       ],
-      {
-        duration: 600,
-        delay,
-      },
+      { duration: 500, delay },
     );
-    const timer = setTimeout(() => stop(scramble(element, 650)), delay);
-    stop(() => clearTimeout(timer));
   } else if (element.matches(HEADINGS)) {
     // The clip window grows upward while the text rises into it.
     play(
@@ -63,132 +52,37 @@ function reveal(
       [
         {
           clipPath: "inset(100% -0.1em -0.3em -0.1em)",
-          transform: "translateY(0.45em)",
+          transform: "translateY(0.4em)",
         },
         {
           clipPath: "inset(-0.2em -0.1em -0.3em -0.1em)",
           transform: "translateY(0)",
         },
       ],
-      { duration: 1000, delay: delay + 60 },
-    );
-  } else if (element.matches(CARDS)) {
-    play(
-      element,
-      [
-        { opacity: 0, transform: "translateY(36px) scale(0.96)" },
-        { opacity: 1, transform: "none" },
-      ],
-      { duration: 900, delay },
-    );
-    play(
-      element.querySelector("svg"),
-      [
-        { opacity: 0, transform: "scale(0.4) rotate(-45deg)" },
-        { opacity: 1, transform: "none" },
-      ],
-      {
-        duration: 900,
-        delay: delay + 250,
-        easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-      },
+      { duration: 800, delay },
     );
   } else if (element.matches(CASES)) {
-    play(element, fadeUp(32), { duration: 900, delay });
-    const number = element.querySelector(".case-number");
-    if (number) {
-      const timer = setTimeout(() => stop(scramble(number, 500)), delay + 150);
-      stop(() => clearTimeout(timer));
-    }
-    element.querySelectorAll(".tech-list li").forEach((chip, i) =>
-      play(
-        chip,
-        [
-          { opacity: 0, transform: "translateY(8px) scale(0.9)" },
-          { opacity: 1, transform: "none" },
-        ],
-        {
-          duration: 500,
-          delay: delay + 420 + i * 45,
-        },
-      ),
-    );
-  } else if (element.matches(ROLES)) {
-    play(
-      element.querySelector(".experience-date"),
-      [
-        { opacity: 0, transform: "translateX(-24px)" },
-        { opacity: 1, transform: "none" },
-      ],
-      { duration: 900, delay },
-    );
-    element
-      .querySelectorAll(
-        ".experience-content > :not(.tech-list):not(.timeline-node)",
-      )
-      .forEach((child, i) =>
-        play(
-          child,
-          [
-            { opacity: 0, transform: "translateX(24px)" },
-            { opacity: 1, transform: "none" },
-          ],
-          {
-            duration: 900,
-            delay: delay + 80 + i * 70,
-          },
-        ),
-      );
-    element.querySelectorAll(".tech-list li").forEach((chip, i) =>
-      play(
-        chip,
-        [
-          { opacity: 0, transform: "scale(0.8)" },
-          { opacity: 1, transform: "none" },
-        ],
-        {
-          duration: 500,
-          delay: delay + 380 + i * 40,
-          easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-        },
-      ),
-    );
-  } else if (element.matches(STACK)) {
-    play(
-      element.querySelector("dt"),
-      [
-        { opacity: 0, transform: "translateX(-12px)" },
-        { opacity: 1, transform: "none" },
-      ],
-      { duration: 700, delay },
-    );
-    element
-      .querySelectorAll("dd > span, dd > button")
-      .forEach((item, i) =>
-        play(item, fadeUp(10), { duration: 600, delay: delay + 100 + i * 45 }),
-      );
+    play(element, fadeUp(24), { duration: 700, delay });
+  } else if (element.matches(ROLES) || element.matches(STACK)) {
+    play(element, fadeUp(14), { duration: 600, delay });
   } else {
-    play(element, fadeUp(22), { duration: 850, delay });
+    play(element, fadeUp(18), { duration: 650, delay });
   }
 }
 
-function heroIntro(play: Play, stop: (fn: () => void) => void) {
+function heroIntro(play: Play) {
   const hero = document.querySelector(".hero");
   if (!hero) return;
   hero
     .querySelectorAll(".hero-topline > *")
     .forEach((item, i) =>
-      play(item, fadeUp(10), { duration: 800, delay: i * 90 }),
+      play(item, fadeUp(10), { duration: 700, delay: i * 80 }),
     );
   hero.querySelectorAll(".hero-line > span").forEach((line, i) =>
-    play(
-      line,
-      [{ transform: "translateY(110%) rotate(2deg)" }, { transform: "none" }],
-      {
-        duration: 1150,
-        delay: 120 + i * 120,
-      },
-    ),
+    play(line, [{ transform: "translateY(110%)" }, { transform: "none" }], {
+      duration: 1000,
+      delay: 100 + i * 110,
+    }),
   );
   play(
     hero.querySelector(".hero-title .accent"),
@@ -196,20 +90,13 @@ function heroIntro(play: Play, stop: (fn: () => void) => void) {
       { opacity: 0, transform: "scale(0)" },
       { opacity: 1, transform: "none" },
     ],
-    { duration: 700, delay: 780, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+    { duration: 600, delay: 650, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
   );
   hero
-    .querySelectorAll(
-      ".hero-focus, .hero-description, .core-stack, .hero-ctas > a",
-    )
+    .querySelectorAll(".hero-copy > :not(h1)")
     .forEach((item, i) =>
-      play(item, fadeUp(20), { duration: 900, delay: 420 + i * 80 }),
+      play(item, fadeUp(16), { duration: 800, delay: 380 + i * 70 }),
     );
-  const stack = hero.querySelector(".core-stack");
-  if (stack) {
-    const timer = setTimeout(() => stop(scramble(stack, 900)), 600);
-    stop(() => clearTimeout(timer));
-  }
   const portrait = hero.querySelector("[data-portrait]");
   play(
     portrait,
@@ -217,47 +104,54 @@ function heroIntro(play: Play, stop: (fn: () => void) => void) {
       { clipPath: "inset(100% 0 0 0 round 5px)" },
       { clipPath: "inset(0 0 0 0 round 5px)" },
     ],
-    { duration: 1300, delay: 220, easing: ease.inOut },
+    { duration: 1100, delay: 200, easing: ease.inOut },
   );
   play(
     portrait?.querySelector("img"),
-    [{ transform: "scale(1.25)" }, { transform: "none" }],
-    {
-      duration: 1800,
-      delay: 220,
-    },
+    [{ transform: "scale(1.15)" }, { transform: "none" }],
+    { duration: 1500, delay: 200 },
   );
   play(hero.querySelector(".portrait-caption"), fadeUp(8), {
-    duration: 700,
-    delay: 1000,
+    duration: 600,
+    delay: 900,
   });
-  document
-    .querySelectorAll(".snapshot > div")
-    .forEach((stat, i) =>
-      play(stat, fadeUp(16), { duration: 900, delay: 800 + i * 80 }),
-    );
 }
 
-// Section-aware navigation: a single marker glides to the link of the section in view.
+// Section-aware navigation: a single marker glides to the link of the section
+// in view. Direct links track their own hash; a dropdown trigger tracks the
+// sections listed in its data-spy-for.
 function scrollspy() {
   const cleanups: (() => void)[] = [];
   document.querySelectorAll<HTMLElement>("[data-scrollspy]").forEach((nav) => {
-    const links = [...nav.querySelectorAll<HTMLAnchorElement>("a[href*='#']")];
-    const sections = links
-      .map((link) => document.getElementById(new URL(link.href).hash.slice(1)))
+    const items = [
+      ...nav.querySelectorAll<HTMLElement>(
+        ":scope > a[href*='#'], :scope [data-spy-for]",
+      ),
+    ].map((element) => ({
+      element,
+      ids:
+        element instanceof HTMLAnchorElement
+          ? [new URL(element.href).hash.slice(1)]
+          : (element.dataset.spyFor ?? "").split(" "),
+    }));
+    const sections = items
+      .flatMap((item) => item.ids)
+      .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
     if (!sections.length) return;
     const visible = new Set<Element>();
     const mark = () => {
       const current = sections.filter((section) => visible.has(section)).at(-1);
-      links.forEach((link) => {
-        const active = current && link.hash === `#${current.id}`;
-        link.toggleAttribute("data-active", Boolean(active));
+      const origin = nav.getBoundingClientRect();
+      items.forEach(({ element, ids }) => {
+        const active = Boolean(current && ids.includes(current.id));
+        element.toggleAttribute("data-active", active);
         if (!active) return;
-        nav.style.setProperty("--spy-x", `${link.offsetLeft}px`);
-        nav.style.setProperty("--spy-y", `${link.offsetTop}px`);
-        nav.style.setProperty("--spy-w", `${link.offsetWidth}px`);
-        nav.style.setProperty("--spy-h", `${link.offsetHeight}px`);
+        const box = element.getBoundingClientRect();
+        nav.style.setProperty("--spy-x", `${box.left - origin.left}px`);
+        nav.style.setProperty("--spy-y", `${box.top - origin.top}px`);
+        nav.style.setProperty("--spy-w", `${box.width}px`);
+        nav.style.setProperty("--spy-h", `${box.height}px`);
       });
       nav.toggleAttribute("data-spy-active", Boolean(current));
     };
@@ -278,30 +172,31 @@ function scrollspy() {
       observer.disconnect();
       window.removeEventListener("resize", mark);
       nav.removeAttribute("data-spy-active");
-      links.forEach((link) => link.removeAttribute("data-active"));
+      items.forEach(({ element }) => element.removeAttribute("data-active"));
     });
   });
   return () => cleanups.forEach((cleanup) => cleanup());
 }
 
-const SPOTLIGHT = ".capability-grid > div, .case-row, .experience-row";
-const TILT = ".capability-grid > div";
+const SPOTLIGHT = ".case-row, .experience-row";
 const MAGNETIC =
-  ".hero-ctas > a, .contact-actions > a, .case-read, .header-cv, .case-next a";
+  ".hero-ctas > a, .contact-actions > a, .header-cv, .case-next a";
 
 // Pointer effects are delegated from the document, so they survive navigation.
 function pointerEffects() {
-  let tilted: HTMLElement | null = null;
   let magnet: HTMLElement | null = null;
+  let frame = 0;
+  let last: PointerEvent | null = null;
   const release = () => {
-    tilted?.style.removeProperty("--tilt-x");
-    tilted?.style.removeProperty("--tilt-y");
     magnet?.style.removeProperty("--mag-x");
     magnet?.style.removeProperty("--mag-y");
-    tilted = magnet = null;
+    magnet = null;
   };
-  const onMove = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" || !finePointer()) return;
+  // Coalesced to one write per frame, however fast the pointer reports.
+  const apply = () => {
+    frame = 0;
+    const event = last;
+    if (!event) return;
     const target = event.target instanceof Element ? event.target : null;
     const spot = target?.closest<HTMLElement>(SPOTLIGHT);
     if (spot) {
@@ -310,40 +205,27 @@ function pointerEffects() {
       spot.style.setProperty("--spot-y", `${event.clientY - box.top}px`);
     }
     if (!motionAllowed()) return release();
-
-    const tilt = target?.closest<HTMLElement>(TILT) ?? null;
-    if (tilt !== tilted) {
-      tilted?.style.removeProperty("--tilt-x");
-      tilted?.style.removeProperty("--tilt-y");
-      tilted = tilt;
-    }
-    if (tilt) {
-      const box = tilt.getBoundingClientRect();
-      const x = (event.clientX - box.left) / box.width - 0.5;
-      const y = (event.clientY - box.top) / box.height - 0.5;
-      tilt.style.setProperty("--tilt-x", `${(-y * 4).toFixed(2)}deg`);
-      tilt.style.setProperty("--tilt-y", `${(x * 4).toFixed(2)}deg`);
-    }
-
     const pull = target?.closest<HTMLElement>(MAGNETIC) ?? null;
-    if (pull !== magnet) {
-      magnet?.style.removeProperty("--mag-x");
-      magnet?.style.removeProperty("--mag-y");
-      magnet = pull;
-    }
+    if (pull !== magnet) release();
+    magnet = pull;
     if (pull) {
       const box = pull.getBoundingClientRect();
       const x = event.clientX - box.left - box.width / 2;
       const y = event.clientY - box.top - box.height / 2;
       pull.style.setProperty(
         "--mag-x",
-        `${Math.max(-10, Math.min(10, x * 0.22)).toFixed(1)}px`,
+        `${Math.max(-8, Math.min(8, x * 0.2)).toFixed(1)}px`,
       );
       pull.style.setProperty(
         "--mag-y",
-        `${Math.max(-7, Math.min(7, y * 0.35)).toFixed(1)}px`,
+        `${Math.max(-6, Math.min(6, y * 0.3)).toFixed(1)}px`,
       );
     }
+  };
+  const onMove = (event: PointerEvent) => {
+    if (event.pointerType !== "mouse" || !finePointer()) return;
+    last = event;
+    if (!frame) frame = requestAnimationFrame(apply);
   };
   const onLeave = (event: PointerEvent) => {
     if (!event.relatedTarget) release();
@@ -352,6 +234,7 @@ function pointerEffects() {
   document.addEventListener("pointerout", onLeave);
   window.addEventListener("blur", release);
   return () => {
+    cancelAnimationFrame(frame);
     release();
     document.removeEventListener("pointermove", onMove);
     document.removeEventListener("pointerout", onLeave);
@@ -374,7 +257,6 @@ export function MotionController() {
     const animations = new Set<Animation>();
     const cleanups: (() => void)[] = [scrollspy()];
     const pending = new Set<HTMLElement>();
-    const stopLater = (fn: () => void) => cleanups.push(fn);
     const play: Play = (target, keyframes, options) => {
       if (!target) return;
       const animation = target.animate(keyframes, {
@@ -397,10 +279,10 @@ export function MotionController() {
             observer.unobserve(element);
             pending.delete(element);
             delete element.dataset.revealPending;
-            reveal(element, i * 85, play, stopLater);
+            reveal(element, Math.min(i, 4) * 70, play);
           });
       },
-      { rootMargin: "0px 0px -12% 0px" },
+      { rootMargin: "0px 0px -8% 0px" },
     );
 
     let started = false;
@@ -408,15 +290,14 @@ export function MotionController() {
       if (started || !motionAllowed()) return;
       started = true;
       const hero = !clientNavigation && document.querySelector(".hero");
-      if (hero) heroIntro(play, stopLater);
+      if (hero) heroIntro(play);
       let index = 0;
       document.querySelectorAll<HTMLElement>(REVEAL).forEach((element) => {
-        if (hero && element.matches(".snapshot > div")) return;
         const box = element.getBoundingClientRect();
         if (box.bottom <= 0) return;
         if (box.top < window.innerHeight) {
           if (!clientNavigation)
-            reveal(element, 200 + index++ * 80, play, stopLater);
+            reveal(element, 200 + Math.min(index++, 6) * 70, play);
           return;
         }
         element.dataset.revealPending = "";

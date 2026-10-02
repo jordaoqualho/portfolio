@@ -18,10 +18,14 @@ type Instance = ViewTransitionInstance & {
   new: Pseudo;
 };
 
-const DURATION = 900;
+// Short and small: the old page settles back while the new one rises a few
+// pixels into place. Only transform and opacity animate, so the snapshots stay
+// on the compositor and the transition does not drop frames on long pages.
+const OUT = 360;
+const IN = 560;
 
 // Scaling a full page snapshot around its own centre would push the visible
-// visible part up or down, so the origin is moved to the middle of the viewport.
+// part up or down, so the origin is moved to the middle of the viewport.
 function viewportOrigin(group: Pseudo) {
   try {
     const top = new DOMMatrixReadOnly(group.getComputedStyle().transform).m42;
@@ -31,44 +35,35 @@ function viewportOrigin(group: Pseudo) {
   }
 }
 
-const recede = (origin: string): Keyframe[] => [
+const settle = (origin: string): Keyframe[] => [
   { transform: "none", opacity: 1, transformOrigin: origin },
-  {
-    transform: "translateY(-3vh) scale(0.93)",
-    opacity: 0.25,
-    transformOrigin: origin,
-  },
+  { transform: "scale(0.97)", opacity: 0, transformOrigin: origin },
 ];
-// Rounded top edge and shadow make the incoming page read as a sheet on top.
-const sheet = (): Keyframe[] => [
-  {
-    transform: `translateY(${window.innerHeight}px)`,
-    borderRadius: "28px 28px 0 0",
-    boxShadow: "0 -24px 60px rgb(0 0 0 / 0.14)",
-  },
-  { transform: "none", borderRadius: "0", boxShadow: "0 0 0 rgb(0 0 0 / 0)" },
+const rise = (distance: number): Keyframe[] => [
+  { transform: `translateY(${distance}px)`, opacity: 0 },
+  { transform: "none", opacity: 1 },
 ];
-const sheetEase = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 function onExit(viewTransition: ViewTransitionInstance, types: string[]) {
   if (!motionAllowed()) return;
   const { old, group } = viewTransition as Instance;
-  const animation = types.includes(BACK)
-    ? old.animate(sheet().reverse(), {
-        duration: DURATION * 0.85,
+  const animation = types.includes(FORWARD)
+    ? old.animate(settle(viewportOrigin(group)), {
+        duration: OUT,
         easing: ease.inOut,
         fill: "both",
       })
-    : types.includes(FORWARD)
-      ? old.animate(recede(viewportOrigin(group)), {
-          duration: DURATION,
+    : types.includes(BACK)
+      ? old.animate(rise(40).reverse(), {
+          duration: OUT,
           easing: ease.inOut,
           fill: "both",
         })
-      : old.animate(
-          [{ opacity: 1 }, { opacity: 0, transform: "translateY(-12px)" }],
-          { duration: 260, easing: ease.soft, fill: "both" },
-        );
+      : old.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 220,
+          easing: ease.soft,
+          fill: "both",
+        });
   return () => animation.cancel();
 }
 
@@ -76,25 +71,25 @@ function onEnter(viewTransition: ViewTransitionInstance, types: string[]) {
   if (!motionAllowed()) return;
   const { new: next, group } = viewTransition as Instance;
   const animation = types.includes(FORWARD)
-    ? next.animate(sheet(), {
-        duration: DURATION * 1.1,
-        delay: 60,
-        easing: sheetEase,
+    ? next.animate(rise(56), {
+        duration: IN,
+        delay: 120,
+        easing: ease.out,
         fill: "both",
       })
     : types.includes(BACK)
-      ? next.animate(recede(viewportOrigin(group)).reverse(), {
-          duration: DURATION,
+      ? next.animate(settle(viewportOrigin(group)).reverse(), {
+          duration: IN,
+          delay: 100,
           easing: ease.out,
           fill: "both",
         })
-      : next.animate(
-          [
-            { opacity: 0, transform: "translateY(16px)" },
-            { opacity: 1, transform: "none" },
-          ],
-          { duration: 480, delay: 160, easing: ease.out, fill: "both" },
-        );
+      : next.animate(rise(12), {
+          duration: 420,
+          delay: 120,
+          easing: ease.out,
+          fill: "both",
+        });
   return () => animation.cancel();
 }
 
