@@ -2,25 +2,14 @@ import { NextRequest } from "next/server";
 import { createMcpServer } from "@/mcp/server";
 import { mcpClients, mcpTools, mcpUrl } from "@/data/agents";
 import { siteUrl } from "@/lib/site";
+import { corsHeaders, onlyAllow, preflight } from "@/lib/api";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 
 export const dynamic = "force-dynamic";
 
-const corsHeaders: Record<string, string> = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "*",
-};
-
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      ...corsHeaders,
-      "Access-Control-Max-Age": "86400",
-    },
-  });
-}
+export const OPTIONS = preflight;
+// Stateless server: there are no sessions to DELETE.
+export const { PUT, PATCH, DELETE } = onlyAllow("GET", "POST");
 
 export async function GET(req: NextRequest) {
   const accept = req.headers.get("accept") ?? "";
@@ -54,6 +43,8 @@ export async function GET(req: NextRequest) {
         llmsTxt: `${siteUrl}/llms.txt`,
         llmsFullTxt: `${siteUrl}/llms-full.txt`,
         docs: `${siteUrl}/agents/`,
+        restApi: `${siteUrl}/api`,
+        openapi: `${siteUrl}/openapi.json`,
       },
       availableTools: mcpTools.map((tool) => ({
         name: tool.name,

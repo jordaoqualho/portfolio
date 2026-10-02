@@ -1,20 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { prefersMarkdown } from "@/lib/negotiation";
 
 // Agents get the Markdown twin of a page, either by asking for text/markdown
 // or by appending `.md`. Browsers keep getting HTML.
-function prefersMarkdown(accept: string) {
-  let markdown = 0;
-  let html = 0;
-  for (const part of accept.toLowerCase().split(",")) {
-    const [type, ...params] = part.split(";").map((s) => s.trim());
-    const q = params.find((p) => p.startsWith("q="));
-    const weight = q ? Number(q.slice(2)) || 0 : 1;
-    if (type === "text/markdown") markdown = weight;
-    else if (type === "text/html") html = weight;
-  }
-  return markdown > 0 && markdown >= html;
-}
-
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   if (!pathname.endsWith("/") && !pathname.endsWith(".md")) {
@@ -36,8 +24,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Pages and `.md` URLs only: no API, build assets or other files.
+  // Pages and `.md` URLs only: no API, well-known files, build assets or other files.
   matcher: [
-    "/((?!api/|_next/|md/|opengraph-image|twitter-image|.*\\.(?!md$)[a-z0-9]+$).*)",
+    "/((?!api(?:/|$)|_next/|md/|\\.well-known/|opengraph-image|twitter-image|.*\\.(?!md$)[a-z0-9]+$).*)",
   ],
 };
