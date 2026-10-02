@@ -6,7 +6,7 @@ export function EngineeringCases() {
       <div className="container">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">01 / SELECTED WORK</span>
+            <span className="eyebrow">SELECTED WORK</span>
             <h2>
               Selected Engineering Cases<span className="accent">.</span>
             </h2>
@@ -14,7 +14,6 @@ export function EngineeringCases() {
               Production problems: what broke, how I investigated, and what changed.
             </p>
           </div>
-          <span className="section-note">03 CASE STUDIES</span>
         </div>
         <div>
           {cases.map((item) => (

@@ -73,63 +73,45 @@ export default async function CasePage({ params }: Props) {
             <aside className="case-index">
               <span className="eyebrow">IN THIS CASE</span>
               <nav aria-label="Case contents" data-scrollspy>
-                <a href="#context">Context</a>
-                {item.problem && <a href="#problem">Problem</a>}
-                {item.investigation && (
-                  <a href="#investigation">Investigation</a>
-                )}
-                {item.rootCause && <a href="#root-cause">Root cause</a>}
-                <a href="#contribution">My contribution</a>
-                {item.outcome && <a href="#outcome">Outcome</a>}
-                <a href="#takeaway">What I learned</a>
+                {item.sections.map((section) => (
+                  <a key={section.id} href={`#${section.id}`}>
+                    {section.heading}
+                  </a>
+                ))}
               </nav>
             </aside>
             <article className="case-prose">
-              <section id="context">
-                <h2>Context</h2>
-                <p>{item.context}</p>
-              </section>
-              {item.problem && (
-                <section id="problem">
-                  <h2>Problem</h2>
-                  <p>{item.problem}</p>
-                </section>
-              )}
-              {item.investigation && (
-                <section id="investigation">
-                  <h2>Investigation</h2>
-                  <ol>
-                    {item.investigation.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ol>
-                </section>
-              )}
-              {item.rootCause && (
-                <section id="root-cause">
-                  <h2>Root cause</h2>
-                  <p>{item.rootCause}</p>
-                </section>
-              )}
-              <section id="contribution">
-                <h2>My contribution</h2>
-                <ul>
-                  {item.contribution.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </section>
-              {item.outcome && (
-                <section id="outcome" className="outcome-panel">
-                  <span className="eyebrow">THE RESULT</span>
-                  <h2>Outcome</h2>
-                  <p>{item.outcome}</p>
-                </section>
-              )}
-              <section id="takeaway" className="takeaway">
-                <h2>What I learned</h2>
-                <blockquote>{item.takeaway}</blockquote>
-              </section>
+              {item.sections.map((section) => {
+                const List = section.ordered ? "ol" : "ul";
+                const className =
+                  section.id === "result"
+                    ? "outcome-panel"
+                    : section.id === "takeaway"
+                      ? "takeaway"
+                      : undefined;
+                return (
+                  <section
+                    key={section.id}
+                    id={section.id}
+                    className={className}
+                  >
+                    <h2>{section.heading}</h2>
+                    {section.body &&
+                      (section.id === "takeaway" ? (
+                        <blockquote>{section.body}</blockquote>
+                      ) : (
+                        <p>{section.body}</p>
+                      ))}
+                    {section.points && (
+                      <List>
+                        {section.points.map((point) => (
+                          <li key={point}>{point}</li>
+                        ))}
+                      </List>
+                    )}
+                  </section>
+                );
+              })}
             </article>
           </div>
           <div className="case-next">

@@ -9,11 +9,29 @@ const config: NextConfig = {
   images: { unoptimized: true },
   devIndicators: false,
   agentRules: false,
+  // Conventional docs URLs lead to the developer portal.
+  async redirects() {
+    const docs = ["/docs", "/docs/", "/developer", "/developer/"].map((source) => ({
+      source,
+      destination: "/developers/",
+      permanent: true,
+    }));
+    // Case slugs renamed after the rewrite; keep old shared links working.
+    const renamed = [
+      ["ecommerce-scalability", "live-commerce-traffic-spike"],
+      ["frontend-infrastructure", "healthcare-react-component-system"],
+    ].flatMap(([from, to]) => [
+      { source: `/work/${from}`, destination: `/work/${to}/`, permanent: true },
+      { source: `/work/${from}/`, destination: `/work/${to}/`, permanent: true },
+      { source: `/work/${from}.md`, destination: `/work/${to}.md`, permanent: true },
+    ]);
+    return [...docs, ...renamed];
+  },
   // Pages answer in HTML or Markdown depending on Accept (see src/proxy.ts).
   async headers() {
     return [
       {
-        source: "/((?!api/|_next/).*)",
+        source: "/((?!api(?:/|$)|_next/|\\.well-known/).*)",
         headers: [{ key: "Vary", value: "Accept" }],
       },
     ];

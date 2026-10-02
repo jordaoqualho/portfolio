@@ -16,7 +16,12 @@ export function CaseCard({ item }: { item: EngineeringCase }) {
           default="none"
         >
           <h3>
-            <Link href={`/work/${item.slug}/`} transitionTypes={[FORWARD]}>
+            {/* The link stretches over the whole row, so the full card is the click target. */}
+            <Link
+              className="case-link"
+              href={`/work/${item.slug}/`}
+              transitionTypes={[FORWARD]}
+            >
               {item.title}
               <ArrowUpRight className="case-arrow" size={24} />
             </Link>
@@ -33,14 +38,9 @@ export function CaseCard({ item }: { item: EngineeringCase }) {
           ))}
         </ul>
       </div>
-      <Link
-        className="case-read"
-        href={`/work/${item.slug}/`}
-        transitionTypes={[FORWARD]}
-        aria-label={`Read case: ${item.title}`}
-      >
+      <span className="case-read" aria-hidden="true">
         Read case <ArrowUpRight size={16} />
-      </Link>
+      </span>
     </article>
   );
 }
