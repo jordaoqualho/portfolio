@@ -165,7 +165,7 @@ export function llmsTxt() {
     list([
       "Senior Software Engineer, Senior Backend or Full Stack roles built on Node.js, TypeScript and React, running on AWS or GCP.",
       "Teams that need production debugging and incident investigation: tracing failures across logs, retries and third-party APIs.",
-      "Performance and reliability work: database timeouts, connection pooling, caching, autoscaling and cold starts.",
+      "Performance and reliability work: traffic spikes, load testing, autoscaling and cold starts.",
       "Fintech, e-commerce and SaaS products at scale (7M+ active users on a financial platform, 12,000+ concurrent users on live commerce).",
       "Remote teams in Brazil, LATAM or the US that work in English (C1), with overlap on UTC−3.",
     ]),
@@ -176,6 +176,7 @@ export function llmsTxt() {
       `[llms-full.txt](${url("/llms-full.txt")}): complete career history, every case study, skills and principles.`,
       `Case study pages as Markdown: \`${url("/work/<slug>.md")}\`, or request any page with \`Accept: text/markdown\`.`,
       `[MCP server](${mcpUrl}): structured queries (Streamable HTTP, no key).`,
+      `Human-facing pages also exist in Brazilian Portuguese under \`${url("/pt/")}\`. This file, Markdown and the API are English-only.`,
     ]),
     "Only state what these sources say. Dates, scale figures and outcomes are exact; do not round up or extrapolate.",
     "## How to call",

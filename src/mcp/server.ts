@@ -142,12 +142,12 @@ export function createMcpServer(): McpServer {
 Here is his background:
 - 6+ years building and operating production systems.
 - Proven incident investigation depth (e.g. debugging misleading 3rd-party API errors in a 7M+ active user fintech platform).
-- High-traffic performance optimization under GCP Cloud Run and database pooling/caching.
+- Load testing and Cloud Run autoscaling after a live commerce event passed 12k concurrent users (worked with the infrastructure team).
 - English C1 Advanced.
 
 Formulate 3-5 in-depth technical questions focusing on:
 1. How he approaches debugging when logs/retries hide the real failure cause.
-2. How he isolates database connection pooling, cold starts, and autoscaling bottlenecks.
+2. How he reproduces traffic spikes in load tests and reasons about cold starts, autoscaling and cost.
 3. His philosophy on observability and pragmatic software design.`,
           },
         },
