@@ -1,28 +1,18 @@
-import { skills } from "@/data/profile";
+import { stackEvidence } from "@/lib/stack";
+import { StackExplorer } from "./StackExplorer";
 export function TechStack() {
   return (
     <section id="stack" className="stack-section section">
-      <div className="container editorial-grid">
+      <div className="container stack-layout">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">03 / TECHNICAL STACK</span>
             <h2>
               What I use in production<span className="accent">.</span>
             </h2>
+            <p>Pick a technology to see where I used it.</p>
           </div>
         </div>
-        <dl className="stack-groups">
-          {skills.map((group) => (
-            <div key={group.group}>
-              <dt>{group.group}</dt>
-              <dd>
-                {group.items.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <StackExplorer groups={stackEvidence()} />
       </div>
     </section>
   );
