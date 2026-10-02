@@ -66,18 +66,47 @@ export const profile = {
     "6+ years building and operating production systems across fintech, e-commerce and SaaS, from React applications to backend services supporting millions of users.",
   resumePath: "/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
 };
+// Every homepage section, in page order. The desktop header folds Work and
+// Projects into one dropdown; the mobile menu lists them all.
 export const navigation = [
   { label: "Work", href: "/#work" },
   { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Stack", href: "/#stack" },
   { label: "About", href: "/#about" },
   { label: "AI Agents", href: "/#agents" },
   { label: "Contact", href: "/#contact" },
 ];
+// Each headline number links to the page that backs it up.
 export const stats = [
-  { value: "6+ years", label: "Professional engineering experience" },
-  { value: "7M+ active users", label: "Financial platform experience" },
-  { value: "Production systems", label: "Fintech · E-commerce · SaaS · Logistics" },
-  { value: "Brazil · Remote", label: "English C1 · LATAM and US teams" },
+  {
+    value: 6,
+    suffix: "+",
+    label: "years in production",
+    detail: "Since 2020 across fintech, e-commerce, SaaS and logistics",
+    href: "/#experience",
+  },
+  {
+    value: 7,
+    suffix: "M+",
+    label: "users on the platform",
+    detail: "Financial platform where I traced a masked onboarding failure",
+    href: "/work/financial-onboarding-incident/",
+  },
+  {
+    value: 20,
+    suffix: "k",
+    label: "concurrent users load-tested",
+    detail: "After a live event passed 12k, within the same budget",
+    href: "/work/live-commerce-traffic-spike/",
+  },
+  {
+    value: 50,
+    suffix: "+",
+    label: "shared React components",
+    detail: "Storybook library across healthcare micro-frontends",
+    href: "/work/healthcare-react-component-system/",
+  },
 ];
 export const capabilities: Capability[] = [
   {
@@ -555,6 +584,12 @@ export const projects: Project[] = [
     repo: "https://github.com/jordaoqualho/roundkeep",
     detail: {
       tagline: "A D&D 5e combat table that keeps working without internet",
+      image: {
+        src: "/projects/roundkeep.jpg",
+        alt: "Roundkeep encounter screen: creature library on the left, initiative order with HP and armor class in the middle, and the selected creature's stat sheet on the right.",
+        width: 2400,
+        height: 1433,
+      },
       overview:
         "Roundkeep runs a D&D 5e fight in the browser: initiative, HP, conditions, and a library of SRD creatures and spells. It runs on the Dungeon Master's machine, with no account and no cloud, and players follow the combat from their phones on the same network.",
       features: [
@@ -596,6 +631,12 @@ export const projects: Project[] = [
     repo: "https://github.com/jordaoqualho/deadfolio",
     detail: {
       tagline: "An autopsy for the GitHub projects you left behind",
+      image: {
+        src: "/projects/deadfolio.jpg",
+        alt: "Deadfolio home page in Brazilian Portuguese: headline saying your GitHub is full of projects left behind and Deadfolio finds them, with buttons to analyze a GitHub profile or paste a repository.",
+        width: 2400,
+        height: 1435,
+      },
       overview:
         "Paste a public GitHub username and Deadfolio scores every public repository for signs of abandonment. On the ones worth a look, it runs an AI autopsy built from the repository's own evidence. Nobody is asked about their stack, project age or activity, because the repository already knows. The one question a person answers is why they actually stopped. The app is available in English and Brazilian Portuguese.",
       features: [
@@ -625,6 +666,51 @@ export const projects: Project[] = [
         "No accounts, payments, notifications or moderation, on purpose.",
         "Only public repositories are analyzed.",
         "Ownership is not verified, so every published record is labeled UNVERIFIED.",
+      ],
+    },
+  },
+  {
+    name: "Fintal",
+    status: "Live",
+    description:
+      "A personal finance dashboard built on bank CSV exports instead of bank logins. Imports Nubank, C6 and Wise statements, categorizes spending and tracks installments, subscriptions and budgets.",
+    stack: ["Next.js", "TypeScript", "NestJS"],
+    href: "https://fintalapp.vercel.app",
+    slug: "fintal",
+    detail: {
+      tagline: "Personal finance insights from bank exports, without bank passwords",
+      image: {
+        src: "/projects/fintal.jpg",
+        alt: "Fintal insights screen in Brazilian Portuguese: a financial health score gauge, a month-over-month chart of income, expenses and balance with forecast months, and budget progress against the monthly limit.",
+        width: 2400,
+        height: 1433,
+      },
+      overview:
+        "Fintal is a privacy-focused personal finance app. Instead of asking for bank credentials, it imports the CSV exports banks already provide, organizes transactions, installments and subscriptions, and turns them into a dashboard of trends, budgets and diagnostics.",
+      features: [
+        "CSV import with automatic format detection for Nubank, C6 Bank and Wise (including multi-currency ZIP exports), and column mapping for other banks.",
+        "Automatic categorization, with custom categories.",
+        "Accounts and cards, and a transaction list with search, filters, bulk edit and infinite scroll.",
+        "Installments and subscriptions tracked as recurring spend.",
+        "A dashboard with a financial health score, month-over-month charts, an intensity heatmap and category breakdowns.",
+        "Privacy mode that blurs every monetary value in the app, toggled from the header or with P.",
+        "Command palette (⌘K) and global keyboard shortcuts, guided onboarding missions, and an installable PWA.",
+      ],
+      engineering: [
+        "No bank login: data enters only through files the user exports, parsed by bank-specific detectors with a generic column-mapping fallback.",
+        "Privacy mode is a React context persisted in localStorage. It sets a data attribute on the document, and a PrivacyAmount wrapper applies the blur in CSS, so any amount on any screen can be hidden consistently.",
+        "Theme preference (light, dark or system) is applied by a boot script before first paint, and Tailwind runs in class mode so the app's choice wins over the operating system's.",
+        "The Next.js App Router frontend talks to a NestJS API. Sign-in uses Google OAuth with JWT.",
+        "Quality gates: ESLint, Prettier, Vitest unit tests and Playwright end-to-end tests, with Husky running lint, type-check and a full build before every push.",
+      ],
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "NestJS",
+        "Tailwind CSS",
+        "Radix UI",
+        "Vitest",
+        "Playwright",
       ],
     },
   },
