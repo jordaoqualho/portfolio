@@ -1,0 +1,133 @@
+/* Four proof points. Big tabular numbers, label underneath, and the evidence
+   line slides in on hover/focus; the whole cell links to the case behind it. */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--border);
+}
+
+.item {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 28px 24px 30px;
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  transition: background-color 300ms ease;
+}
+
+.item:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* Accent rule that grows along the top edge on hover. */
+.item::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.value {
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.suffix {
+  color: var(--accent);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.detail {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--muted);
+  opacity: 0.75;
+  transition:
+    opacity 300ms ease,
+    color 300ms ease,
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail svg {
+  flex-shrink: 0;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 300ms ease,
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.item:is(:hover, :focus-visible)::before {
+  transform: scaleX(1);
+}
+
+.item:is(:hover, :focus-visible) .detail {
+  opacity: 1;
+  color: var(--foreground);
+}
+
+.item:is(:hover, :focus-visible) .detail svg {
+  opacity: 1;
+  transform: none;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.item:active {
+  transform: scale(0.99);
+}
+
+@media (max-width: 900px) {
+  .strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .item:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .item:nth-child(n + 3) {
+    border-top: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 480px) {
+  .item {
+    padding: 22px 14px 24px;
+  }
+
+  .detail {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item::before,
+  .detail,
+  .detail svg {
+    transition: none;
+  }
+}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowDown, Mail, MapPin } from "lucide-react";
-import { profile, stats } from "@/data/profile";
+import { profile } from "@/data/profile";
+import { ProofStrip } from "./ProofStrip";
 import { HeroFacets } from "./HeroFacets";
 import styles from "./Hero.module.css";
 export function Hero() {
@@ -68,17 +69,7 @@ export function Hero() {
           </div>
         </section>
       </div>
-      <section
-        className="container snapshot"
-        aria-label="Professional snapshot"
-      >
-        {stats.map((stat) => (
-          <div key={stat.value}>
-            <strong>{stat.value}</strong>
-            <span>{stat.label}</span>
-          </div>
-        ))}
-      </section>
+      <ProofStrip />
     </>
   );
 }
