@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { profile } from "@/data/profile";
+import { defaultLocale, type Locale } from "@/i18n/config";
+import { ownerNotificationEmail, visitorConfirmationEmail } from "./contact-email";
 
 // The contact form's payload. `website` is a honeypot: hidden from people,
 // filled in by bots. `startedAt` is when the form was rendered; submissions
@@ -45,48 +47,11 @@ export function rateLimit(key: string, now = Date.now()) {
 
 export const resetRateLimit = () => hits.clear();
 
-const escapeHtml = (value: string) =>
-  value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-
-export function contactEmail(input: ContactInput) {
-  const from = input.company ? `${input.name} (${input.company})` : input.name;
-  const subject = `Portfolio message from ${from}`.slice(0, 180);
-  const text = [
-    `Name: ${input.name}`,
-    `Email: ${input.email}`,
-    input.company && `Company: ${input.company}`,
-    "",
-    input.message,
-  ]
-    .filter((line) => line !== "")
-    .join("\n");
-  const html = `<p><strong>Name:</strong> ${escapeHtml(input.name)}<br><strong>Email:</strong> ${escapeHtml(input.email)}${
-    input.company ? `<br><strong>Company:</strong> ${escapeHtml(input.company)}` : ""
-  }</p><p style="white-space:pre-wrap">${escapeHtml(input.message)}</p>`;
-  return { subject, text, html };
-}
-
-// Sends through Resend's REST API. replyTo is the visitor, so answering from
-// Gmail goes straight to them. Returns false when the key is missing or the
-// provider rejects the message; details go to the server log only.
-export async function sendContactEmail(input: ContactInput) {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    console.error("[contact] RESEND_API_KEY is not set");
-    return false;
-  }
-  const { subject, text, html } = contactEmail(input);
+async function sendViaResend(key: string, payload: Record<string, unknown>) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>",
-      to: [process.env.CONTACT_TO_EMAIL || profile.email],
-      reply_to: input.email,
-      subject,
-      text,
-      html,
-    }),
+    body: JSON.stringify(payload),
   }).catch((error) => {
     console.error("[contact] Resend request failed", error);
     return null;
@@ -95,5 +60,45 @@ export async function sendContactEmail(input: ContactInput) {
     if (response) console.error("[contact] Resend rejected", response.status, await response.text());
     return false;
   }
+  return true;
+}
+
+// Sends the owner's notification (reply-to is the visitor, so answering from
+// Gmail goes straight to them) and, best-effort, a branded confirmation back
+// to the visitor. The confirmation's failure does not fail the request: the
+// message already reached the owner, which is the part that matters. Note:
+// without a verified sending domain, Resend's onboarding@resend.dev address
+// can only deliver to the account owner, so the visitor confirmation only
+// actually lands once a custom domain is verified.
+export async function sendContactEmail(input: ContactInput, locale: Locale = defaultLocale) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) {
+    console.error("[contact] RESEND_API_KEY is not set");
+    return false;
+  }
+  const from = process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
+  const to = process.env.CONTACT_TO_EMAIL || profile.email;
+
+  const owner = ownerNotificationEmail(input);
+  const ownerSent = await sendViaResend(key, {
+    from,
+    to: [to],
+    reply_to: input.email,
+    subject: owner.subject,
+    text: owner.text,
+    html: owner.html,
+  });
+  if (!ownerSent) return false;
+
+  const confirmation = visitorConfirmationEmail(input, locale);
+  await sendViaResend(key, {
+    from,
+    to: [input.email],
+    reply_to: to,
+    subject: confirmation.subject,
+    text: confirmation.text,
+    html: confirmation.html,
+  });
+
   return true;
 }

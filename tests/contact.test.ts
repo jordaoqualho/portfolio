@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/contact/route";
-import { contactEmail, resetRateLimit } from "@/lib/contact";
+import { ownerNotificationEmail } from "@/lib/contact-email";
+import { resetRateLimit } from "@/lib/contact";
 
 const valid = {
   name: "Ada Lovelace",
@@ -83,7 +84,31 @@ describe("contact API", () => {
   });
 
   it("escapes visitor input in the HTML email", () => {
-    const { html } = contactEmail({ ...valid, message: "<script>alert(1)</script>" });
+    const { html } = ownerNotificationEmail({ ...valid, message: "<script>alert(1)</script>" });
     expect(html).not.toContain("<script>");
+  });
+
+  it("also sends a branded confirmation to the visitor, reply-to the owner", async () => {
+    const response = await send(valid);
+    expect(response.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const [, confirmInit] = fetchMock.mock.calls[1];
+    const payload = JSON.parse(confirmInit.body);
+    expect(payload.to).toEqual(["ada@example.com"]);
+    expect(payload.reply_to).toBe("jordaoqualho@gmail.com");
+    expect(payload.html).toContain("Ada");
+  });
+
+  it("sends the visitor confirmation in the site's locale", async () => {
+    await send(valid, { cookie: "locale=pt" });
+    const [, confirmInit] = fetchMock.mock.calls[1];
+    const payload = JSON.parse(confirmInit.body);
+    expect(payload.subject).toContain("Mensagem recebida");
+  });
+
+  it("skips the visitor confirmation when the owner email fails", async () => {
+    fetchMock.mockResolvedValueOnce(new Response("bad", { status: 422 }));
+    await send(valid);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

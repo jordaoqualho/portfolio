@@ -1,3 +1,4 @@
+import { defaultLocale, isLocale, LOCALE_COOKIE } from "@/i18n/config";
 import { ContactInput, looksLikeBot, rateLimit, sendContactEmail } from "@/lib/contact";
 
 // The portfolio's contact form. Same-origin only: it is not part of the public
@@ -13,6 +14,15 @@ function sameOrigin(request: Request) {
   } catch {
     return false;
   }
+}
+
+// Plain Request has no .cookies (that's NextRequest-only), so the locale
+// cookie set by PreferencesMenu is read off the header directly.
+function localeFromRequest(request: Request) {
+  const cookie = request.headers.get("cookie") ?? "";
+  const match = cookie.match(new RegExp(`(?:^|;\\s*)${LOCALE_COOKIE}=([^;]+)`));
+  const value = match ? decodeURIComponent(match[1]) : undefined;
+  return isLocale(value) ? value : defaultLocale;
 }
 
 export async function POST(request: Request) {
@@ -40,7 +50,7 @@ export async function POST(request: Request) {
   // Bots get a normal-looking success so they do not learn to adapt.
   if (looksLikeBot(parsed.data)) return reply(200, { ok: true });
 
-  const sent = await sendContactEmail(parsed.data);
+  const sent = await sendContactEmail(parsed.data, localeFromRequest(request));
   return sent ? reply(200, { ok: true }) : reply(502, { error: "send_failed" });
 }
 
