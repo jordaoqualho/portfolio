@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     metadataBase: new URL(siteUrl),
     title: { default: title, template: "%s · Jordão Qualho" },
     description,
+    verification: process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+      : undefined,
     keywords: [
       "Senior Software Engineer",
       "Engenheiro de Software Sênior",
@@ -93,6 +96,14 @@ export default async function RootLayout({
       "Production Reliability",
     ],
   };
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Jordão Qualho",
+    url: siteUrl,
+    inLanguage: ["en", "pt-BR"],
+    publisher: { "@type": "Person", name: profile.name, url: siteUrl },
+  };
   return (
     <html
       lang={localeMeta[locale].lang}
@@ -130,7 +141,7 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(person).replace(/</g, "\\u003c"),
+            __html: JSON.stringify([person, website]).replace(/</g, "\\u003c"),
           }}
         />
       </body>
