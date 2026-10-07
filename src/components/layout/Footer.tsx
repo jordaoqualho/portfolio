@@ -11,6 +11,11 @@ export function Footer({ locale }: { locale: Locale }) {
     <footer className="container footer">
       <p>
         © {new Date().getFullYear()} {profile.name}
+        <span className="footer-author">
+          {" · "}
+          {t.siteBy}{" "}
+          <a href="https://jordaoqualho.com/">{profile.name}</a>
+        </span>
       </p>
       <span>{t.location}</span>
       <MotionPreferences />
