@@ -6,12 +6,11 @@ export const en = {
     home: "Jordão Qualho home",
     main: "Main navigation",
     mobile: "Mobile navigation",
-    mobileLabel: "Explore the portfolio",
     openMenu: "Open navigation",
     closeMenu: "Close navigation",
     downloadCv: "Download CV",
     nav: {
-      work: "Case studies",
+      work: "Work",
       experience: "Experience",
       projects: "Projects",
       stack: "Stack",
@@ -21,7 +20,7 @@ export const en = {
     },
   },
   workMenu: {
-    trigger: "Case studies",
+    trigger: "Work",
     cases: "Engineering cases",
     projects: "Side projects",
     allCases: "All cases",
@@ -41,7 +40,7 @@ export const en = {
     agents: "For AI agents",
     developers: "Developers",
     privacy: "Privacy",
-    siteBy: "Site by",
+    siteBy: ""Site by",
   },
   motion: {
     pause: "Pause motion",
@@ -55,7 +54,6 @@ export const en = {
     viewCases: "View cases",
     description:
       "6+ years building backend services, APIs and production systems for fintech, e-commerce and SaaS. Remote, from Brazil.",
-    aiProfile: "Hiring with AI? This portfolio has an MCP endpoint",
     facetsPrefix: "Also a",
     facetsGroup: "Outside work",
     facetShow: "Show:",
@@ -77,32 +75,19 @@ export const en = {
     title: "What I’m building outside work",
     technologies: "Technologies",
     liveSite: "Live site",
-    viewProject: "View project",
     code: "Code",
   },
   stack: {
-    title: "Professional stack and project experience",
-    intro: "Hover a technology to see the roles, cases and projects behind it.",
+    title: "What I use in production",
+    intro: "Pick a technology to see where I used it.",
+    usedIn: (n: number) => `, used in ${n} roles`,
     years: (y: number) =>
       y < 1 ? "under a year" : `${y}+ year${y === 1 ? "" : "s"}`,
-    compactYears: (y: number) => (y < 1 ? "<1 yr" : `${y}+ yrs`),
-    exposure: (y: number) =>
-      y < 1
-        ? "under a year exposure"
-        : `${y}+ year${y === 1 ? "" : "s"} exposure`,
-    compactExposure: (y: number) => (y < 1 ? "<1 yr exp." : `${y}+ yrs exp.`),
-    professionalYears: (years: string) => `${years} professional experience`,
-    exposureYears: (years: string) => `${years} professional exposure`,
-    professionalExperience: "Professional experience",
-    professionalEvidence: "Professional evidence",
-    rolesCount: (n: number) => `${n} role${n === 1 ? "" : "s"}`,
-    caseShort: "case",
-    projectExperience: "Project experience",
-    caseEvidence: "Case evidence",
-    noEvidence: "No verified evidence is attached here yet; see the CV or project links for more context.",
-    since: (year: number) => `since ${year}`,
+    across: (years: string, roles: number, since: number) =>
+      `${years} across ${roles} role${roles === 1 ? "" : "s"} · since ${since}`,
+    noEvidence:
+      "Part of my toolkit. Not tied to a featured role on this page; the CV has the full detail.",
     relatedCases: "Related cases",
-    relatedProjects: "Projects using it",
   },
   about: {
     title: ["Based in Brazil.", "Working in English"],
@@ -185,20 +170,7 @@ export const en = {
     limits: "Deliberate limits",
     keyDecision: "Key decision",
     open: "Open the app",
-    visitSite: "Visit site",
     code: "View the code",
-    stackLabel: "TECHNICAL STACK",
-    technologiesCount: (n: number) => `${n} technologies mapped`,
-    stackMap: "SYSTEM MAP",
-    technicalMapTitle: "How the project holds together",
-    technicalMapBody:
-      "A compact view of the technologies behind the experience, grouped by the role they play in the product.",
-    layers: {
-      interface: "Interface",
-      runtime: "Runtime",
-      data: "Data & logic",
-      delivery: "Delivery",
-    },
     next: "NEXT PROJECT",
     production: "See production work",
   },
