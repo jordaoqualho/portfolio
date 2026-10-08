@@ -35,6 +35,10 @@ export function Hero({ locale }: { locale: Locale }) {
               </h1>
               <HeroFacets facets={facets} />
               <p className="hero-description">{t.description}</p>
+              <a className="hero-ai-link" href="#agents">
+                {t.aiProfile}
+                <ArrowDown size={14} aria-hidden="true" />
+              </a>
               <div className="hero-ctas">
                 <a className="button primary" href="#contact-form">
                   <Send size={16} aria-hidden="true" />

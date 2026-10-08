@@ -9,9 +9,9 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import posthog from "posthog-js";
 import { ArrowRight, Check, CircleCheck, LoaderCircle, RotateCcw } from "lucide-react";
 import { useUi } from "@/i18n/provider";
+import { track } from "@/lib/analytics";
 import {
   fieldIssue,
   limits,
@@ -25,12 +25,6 @@ import {
 type Status = "idle" | "sending" | "success" | "error" | "limited";
 
 const empty: ContactValues = { name: "", email: "", company: "", message: "" };
-
-const track = (event: string, properties?: Record<string, unknown>) => {
-  try {
-    posthog.capture(event, properties);
-  } catch {}
-};
 
 // Validation is quiet until a field is left (blur) or the form is submitted;
 // after that, the field re-checks on every keystroke so errors clear as soon

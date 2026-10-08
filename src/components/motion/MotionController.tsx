@@ -117,9 +117,9 @@ function heroIntro(play: Play) {
   });
 }
 
-// Section-aware navigation: a single marker glides to the link of the section
-// in view. Direct links track their own hash; a dropdown trigger tracks the
-// sections listed in its data-spy-for.
+// Section-aware navigation: a single marker glides to the link for the section
+// that has passed the reading line. Using document position rather than an
+// intersection callback keeps the active item stable for sections of any height.
 function scrollspy() {
   const cleanups: (() => void)[] = [];
   document.querySelectorAll<HTMLElement>("[data-scrollspy]").forEach((nav) => {
@@ -139,9 +139,13 @@ function scrollspy() {
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
     if (!sections.length) return;
-    const visible = new Set<Element>();
+    let frame = 0;
     const mark = () => {
-      const current = sections.filter((section) => visible.has(section)).at(-1);
+      frame = 0;
+      const readingLine = window.innerHeight * 0.42;
+      const current = sections
+        .filter((section) => section.getBoundingClientRect().top <= readingLine)
+        .at(-1);
       const origin = nav.getBoundingClientRect();
       items.forEach(({ element, ids }) => {
         const active = Boolean(current && ids.includes(current.id));
@@ -155,21 +159,15 @@ function scrollspy() {
       });
       nav.toggleAttribute("data-spy-active", Boolean(current));
     };
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) =>
-          entry.isIntersecting
-            ? visible.add(entry.target)
-            : visible.delete(entry.target),
-        );
-        mark();
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-    sections.forEach((section) => observer.observe(section));
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(mark);
+    };
+    mark();
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", mark);
     cleanups.push(() => {
-      observer.disconnect();
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", mark);
       nav.removeAttribute("data-spy-active");
       items.forEach(({ element }) => element.removeAttribute("data-active"));

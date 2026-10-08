@@ -54,4 +54,8 @@ describe("Portuguese content parity", () => {
     expect(formatDates("Dec 2023 – Aug 2026", "en")).toBe("Dec 2023 – Aug 2026");
     expect(formatDates("Dec 2023 – Aug 2026", "pt")).toMatch(/^dez\.? 2023 – ago\.? 2026$/);
   });
+
+  it("uses a Portuguese cloud delivery label", () => {
+    expect(getContent("pt").skills.find((group) => group.group === "Nuvem e entrega")).toBeDefined();
+  });
 });

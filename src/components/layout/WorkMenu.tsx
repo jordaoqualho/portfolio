@@ -7,20 +7,32 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { BACK, FORWARD } from "@/lib/motion";
 import { localePath, stripLocale } from "@/i18n/paths";
 import { useLocale, useUi } from "@/i18n/provider";
-import { ProjectIcon } from "@/components/work/ProjectIcon";
 
-// Built on the server from the locale's content, so the client bundle does
-// not carry both languages' case and project text.
 export type WorkMenuItems = {
   cases: { href: string; category: string; title: string }[];
   projects: { href: string; name: string; line: string }[];
 };
 
-// "Work" in the header: one trigger for the engineering cases and side
-// projects, with direct links to every page. Hover opens it with a short
-// intent delay; click and keyboard work the same way.
-export function WorkMenu({ items }: { items: WorkMenuItems }) {
-  const t = useUi().workMenu;
+type Item = { href: string; title: string; detail: string; projectName?: string };
+
+// A label opens a concise preview of its content. The final row deliberately
+// remains a real section link, separating "show the menu" from "go to this
+// section" for mouse, keyboard and touch users.
+function SectionMenu({
+  label,
+  heading,
+  sectionHref,
+  sectionLabel,
+  spyFor,
+  items,
+}: {
+  label: string;
+  heading: string;
+  sectionHref: string;
+  sectionLabel: string;
+  spyFor: string;
+  items: Item[];
+}) {
   const locale = useLocale();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
@@ -35,7 +47,6 @@ export function WorkMenu({ items }: { items: WorkMenuItems }) {
     timer.current = window.setTimeout(() => setOpen(next), delay);
   };
 
-  // Close on navigation, adjusted during render rather than in an effect.
   const [shownOn, setShownOn] = useState(pathname);
   if (shownOn !== pathname) {
     setShownOn(pathname);
@@ -72,87 +83,107 @@ export function WorkMenu({ items }: { items: WorkMenuItems }) {
       ref={root}
       className="work-menu"
       data-open={open || undefined}
-      onPointerEnter={(e) => e.pointerType === "mouse" && schedule(true, 90)}
-      onPointerLeave={(e) => e.pointerType === "mouse" && schedule(false, 180)}
-      onBlur={(e) => {
-        if (!root.current?.contains(e.relatedTarget as Node)) setOpen(false);
+      onPointerEnter={(event) => event.pointerType === "mouse" && schedule(true, 90)}
+      onPointerLeave={(event) => event.pointerType === "mouse" && schedule(false, 180)}
+      onBlur={(event) => {
+        if (!root.current?.contains(event.relatedTarget as Node)) setOpen(false);
       }}
     >
       <button
         ref={trigger}
         type="button"
         className="work-menu-trigger"
-        data-spy-for="work projects"
+        data-spy-for={spyFor}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => {
           window.clearTimeout(timer.current);
           setOpen(!open);
         }}
-        onKeyDown={(e) => {
-          if (e.key !== "ArrowDown") return;
-          e.preventDefault();
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowDown") return;
+          event.preventDefault();
           setOpen(true);
           focusFirst();
         }}
       >
-        {t.trigger}
+        {label}
         <ChevronDown size={14} aria-hidden="true" />
       </button>
-      <div id={panelId} className="work-menu-panel">
+      <div id={panelId} className="work-menu-panel work-menu-panel-cases">
         <div className="work-menu-column">
-          <p className="work-menu-label">{t.cases}</p>
+          <p className="work-menu-label">{heading}</p>
           <ul>
-            {items.cases.map((item) => (
+            {items.map((item) => (
               <li key={item.href}>
                 <Link
+                  className={item.projectName ? "work-menu-project" : undefined}
                   href={item.href}
                   transitionTypes={[FORWARD]}
                   onClick={() => setOpen(false)}
                 >
-                  <span className="work-menu-meta">{item.category}</span>
-                  <span className="work-menu-title">{item.title}</span>
+                  {item.projectName ? (
+                    <>
+                      <span className="work-menu-title">{item.title}</span>
+                      <span className="work-menu-meta">{item.detail}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="work-menu-meta">{item.detail}</span>
+                      <span className="work-menu-title">{item.title}</span>
+                    </>
+                  )}
                 </Link>
               </li>
             ))}
           </ul>
           <Link
             className="work-menu-all"
-            href={localePath(locale, "/#work")}
+            href={localePath(locale, sectionHref)}
             transitionTypes={back}
             onClick={() => setOpen(false)}
           >
-            {t.allCases} <ArrowRight size={13} aria-hidden="true" />
-          </Link>
-        </div>
-        <div className="work-menu-column">
-          <p className="work-menu-label">{t.projects}</p>
-          <ul>
-            {items.projects.map((project) => (
-              <li key={project.name}>
-                <Link
-                  className="work-menu-project"
-                  href={project.href}
-                  transitionTypes={[FORWARD]}
-                  onClick={() => setOpen(false)}
-                >
-                  <ProjectIcon name={project.name} size={15} />
-                  <span className="work-menu-title">{project.name}</span>
-                  <span className="work-menu-meta">{project.line}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link
-            className="work-menu-all"
-            href={localePath(locale, "/#projects")}
-            transitionTypes={back}
-            onClick={() => setOpen(false)}
-          >
-            {t.allProjects} <ArrowRight size={13} aria-hidden="true" />
+            {sectionLabel} <ArrowRight size={13} aria-hidden="true" />
           </Link>
         </div>
       </div>
     </div>
+  );
+}
+
+export function WorkMenu({ items }: { items: WorkMenuItems }) {
+  const t = useUi().workMenu;
+  return (
+    <SectionMenu
+      label={t.trigger}
+      heading={t.cases}
+      sectionHref="/#work"
+      sectionLabel={t.allCases}
+      spyFor="work"
+      items={items.cases.map((item) => ({
+        href: item.href,
+        title: item.title,
+        detail: item.category,
+      }))}
+    />
+  );
+}
+
+export function ProjectMenu({ items }: { items: WorkMenuItems }) {
+  const t = useUi().workMenu;
+  return (
+    <SectionMenu
+      label={t.projects}
+      heading={t.projects}
+      sectionHref="/#projects"
+      sectionLabel={t.allProjects}
+      spyFor="projects"
+      items={items.projects.map((item) => ({
+        href: item.href,
+        title: item.name,
+        detail: item.line,
+        projectName: item.name,
+      }))}
+    />
   );
 }

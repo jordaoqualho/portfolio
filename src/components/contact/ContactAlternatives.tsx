@@ -1,14 +1,8 @@
 "use client";
 
-import posthog from "posthog-js";
 import { ArrowUpRight, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { useUi } from "@/i18n/provider";
-
-const track = (event: string) => {
-  try {
-    posthog.capture(event);
-  } catch {}
-};
+import { track } from "@/lib/analytics";
 
 // Secondary channels under the form. WhatsApp is framed for project and
 // consulting enquiries, not recruiting, and opens with a prefilled message.

@@ -2,13 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Download, Menu, X } from "lucide-react";
+import { ArrowRight, Download, Menu, X } from "lucide-react";
 import { navigation, profile } from "@/data/profile";
 import { BACK } from "@/lib/motion";
 import { localePath, stripLocale } from "@/i18n/paths";
 import { useLocale, useUi } from "@/i18n/provider";
 import { PreferencesMenu } from "./PreferencesMenu";
-import { WorkMenu, type WorkMenuItems } from "./WorkMenu";
+import { ProjectMenu, WorkMenu, type WorkMenuItems } from "./WorkMenu";
 
 const navKey = {
   "/#work": "work",
@@ -20,10 +20,16 @@ const navKey = {
   "/#contact": "contact",
 } as const;
 
-// Work and Projects live in the dropdown on desktop.
+// Keep the desktop header focused on the career narrative. AI Agents remains
+// discoverable in the mobile navigation and footer without crowding the header.
 const desktopLinks = navigation.filter(
-  (item) => item.href !== "/#work" && item.href !== "/#projects",
+  (item) =>
+    item.href !== "/#work" &&
+    item.href !== "/#experience" &&
+    item.href !== "/#projects" &&
+    item.href !== "/#agents",
 );
+const experienceLink = navigation.find((item) => item.href === "/#experience");
 
 export function Header({ menu }: { menu: WorkMenuItems }) {
   const t = useUi().header;
@@ -82,6 +88,15 @@ export function Header({ menu }: { menu: WorkMenuItems }) {
         </Link>
         <nav aria-label={t.main} className="desktop-nav" data-scrollspy>
           <WorkMenu items={menu} />
+          {experienceLink && (
+            <Link
+              href={localePath(locale, experienceLink.href)}
+              transitionTypes={types}
+            >
+              {label(experienceLink.href)}
+            </Link>
+          )}
+          <ProjectMenu items={menu} />
           {desktopLinks.map((item) => (
             <Link
               key={item.href}
@@ -121,8 +136,10 @@ export function Header({ menu }: { menu: WorkMenuItems }) {
         id="mobile-navigation"
         aria-label={t.mobile}
         className="mobile-nav"
+        data-scrollspy
         hidden={!open}
       >
+        <span className="mobile-nav-kicker">{t.mobileLabel}</span>
         {navigation.map((item) => (
           <Link
             key={item.href}
@@ -131,7 +148,7 @@ export function Header({ menu }: { menu: WorkMenuItems }) {
             onClick={() => setOpen(false)}
           >
             {label(item.href)}
-            <ArrowUpRight size={16} />
+            <ArrowRight size={16} aria-hidden="true" />
           </Link>
         ))}
       </nav>

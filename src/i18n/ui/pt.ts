@@ -6,6 +6,7 @@ export const pt = {
     home: "Início, Jordão Qualho",
     main: "Navegação principal",
     mobile: "Navegação no celular",
+    mobileLabel: "Explore o portfólio",
     openMenu: "Abrir navegação",
     closeMenu: "Fechar navegação",
     downloadCv: "Baixar CV",
@@ -54,6 +55,7 @@ export const pt = {
     viewCases: "Ver cases",
     description:
       "Mais de 6 anos construindo serviços de backend, APIs e sistemas em produção para fintech, e-commerce e SaaS. Remoto, do Brasil.",
+    aiProfile: "Contratando com IA? Este portfólio tem um endpoint MCP",
     facetsPrefix: "Também",
     facetsGroup: "Fora do trabalho",
     facetShow: "Mostrar:",
@@ -75,19 +77,50 @@ export const pt = {
     title: "O que construo fora do trabalho",
     technologies: "Tecnologias",
     liveSite: "Site",
+    viewProject: "Ver projeto",
     code: "Código",
   },
   stack: {
-    title: "O que uso em produção",
-    intro: "Escolha uma tecnologia para ver onde usei.",
-    usedIn: (n: number) => `, usada em ${n} ${n === 1 ? "empresa" : "empresas"}`,
+    title: "Stack profissional e experiência em projetos",
+    intro: "Passe o mouse em uma tecnologia para ver os cargos, cases e projetos relacionados.",
     years: (y: number) =>
       y < 1 ? "menos de um ano" : `${y}+ ${y === 1 ? "ano" : "anos"}`,
-    across: (years: string, roles: number, since: number) =>
-      `${years} em ${roles} ${roles === 1 ? "empresa" : "empresas"} · desde ${since}`,
-    noEvidence:
-      "Faz parte do meu repertório. Não está ligada a uma experiência destacada nesta página; o CV tem os detalhes.",
+    compactYears: (y: number) => (y < 1 ? "<1 ano" : `${y}+ anos`),
+    exactProfessional: (months: number) => {
+      const years = Math.floor(months / 12);
+      const remainingMonths = months % 12;
+      const parts = [] as string[];
+      if (years) parts.push(`${years} ${years === 1 ? "ano" : "anos"}`);
+      if (remainingMonths) {
+        parts.push(`${remainingMonths} ${remainingMonths === 1 ? "mês" : "meses"}`);
+      }
+      return `${parts.join(" e ") || "menos de um mês"} de experiência profissional`;
+    },
+    exposure: (y: number) =>
+      y < 1 ? "menos de um ano de exposição" : `${y}+ ${y === 1 ? "ano" : "anos"} de exposição`,
+    compactExposure: (y: number) => (y < 1 ? "<1 ano" : `${y}+ anos`),
+    exactExposure: (months: number) => {
+      const years = Math.floor(months / 12);
+      const remainingMonths = months % 12;
+      const parts = [] as string[];
+      if (years) parts.push(`${years} ${years === 1 ? "ano" : "anos"}`);
+      if (remainingMonths) {
+        parts.push(`${remainingMonths} ${remainingMonths === 1 ? "mês" : "meses"}`);
+      }
+      return `${parts.join(" e ") || "menos de um mês"} de exposição profissional`;
+    },
+    professionalYears: (years: string) => `${years} de experiência profissional`,
+    exposureYears: (years: string) => `${years} de exposição profissional`,
+    professionalExperience: "Experiência profissional",
+    professionalEvidence: "Evidência profissional",
+    rolesCount: (n: number) => `${n} ${n === 1 ? "cargo" : "cargos"}`,
+    caseShort: "case",
+    projectExperience: "Experiência em projeto",
+    caseEvidence: "Evidência em case",
+    noEvidence: "Ainda não há uma evidência verificada ligada aqui; veja o CV ou os links de projetos para mais contexto.",
+    since: (year: number) => `desde ${year}`,
     relatedCases: "Cases relacionados",
+    relatedProjects: "Projetos que usam",
   },
   about: {
     title: ["No Brasil.", "Trabalhando em inglês"],
@@ -170,7 +203,20 @@ export const pt = {
     limits: "Limites intencionais",
     keyDecision: "Decisão principal",
     open: "Abrir o app",
+    visitSite: "Visitar site",
     code: "Ver o código",
+    stackLabel: "STACK TÉCNICA",
+    technologiesCount: (n: number) => `${n} tecnologias mapeadas`,
+    stackMap: "MAPA DO SISTEMA",
+    technicalMapTitle: "Como o projeto se sustenta",
+    technicalMapBody:
+      "Uma visão compacta das tecnologias por trás da experiência, agrupadas pelo papel que exercem no produto.",
+    layers: {
+      interface: "Interface",
+      runtime: "Runtime",
+      data: "Dados e lógica",
+      delivery: "Entrega",
+    },
     next: "PRÓXIMO PROJETO",
     production: "Ver trabalho em produção",
   },
@@ -180,6 +226,10 @@ export const pt = {
     updated: "ATUALIZADO EM",
     contents: "NESTA PÁGINA",
     contentsNav: "Conteúdo da página",
+    analyticsEnabled: "Analytics estão ativados neste navegador.",
+    analyticsDisabled: "Analytics estão desativados neste navegador.",
+    analyticsDisable: "Desativar analytics neste navegador",
+    analyticsEnable: "Ativar analytics novamente",
   },
   notFound: {
     eyebrow: "404 / PÁGINA NÃO ENCONTRADA",
