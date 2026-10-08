@@ -319,7 +319,7 @@ export function openApiSpec() {
               name: "technology",
               in: "query",
               required: false,
-              description: "Technology to filter by, e.g. AWS, Node.js, React, GCP.",
+              description: "Technology to filter by, e.g. AWS, Node.js, React, Google Cloud Platform.",
               schema: { type: "string" },
             },
             {

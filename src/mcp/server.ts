@@ -70,7 +70,7 @@ export function createMcpServer(): McpServer {
       technology: z
         .string()
         .optional()
-        .describe("Technology to filter by (e.g. 'AWS', 'Node.js', 'React', 'GCP', 'Redis')"),
+        .describe("Technology to filter by (e.g. 'AWS', 'Node.js', 'React', 'Google Cloud Platform', 'Redis')"),
       company: z
         .string()
         .optional()

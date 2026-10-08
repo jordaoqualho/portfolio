@@ -77,7 +77,7 @@ describe("REST API", () => {
     expect(aws.count).toBeLessThan(experience.length);
     expect(matchesSchema("ExperienceResult", aws)).toBe(true);
     const soma = await experienceRoute
-      .GET(request("/api/experience?company=soma&technology=gcp"))
+      .GET(request("/api/experience?company=soma&technology=google cloud platform"))
       .json();
     expect(soma.experiences.map((e: { company: string }) => e.company)).toEqual([
       "Grupo Soma",

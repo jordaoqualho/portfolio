@@ -52,7 +52,7 @@ export default function Image() {
           marginTop: 30,
         }}
       >
-        Node.js · TypeScript · React · AWS · GCP
+        Node.js · TypeScript · React · AWS · Google Cloud Platform
       </div>
       <div
         style={{

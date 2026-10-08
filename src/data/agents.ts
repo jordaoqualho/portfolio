@@ -122,7 +122,7 @@ export const examplePrompts = [
   "Read jordaoqualho.com/llms.txt and tell me if Jordão fits a Senior Backend role on AWS.",
   "Using the jordao-qualho MCP server, check this job description against Jordão's verified experience: …",
   "Which of Jordão's case studies show production incident debugging? Summarize the root cause of each.",
-  "List Jordão's roles that used GCP, with dates.",
+  "List Jordão's roles that used Google Cloud Platform, with dates.",
 ];
 
 export const agentGroundRules =

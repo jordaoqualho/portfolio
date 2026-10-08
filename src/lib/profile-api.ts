@@ -113,6 +113,6 @@ export function evaluateJobFit(jobDescription: string) {
     recommendation:
       matchingSkills.length > 0 && isFullStackOrBackend
         ? "Strong match on core backend/full stack stack. Review verified production cases for investigation & reliability depth."
-        : "Review specific requirements. Jordão's core depth is Node.js, TypeScript, AWS, GCP, React, and production reliability.",
+        : "Review specific requirements. Jordão's core depth is Node.js, TypeScript, AWS, Google Cloud Platform, React, and production reliability.",
   };
 }
