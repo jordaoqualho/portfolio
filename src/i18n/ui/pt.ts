@@ -40,7 +40,7 @@ export const pt = {
     agents: "Para agentes de IA",
     developers: "Desenvolvedores",
     privacy: "Privacidade",
-    siteBy: ""Site por",
+    siteBy: "Site por",
   },
   motion: {
     pause: "Pausar animações",

@@ -40,7 +40,7 @@ export const en = {
     agents: "For AI agents",
     developers: "Developers",
     privacy: "Privacy",
-    siteBy: ""Site by",
+    siteBy: "Site by",
   },
   motion: {
     pause: "Pause motion",
