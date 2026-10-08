@@ -41,9 +41,21 @@
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-.count {
-  font-size: 0.6875rem;
+.evidenceBadge {
+  margin-left: auto;
+  min-width: 1.75rem;
   color: var(--accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.evidenceBadge[data-kind="project"],
+.evidenceBadge[data-kind="case"] {
+  color: var(--muted);
 }
 
 /* Desktop: the panel sits under the heading and follows the scroll. */
@@ -83,6 +95,24 @@
   border-top: 1px solid var(--border);
   display: grid;
   gap: 10px;
+}
+
+.evidenceGroup + .evidenceGroup {
+  margin-top: 18px;
+}
+
+.evidenceLabel {
+  margin: 18px 0 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.evidenceLabel + .cases {
+  margin-top: 8px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .roles li {

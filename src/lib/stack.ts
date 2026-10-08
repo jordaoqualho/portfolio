@@ -1,15 +1,36 @@
-import { cases as allCases, experience as allRoles, skills as allSkills } from "@/data/profile";
+import {
+  cases as allCases,
+  experience as allRoles,
+  projects as allProjects,
+  skills as allSkills,
+} from "@/data/profile";
 
 type Source = {
   cases: typeof allCases;
   experience: typeof allRoles;
+  projects: typeof allProjects;
   skills: { group: string; items: string[] }[];
 };
 
 // Skill labels that appear under a different name in roles and cases.
 const aliases: Record<string, string[]> = {
-  "Google Cloud Platform": ["GCP", "Cloud Run", "Google Cloud Run"],
-  "REST APIs": ["External APIs"],
+  "Google Cloud Platform": ["GCP"],
+};
+
+// A role mentioning a technology does not always mean the whole role was
+// spent using it. Keep these cases qualitative (or explicitly marked as
+// exposure) instead of presenting a false level of precision.
+const evidenceLabels: Record<string, StackEvidenceLabel> = {
+  AWS: "exposure",
+  PostgreSQL: "exposure",
+  SQS: "exposure",
+};
+
+// Manual confirmations override the conservative calendar calculation when
+// the user has explicitly established the duration (AWS and TypeScript).
+const confirmedYears: Record<string, number> = {
+  AWS: 5,
+  TypeScript: 3,
 };
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -41,12 +62,23 @@ function coveredMonths(ranges: { start: number; end: number }[]) {
 
 export type StackRole = { company: string; years: string };
 export type StackCase = { slug: string; title: string };
+export type StackProject = { slug: string; name: string };
+export type StackEvidenceLabel =
+  | "years"
+  | "exposure"
+  | "professional"
+  | "project"
+  | "case"
+  | "none";
 export type StackItem = {
   name: string;
   roles: StackRole[];
   cases: StackCase[];
+  projects: StackProject[];
+  evidenceLabel: StackEvidenceLabel;
   since?: number;
   years?: number;
+  durationMonths?: number;
 };
 export type StackGroup = { group: string; items: StackItem[] };
 
@@ -55,14 +87,16 @@ const yearSpan = (dates: string) => {
   return start === end ? start : `${start}–${end}`;
 };
 
-// Links every listed skill to the roles and cases that mention it. Only what
-// the profile data states is used, so the evidence matches the CV.
+// Links every listed skill to roles, cases and projects that mention it. Only
+// what the profile data states is used, so the evidence matches the CV and the
+// portfolio instead of inferring experience from a technology name alone.
 // Pass a locale's content for translated titles; matching always runs on the
 // English technology names, which both languages share.
 export function stackEvidence(
-  { cases, experience, skills }: Source = {
+  { cases, experience, projects, skills }: Source = {
     cases: allCases,
     experience: allRoles,
+    projects: allProjects,
     skills: allSkills.map((g) => ({ group: g.group, items: [...g.items] })),
   },
 ): StackGroup[] {
@@ -73,22 +107,60 @@ export function stackEvidence(
       const uses = (list: string[]) => list.some((t) => names.has(t));
       const roles = experience.filter((role) => uses(role.technologies));
       const ranges = roles.map((role) => parseRange(role.dates));
+      const relatedCases = casesForSkill(cases, uses);
+      const relatedProjects = projectsForSkill(projects, uses);
+      const durationMonths = ranges.length
+        ? coveredMonths(ranges)
+        : undefined;
+      const evidenceLabel = roles.length
+        ? evidenceLabels[name] ?? "years"
+        : relatedProjects.length
+          ? "project"
+          : relatedCases.length
+            ? "case"
+            : "none";
       return {
         name,
         roles: roles.map((role) => ({
           company: role.company,
           years: yearSpan(role.dates),
         })),
-        cases: cases
-          .filter((item) => uses(item.technologies))
-          .map(({ slug, title }) => ({ slug, title })),
+        cases: relatedCases,
+        projects: relatedProjects,
+        evidenceLabel,
         since: ranges.length
           ? Math.floor(Math.min(...ranges.map((r) => r.start)) / 12)
           : undefined,
+        durationMonths,
         years: ranges.length
-          ? Math.floor(coveredMonths(ranges) / 12)
+          ? confirmedYears[name] ?? Math.floor(durationMonths! / 12)
           : undefined,
       };
     }),
   }));
+}
+
+function casesForSkill(
+  source: Source["cases"],
+  uses: (technologies: string[]) => boolean,
+): StackCase[] {
+  return source
+    .filter((item) => uses(item.technologies))
+    .map(({ slug, title }) => ({ slug, title }));
+}
+
+function projectsForSkill(
+  source: Source["projects"],
+  uses: (technologies: string[]) => boolean,
+): StackProject[] {
+  return source
+    .filter((project) => {
+      const technologies = [
+        ...(project.stack ?? []),
+        ...(project.detail?.technologies ?? []),
+      ];
+      return uses(technologies);
+    })
+    .filter((project) => Boolean(project.slug))
+    .map((project) => ({ slug: project.slug!, name: project.name }));
 }

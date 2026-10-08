@@ -5,6 +5,13 @@ import { stackEvidence } from "@/lib/stack";
 import { StackExplorer } from "./StackExplorer";
 export function TechStack({ locale }: { locale: Locale }) {
   const t = ui(locale).stack;
+  const groups = stackEvidence(getContent(locale))
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => item.evidenceLabel !== "none"),
+    }))
+    .filter((group) => group.items.length > 0);
+
   return (
     <section id="stack" className="stack-section section">
       <div className="container stack-layout">
@@ -17,7 +24,7 @@ export function TechStack({ locale }: { locale: Locale }) {
             <p>{t.intro}</p>
           </div>
         </div>
-        <StackExplorer groups={stackEvidence(getContent(locale))} />
+        <StackExplorer groups={groups} />
       </div>
     </section>
   );
