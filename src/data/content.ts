@@ -122,7 +122,7 @@ export function formatDates(dates: string, locale: Locale) {
     .join(" – ");
 }
 
-// Header dropdown entries for a locale (serializable, passed to the client).
+// Header menu entries for a locale (serializable, passed to the client).
 export function workMenuItems(locale: Locale) {
   const { cases, projects } = getContent(locale);
   const prefix = (path: string) => localePath(locale, path);
@@ -133,11 +133,11 @@ export function workMenuItems(locale: Locale) {
       title: item.title,
     })),
     projects: projects
-      .filter((p) => p.slug || p.href)
-      .map((p) => ({
-        href: p.slug ? prefix(`/projects/${p.slug}/`) : prefix(p.href!),
-        name: p.name,
-        line: p.detail?.tagline ?? p.description,
+      .filter((project) => project.slug || project.href)
+      .map((project) => ({
+        href: project.slug ? prefix(`/projects/${project.slug}/`) : prefix(project.href!),
+        name: project.name,
+        line: project.detail?.tagline ?? project.description,
       })),
   };
 }

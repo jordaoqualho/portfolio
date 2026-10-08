@@ -63,13 +63,14 @@ export const profile = {
   location: "Brazil",
   languages: "English C1 Advanced · Portuguese native",
   availability: "Open to select remote international opportunities",
-  core: ["Node.js", "TypeScript", "React", "AWS", "GCP"],
+  core: ["Node.js", "TypeScript", "React", "AWS", "Google Cloud Platform"],
   intro:
     "6+ years building and operating production systems across fintech, e-commerce and SaaS, from React applications to backend services supporting millions of users.",
   resumePath: "/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
 };
-// Every homepage section, in page order. The desktop header folds Work and
-// Projects into one dropdown; the mobile menu lists them all.
+// Every homepage section, in the order visitors encounter it. The desktop
+// header uses a case-study menu for the first section; the mobile menu lists
+// every destination directly.
 export const navigation = [
   { label: "Work", href: "/#work" },
   { label: "Experience", href: "/#experience" },
@@ -129,7 +130,7 @@ export const capabilities: Capability[] = [
   {
     title: "Cloud & infrastructure",
     description:
-      "AWS and GCP production environments, including CloudWatch, Cloud Run, Docker, CI/CD, and the work that follows a cloud migration.",
+      "AWS and Google Cloud Platform production environments, including CloudWatch, SQS, CI/CD and the operational work around scaling and incidents.",
   },
 ];
 export const cases: EngineeringCase[] = [
@@ -140,7 +141,7 @@ export const cases: EngineeringCase[] = [
     title: "Tracing a masked failure in a financial onboarding flow",
     summary:
       "More than 100 customers failed account creation at once, and every retry returned a provider error that hid the real one. I reconstructed the request sequence from CloudWatch logs, which led the team to the first failure, a fix and the recovery of the affected accounts.",
-    technologies: ["Node.js", "TypeScript", "AWS CloudWatch", "Grafana", "External provider API"],
+    technologies: ["Node.js", "TypeScript", "CloudWatch"],
     sections: [
       {
         id: "context",
@@ -214,12 +215,12 @@ export const cases: EngineeringCase[] = [
     title: "Handling a 12k-user spike during a live commerce event",
     summary:
       "A live shopping event drew more than 12,000 concurrent users, about twice the usual peak and a load the platform had never been tested at. After keeping the event running, we reproduced the spike with load tests and tuned Cloud Run autoscaling until tests sustained about 20,000 users within the same infrastructure budget.",
-    technologies: ["Node.js", "Google Cloud Run", "GCP", "Taurus", "Load testing", "Autoscaling"],
+    technologies: ["Node.js", "Google Cloud Platform"],
     sections: [
       {
         id: "context",
         heading: "Context",
-        body: "A live commerce platform used during live shopping events for a large Brazilian fashion brand. Events usually peaked around 6,000 concurrent users; one passed 12,000. The backend ran on Google Cloud Run after a recent migration from AWS to GCP, and the platform had never been tested at that load.",
+        body: "A live commerce platform used during live shopping events for a large Brazilian fashion brand. Events usually peaked around 6,000 concurrent users; one passed 12,000. The backend ran on Google Cloud Run after a recent migration from AWS to Google Cloud Platform, and the platform had never been tested at that load.",
       },
       {
         id: "what-failed",
@@ -278,7 +279,7 @@ export const cases: EngineeringCase[] = [
     title: "Building a shared React system across healthcare micro-frontends",
     summary:
       "A US healthcare product needed a custom experience for a large hospital client, spread across several React micro-frontends. In a short engagement, I built a Storybook-documented library of 50+ components from the Figma designs, so those frontends could share one UI foundation.",
-    technologies: ["React", "TypeScript", "Storybook", "ArgoCD", "Micro-frontends"],
+    technologies: ["React", "TypeScript", "Storybook", "Micro Frontends"],
     sections: [
       {
         id: "context",
@@ -348,14 +349,26 @@ export const experience: Experience[] = [
     title: "Senior Backend Engineer · Contract / B2B",
     dates: "Dec 2023 – Aug 2026",
     summary:
-      "Backend engineer and technical lead for a financial-services squad on Sem Parar, a platform with 7M+ active users. I investigated production incidents, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
+      "Backend engineer and technical reference for a financial-services squad on Sem Parar, a platform with 7M+ active users. I led and trained engineers, coordinated production investigations, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
     technologies: [
       "Node.js",
       "TypeScript",
+      "Express.js",
+      "REST APIs",
+      "Microservices",
+      "Technical Leadership",
+      "Event-Driven Architecture",
       "AWS",
-      "DynamoDB",
-      "MySQL",
+      "AWS Lambda",
       "CloudWatch",
+      "DynamoDB",
+      "PostgreSQL",
+      "SQS",
+      "GitHub Actions",
+      "Bitbucket",
+      "Distributed Systems",
+      "Automated Testing",
+      "Jest",
     ],
   },
   {
@@ -363,9 +376,23 @@ export const experience: Experience[] = [
     title: "Senior Full Stack Engineer · Advisory / B2B",
     dates: "Mar 2026 – Apr 2026",
     summary:
-      "Short engagement on a US healthcare product with AI-assisted care workflows. I built a Storybook-documented library of 50+ React components from the Figma designs, integrated it into existing micro-frontends, and adapted ArgoCD manifests for new services.",
+      "Short engagement on a US healthcare product with AI-assisted care workflows. I built a Storybook-documented library of 50+ React components from the Figma designs, integrated it into existing micro-frontends, and adapted deployment manifests for new services.",
     note: "Engagement through Tecla. It ended after the client chose not to continue the contract for commercial reasons related to timeline and cost.",
-    technologies: ["React", "TypeScript", "Storybook", "Micro-frontends", "ArgoCD"],
+    technologies: [
+      "React",
+      "TypeScript",
+      "NestJS",
+      "Storybook",
+      "Micro Frontends",
+      "Distributed Systems",
+      "MySQL",
+      "AWS",
+      "Vite",
+      "Firestore",
+      "Google Cloud Platform",
+      "Automated Testing",
+      "Jest",
+    ],
   },
   {
     company: "ROIT GROUP",
@@ -373,31 +400,96 @@ export const experience: Experience[] = [
     dates: "Jul 2023 – Nov 2023",
     summary:
       "Worked on NestJS microservices for analytical product routes. I designed Redis caching and invalidation, and raised automated test coverage above 85% on the core services.",
-    technologies: ["React", "NestJS", "Redis", "TypeScript", "Jest"],
+    technologies: [
+      "React",
+      "NestJS",
+      "Redis",
+      "TypeScript",
+      "REST APIs",
+      "Microservices",
+      "Caching Strategies",
+      "Distributed Systems",
+      "Google Cloud Platform",
+      "AWS",
+      "Firestore",
+      "Pub/Sub",
+      "Event-Driven Architecture",
+      "PostgreSQL",
+      "Automated Testing",
+      "Jest",
+    ],
   },
   {
     company: "Voyager Portal",
     title: "Senior Full Stack Engineer",
     dates: "Nov 2022 – Jun 2023",
     summary:
-      "Maritime logistics platform. I rebuilt a reporting microservice from Python to TypeScript to cut memory use and stop runtime failures, and built stateful Vue.js interfaces for operations teams.",
-    technologies: ["TypeScript", "Vue.js", "Node.js", "Python"],
+      "Maritime logistics platform built with TypeScript and AdonisJS APIs, plus Vue.js 2, Vuetify and Vuex interfaces backed by MySQL and AWS services. I rebuilt a reporting microservice from Python to TypeScript to cut memory use and stop runtime failures, and built stateful interfaces for operations teams.",
+    technologies: [
+      "TypeScript",
+      "Vue.js",
+      "REST APIs",
+      "Distributed Systems",
+      "AdonisJS",
+      "MySQL",
+      "AWS",
+      "S3",
+      "Docker",
+      "GitLab CI",
+      "WebSockets",
+      "Playwright",
+      "Automated Testing",
+      "Jest",
+    ],
   },
   {
     company: "Grupo Soma",
-    title: "Full Stack Engineer & Tech Lead",
+    title: "Full Stack Engineer",
     dates: "Nov 2021 – Nov 2022",
     summary:
       "Live commerce platform on Google Cloud Run. After an event passed 12,000 concurrent users, I worked with the infrastructure team on load tests and autoscaling changes until tests sustained about 20,000 within budget. Later took on Tech Lead responsibilities for a period, including mentoring engineers and code review standards.",
-    technologies: ["Node.js", "TypeScript", "GCP", "Cloud Run", "Taurus", "React"],
+    technologies: [
+      "React",
+      "JavaScript",
+      "Redux",
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "Google Cloud Platform",
+      "PostgreSQL",
+      "Storybook",
+      "Material UI",
+      "WebSockets",
+      "Caching Strategies",
+      "Pub/Sub",
+      "Monolithic Architecture",
+      "High-Concurrency Systems",
+      "Performance Optimization",
+      "Technical Leadership",
+      "Automated Testing",
+      "Jest",
+    ],
   },
   {
     company: "Cria Studio",
     title: "Full Stack Engineer",
     dates: "Aug 2021 – Nov 2021",
     summary:
-      "Sole engineer on an interactive 2D React product, from technical and product decisions through production release.",
-    technologies: ["React"],
+      "Sole engineer on an interactive 2D product. The MVP started in React and moved to Next.js for the production version, from technical and product decisions through release.",
+    technologies: [
+      "Next.js",
+      "JavaScript",
+      "Redux",
+      "Material UI",
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "S3",
+      "AWS",
+      "Monolithic Architecture",
+      "Automated Testing",
+      "Jest",
+    ],
   },
   {
     company: "Lorena Felicio",
@@ -405,61 +497,97 @@ export const experience: Experience[] = [
     dates: "Jan 2020 – Aug 2021",
     summary:
       "Built an ERP from scratch in React, Node.js, MongoDB and AWS S3, including Brazilian tax and invoicing integrations and automated document workflows.",
-    technologies: ["React", "Node.js", "MongoDB", "AWS"],
+    technologies: [
+      "React",
+      "JavaScript",
+      "Redux",
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "MongoDB",
+      "S3",
+      "AWS",
+      "Monolithic Architecture",
+      "Automated Testing",
+      "Jest",
+    ],
   },
 ];
 export const skills = [
+  // Within each group: core technologies first, then adjacent frameworks and
+  // services, followed by narrower or project-specific evidence.
   {
     group: "Backend",
     items: [
       "Node.js",
-      "TypeScript",
-      "NestJS",
-      "Express",
-      "AdonisJS",
       "REST APIs",
+      "Express.js",
+      "TypeScript",
+      "JavaScript",
       "Microservices",
+      "NestJS",
+      "AdonisJS",
     ],
   },
   {
     group: "Frontend",
     items: [
       "React",
-      "Next.js",
       "Vue.js",
-      "Tailwind CSS",
+      "Next.js",
       "Redux",
+      "Material UI",
       "Storybook",
-      "Micro-frontends",
+      "Micro Frontends",
     ],
   },
   {
-    group: "Data",
-    items: ["PostgreSQL", "MySQL", "DynamoDB", "MongoDB", "Redis", "Firestore"],
+    group: "Data & Caching",
+    items: ["PostgreSQL", "MySQL", "MongoDB", "DynamoDB", "Firestore", "Redis"],
   },
   {
-    group: "Cloud & infrastructure",
+    group: "Cloud & Delivery",
     items: [
       "AWS",
       "Google Cloud Platform",
       "Docker",
-      "GitHub Actions",
-      "ArgoCD",
       "CloudWatch",
-      "Taurus",
-      "CI/CD",
+      "S3",
+      "AWS Lambda",
+      "SQS",
+      "Pub/Sub",
+      "GitHub Actions",
+      "GitLab CI",
+      "Bitbucket",
     ],
   },
   {
     group: "Engineering",
     items: [
-      "Production debugging",
-      "Incident investigation",
-      "Observability",
-      "Performance",
-      "API integrations",
-      "Automated testing",
-      "Technical leadership",
+      "Distributed Systems",
+      "Monolithic Architecture",
+      "Performance Optimization",
+      "High-Concurrency Systems",
+      "WebSockets",
+      "Event-Driven Architecture",
+      "Automated Testing",
+      "Jest",
+      "Caching Strategies",
+      "Technical Leadership",
+    ],
+  },
+  {
+    group: "Project Experience",
+    items: [
+      "Fastify",
+      "Socket.IO",
+      "Tailwind CSS",
+      "PWA",
+      "Vercel",
+      "MCP",
+      "PostHog",
+      "Service Worker",
+      "GSAP",
     ],
   },
 ];
@@ -523,12 +651,260 @@ export type Project = {
 };
 export const projects: Project[] = [
   {
+    name: "Ana Caroline Hipólito",
+    status: "Live",
+    description:
+      "A professional website for a psychologist, designed around an ethical care journey, local search and a clear first contact.",
+    byline:
+      "A production site where visual direction, SEO, privacy and real-world contact flows meet.",
+    stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "PostHog", "Vercel"],
+    href: "https://www.anacarolinehipolito.com.br/",
+    slug: "ana-caroline-hipolito",
+    detail: {
+      tagline: "A professional, search-ready website for a psychologist in Maringá",
+      overview:
+        "Ana Caroline Hipólito is a psychologist who works with adolescents from 13 and adults through Gestalt therapy, both in person in Maringá and online. I built the site to give her work an owned, professional presence beyond Instagram and third-party profiles, while making the path from discovering her work to starting a conversation feel calm and clear.",
+      features: [
+        "Institutional pages for Home, About, Psychotherapy, Maringá, Online Care and Contact.",
+        "A local landing page for people searching for a psychologist in Maringá.",
+        "A first-contact form, WhatsApp paths, a dedicated links page and a QR-code route for offline materials.",
+        "A protected administrative area for organizing incoming contacts without turning the website into a clinical record.",
+        "Privacy policy and content written around the ethical context of Psychology, without promises of results or aggressive conversion language.",
+      ],
+      motivation: [
+        "Before the project, Ana's digital presence lived mainly on Instagram and third-party channels. The site creates an owned space that explains her work with more context and gives search visitors a direct, trustworthy next step.",
+        "The experience is designed around the actual journey of someone considering psychotherapy: understand the approach, see whether the format fits, and choose WhatsApp or a first-contact form without navigating a complex website.",
+      ],
+      engineering: [
+        "Built with Next.js, React and TypeScript, then deployed on Vercel under anacarolinehipolito.com.br.",
+        "Neon Postgres stores first-contact submissions, while a protected admin area gives Ana a practical way to organize them.",
+        "PostHog and Vercel Analytics measure behavior without turning the form into a source of sensitive clinical data.",
+        "Technical SEO is part of the implementation: sitemap, canonical URLs, Open Graph metadata and structured data support the local search journey.",
+        "Responsive, semantic pages were built for desktop and mobile, with performance and accessible content structure considered from the start.",
+      ],
+      callout: {
+        title: "A real result beyond the launch.",
+        body: "The site already generated a patient contact that became a paid first engagement. It has also produced measurable traffic, contact interactions and form submissions, although the current data is not enough to attribute every new patient directly to the website.",
+      },
+      limits: [
+        "The site does not promise therapeutic outcomes or use aggressive commercial language.",
+        "Analytics are kept separate from sensitive clinical information; the form is for first contact, not a clinical record.",
+        "The case uses aggregated contact and traffic outcomes rather than publishing private patient details.",
+      ],
+      technologies: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "PostHog",
+        "Vercel",
+      ],
+      image: {
+        src: "/projects/anacaroline.png",
+        alt: "Homepage of Ana Caroline Hipólito's psychology practice website, with a calm editorial layout and a portrait-led introduction.",
+        width: 3192,
+        height: 1895,
+      },
+    },
+  },
+  {
+    name: "Bombinhas",
+    status: "Beta",
+    description:
+      "A private, mobile-first trip planner for six friends, bringing the itinerary, votes, expenses, shopping and responsibilities into one place.",
+    byline:
+      "A real coordination problem turned into a small product with shared state and financial logic.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+    ],
+    href: "https://bombinhas.vercel.app/",
+    slug: "bombinhas",
+    detail: {
+      tagline: "A private trip planner for six friends heading to Bombinhas",
+      overview:
+        "Bombinhas is a small private app for six adults planning a beach trip together. Before it existed, decisions about the itinerary, food, shopping, accommodation and payments lived in chat. The app turns those conversations into one shared place where the group can plan, vote, record expenses and see what still needs to happen.",
+      features: [
+        "A daily itinerary with activities and voting for what the group should do.",
+        "Shared expenses with each person's paid amount, expected share and current balance.",
+        "A settlement algorithm planned to reduce the final balance to the smallest practical number of transfers.",
+        "Shopping, meal planning and a checklist of what each person is responsible for bringing.",
+        "Accommodation details and shared costs, with Google Maps links for the house and itinerary locations.",
+        "A mobile-first navigation bar and quick actions designed for 375–430px phones.",
+      ],
+      motivation: [
+        "The goal was not to build another generic travel dashboard. It was to remove the repeated questions and manual arithmetic that make group trips harder to coordinate.",
+        "The app is private to the group for now, with the possibility of making the pattern reusable for other trips after the first real use.",
+      ],
+      engineering: [
+        "The app uses Next.js App Router, React, TypeScript, Server Actions, Tailwind CSS, shadcn/ui and Zod, with the frontend and backend handled by Next.js.",
+        "The first persistence layer uses Vercel Blob because the initial scope is small and limited to one private trip; a Supabase or Neon migration is planned before wider use as the Blob model approaches its practical limit.",
+        "Participants choose a name and use a four-digit PIN. PINs are hashed, sessions use signed HTTP-only cookies, and the app distinguishes member and admin roles.",
+        "Trip records are split into independent resources instead of one shared JSON file, reducing write conflicts when people vote, add expenses or mark shopping items at the same time.",
+        "Server-side Zod validation and financial tests cover equal splits, cent rounding, custom divisions, balances and debt simplification.",
+        "The deployment target is Vercel, with infrastructure credentials kept in environment variables rather than in the client.",
+      ],
+      callout: {
+        title: "A product before the vacation starts.",
+        body: "The case is currently in specification and construction. The expected value is less time searching old messages, recalculating balances and asking who is bringing or paying for something; real usage and savings have not been measured yet.",
+      },
+      limits: [
+        "The app has not yet been validated by the full group in a real trip.",
+        "There is no payment integration, climate integration or WhatsApp/Spreadsheet sync; the app organizes the data but does not move money.",
+        "A backup strategy is still to be defined before the app becomes a reusable product.",
+        "Personal details are intentionally limited; property-owner CPF and unnecessary contract data are not exposed.",
+      ],
+      technologies: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
+      image: {
+        src: "/projects/bombinhas.png",
+        alt: "Bombinhas trip planner interface showing the shared itinerary and coordination tools for a group beach trip.",
+        width: 3193,
+        height: 1891,
+      },
+    },
+  },
+  {
+    name: "Akaashi",
+    status: "Live",
+    description:
+      "An independent design and technology studio creating authored digital experiences for businesses that want to be remembered.",
+    byline:
+      "Custom websites and digital experiences for businesses in Maringá and beyond.",
+    stack: ["JavaScript", "GSAP", "Vercel"],
+    href: "https://www.akaashi.com.br/",
+    slug: "akaashi",
+    detail: {
+      tagline: "A design and technology studio for digital products that leave a mark",
+      overview:
+        "Akaashi is an independent design and technology studio creating authored digital experiences for businesses that want to be remembered. It starts with the idea at the center of a business and turns that idea into a visual concept, interaction and web experience instead of reaching for a generic template. The studio begins with local businesses and companies in Maringá and the surrounding region whose real quality is ahead of their digital presence.",
+      features: [
+        "Custom institutional websites as the studio's primary service.",
+        "Redesigns, landing pages and digital experiences with a distinct visual direction.",
+        "Digital applications of an existing brand identity, plus related graphic materials.",
+        "A clear path from diagnosis and concept to proposal, development, launch and support.",
+        "Responsive websites with semantic HTML, metadata, technical SEO and performance work.",
+        "Contact, WhatsApp, analytics, database and administrative integrations when a project needs them.",
+        "Public work and MVPs include Vercelli Pasticceria, Igreja Batista Vila 7, Amaral's Pizzaria, Colha, Fica Leve, The Kingdom and Special Guest For You.",
+      ],
+      motivation: [
+        "Many good businesses have a digital presence that is generic, outdated or weaker than the real business behind it. Akaashi exists to close that gap.",
+        "Fica Leve and Special Guest For You represent the studio's desired direction: take one central characteristic of the business and turn it into a digital experience of its own.",
+      ],
+      engineering: [
+        "Projects move from contact or referral through diagnosis, research, concept or MVP, commercial validation, proposal, development, review, adjustments, launch and support.",
+        "Discovery, content structure, UX, UI, development, publication and maintenance are handled as one connected process.",
+        "The stack changes with the project: lightweight HTML, CSS and JavaScript for focused sites, or React, Next.js, TypeScript, databases and integrations for more complex products.",
+        "GSAP and Lenis are used when motion supports the concept rather than as decoration.",
+        "Sites are developed responsively with semantic HTML, heading structure, metadata, optimized assets, technical SEO and performance checks; own projects have reached Lighthouse scores close to 100.",
+        "Publication is primarily through Vercel, with domains, DNS, existing infrastructure and maintenance considered before and after launch.",
+      ],
+      limits: [
+        "Prices are negotiated per project and are not public.",
+        "The studio is currently focused on institutional websites and web experiences, with more complex applications handled when the project calls for them.",
+        "Client materials and commercial process details remain private unless explicitly approved for publication.",
+      ],
+      callout: {
+        title: "From concept to commercial delivery.",
+        body: "Vercelli Pasticceria was the studio's first approved and paid commercial project. Other public work and MVPs are at different stages of validation and delivery.",
+      },
+      technologies: [
+        "JavaScript",
+        "GSAP",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Vercel",
+      ],
+      image: {
+        src: "/projects/akaashi.png",
+        alt: "Akaashi studio homepage with an editorial cream layout, oversized wordmark, red hand-drawn line and calls to start a project or view the work.",
+        width: 3182,
+        height: 1893,
+      },
+    },
+  },
+  {
+    name: "Koinon Games",
+    status: "Beta",
+    description:
+      "A mobile-first PWA that turns card and social-deduction games into shared rooms anyone can join from a phone. Tested with 50+ people across 100+ games.",
+    byline:
+      "Product direction and game design by me; implementation accelerated with coding agents in a private monorepo.",
+    stack: ["React", "Vite", "TypeScript", "Fastify", "Socket.IO", "PWA"],
+    href: "https://koinongames.vercel.app/",
+    slug: "koinon-games",
+    detail: {
+      tagline: "Synchronous tabletop games for groups, cells and friends",
+      overview:
+        "Koinon Games is a digital tabletop platform for groups that want to play together without carrying a deck of cards or remembering to bring a game. The name comes from koinon, communion: the product is about making a shared activity easy to start. Anyone with a phone can join a room through a QR code or room ID and play over the internet. The initial audience was churches and friend groups, but the product is designed for any group. The first games are O Judas, where disciples identify the traitor through secret words, and Os Fofoqueiros, where believers protect secrets while saboteurs try to disrupt missions.",
+      features: [
+        "O Judas: a social-deduction game in which disciples use secret words to identify the traitor.",
+        "Os Fofoqueiros: a trust-and-betrayal game in which believers protect secrets and gossipers sabotage missions.",
+        "Rooms that can be joined from the home screen with a QR code or room ID.",
+        "Synchronous rooms with real-time player and game-state updates.",
+        "Mobile-first PWA interface designed for use during an in-person gathering.",
+        "Christian and non-Christian themes, depending on the group's preference.",
+        "Shared TypeScript types for players, rooms, themes and Socket.IO events.",
+      ],
+      motivation: [
+        "The product removes the friction of bringing a physical game: if everyone has a phone and internet access, the group can start playing anywhere.",
+        "The original audience was churches and friend groups, but the underlying format is useful for any group that wants a shared game without a moderator carrying all the materials.",
+        "The product direction, game design and decisions about the experience were mine; coding agents accelerated the implementation inside a private monorepo.",
+      ],
+      engineering: [
+        "The web app uses React, Vite and TypeScript, with Tailwind CSS for styling and PWA support for offline-capable experiences.",
+        "The backend uses Node.js, Fastify and Socket.IO for HTTP endpoints and real-time game communication.",
+        "A pnpm-workspaces monorepo keeps the web app, server and packages/shared together.",
+        "The shared package defines the contracts used by both sides, including Player, Room, Theme and GameEventMap.",
+        "Rooms live in server memory and expire after enough inactivity, avoiding accounts and persistence while keeping active games simple.",
+        "Validation protects against repeated or out-of-order events, while a reconnection tolerance gives disconnected players time to return.",
+        "The hardest engineering work was handling different connection conditions and keeping controls usable across different phone sizes.",
+        "The frontend is deployed to Vercel and the backend runs on Railway, with CORS, environment secrets and production configuration kept in the respective platforms.",
+        "There is no monitoring or health-check layer yet because the beta is still small; the current priority is fixing edge cases found in playtests.",
+      ],
+      callout: {
+        title: "More than a prototype on paper.",
+        body: "More than 50 people have already played across 100+ games. The product is still in beta, but the core loop—join a room, synchronize a group and play on phones—has been tested in real gatherings.",
+      },
+      technologies: [
+        "React",
+        "Vite",
+        "TypeScript",
+        "Node.js",
+        "Fastify",
+        "Socket.IO",
+        "Tailwind CSS",
+        "PWA",
+      ],
+      limits: [
+        "The repository is private.",
+        "The product is in beta and still receives fixes as new gaps are found, especially around connectivity and responsive controls.",
+        "The first release focuses on O Judas and Os Fofoqueiros; the game catalog can grow later.",
+        "The platform is designed for synchronous groups rather than asynchronous matchmaking.",
+        "Rooms are held in server memory and there are no accounts or persistent player profiles; only a chosen name and local preferences remain on the device.",
+      ],
+      image: {
+        src: "/projects/koinon.png",
+        alt: "Koinon Games interface showing a mobile-first shared room for social-deduction games.",
+        width: 3192,
+        height: 1893,
+      },
+    },
+  },
+  {
     name: "iMemory",
     status: "Public",
     description:
       "A local dashboard for memory shared across coding agents. Search what they remember, inspect session handoffs and clean up context without touching the underlying database.",
     byline: "Built as a web interface for Fabio Akita's open-source ai-memory MCP server.",
-    stack: ["JavaScript", "CSS", "MCP"],
+    stack: ["JavaScript", "MCP"],
     href: "https://github.com/jordaoqualho/imemory",
     slug: "imemory",
     repo: "https://github.com/jordaoqualho/imemory",
@@ -571,7 +947,7 @@ export const projects: Project[] = [
       decision: [
         "iMemory is intentionally not a fork. The server, hooks, memory engine and MCP implementation continue to come from akitaonrails/ai-memory. That keeps the project small and lets the interface evolve without duplicating the underlying memory system.",
       ],
-      technologies: ["JavaScript", "HTML", "CSS", "MCP", "REST"],
+      technologies: ["JavaScript", "MCP", "REST APIs"],
       credit: "Built against ai-memory v2.4. The engine and its license (MIT) belong to akitaonrails/ai-memory.",
     },
   },
@@ -587,7 +963,7 @@ export const projects: Project[] = [
     detail: {
       tagline: "A D&D 5e combat table that keeps working without internet",
       image: {
-        src: "/projects/roundkeep.jpg",
+        src: "/projects/roundkeep.png",
         alt: "Roundkeep encounter screen: creature library on the left, initiative order with HP and armor class in the middle, and the selected creature's stat sheet on the right.",
         width: 2400,
         height: 1433,
@@ -613,10 +989,8 @@ export const projects: Project[] = [
       technologies: [
         "TypeScript",
         "Socket.IO",
-        "IndexedDB",
         "Service Worker",
         "PWA",
-        "Python",
       ],
       credit:
         "Creature records come from SRD 5.2 (2024) via Open5e under CC BY 4.0. Spells come from the basic catalog distributed by Improved Initiative.",
@@ -634,7 +1008,7 @@ export const projects: Project[] = [
     detail: {
       tagline: "An autopsy for the GitHub projects you left behind",
       image: {
-        src: "/projects/deadfolio.jpg",
+        src: "/projects/deadfolio.png",
         alt: "Deadfolio home page in Brazilian Portuguese: headline saying your GitHub is full of projects left behind and Deadfolio finds them, with buttons to analyze a GitHub profile or paste a repository.",
         width: 2400,
         height: 1435,
@@ -658,10 +1032,6 @@ export const projects: Project[] = [
       technologies: [
         "Next.js",
         "TypeScript",
-        "Gemini",
-        "Vercel AI SDK",
-        "Zod",
-        "Vercel Blob",
         "Tailwind CSS",
       ],
       limits: [
@@ -682,7 +1052,7 @@ export const projects: Project[] = [
     detail: {
       tagline: "Personal finance insights from bank exports, without bank passwords",
       image: {
-        src: "/projects/fintal.jpg",
+        src: "/projects/fintal.png",
         alt: "Fintal insights screen in Brazilian Portuguese: a financial health score gauge, a month-over-month chart of income, expenses and balance with forecast months, and budget progress against the monthly limit.",
         width: 2400,
         height: 1433,
@@ -710,8 +1080,6 @@ export const projects: Project[] = [
         "TypeScript",
         "NestJS",
         "Tailwind CSS",
-        "Radix UI",
-        "Vitest",
         "Playwright",
       ],
     },
@@ -721,7 +1089,7 @@ export const projects: Project[] = [
     status: "Live",
     description:
       "This site. An MCP server, OpenAPI REST API and llms.txt over the same verified profile, so recruiters' AI assistants answer from facts.",
-    stack: ["Next.js", "MCP", "OpenAPI"],
+    stack: ["Next.js", "TypeScript", "MCP"],
     href: "/agents/",
   },
 ];

@@ -64,9 +64,10 @@ export const ptProfile = {
   skillGroups: {
     Backend: "Backend",
     Frontend: "Frontend",
-    Data: "Dados",
-    "Cloud & infrastructure": "Cloud e infraestrutura",
+    "Data & Caching": "Dados e caching",
+    "Cloud & Delivery": "Nuvem e entrega",
     Engineering: "Engenharia",
+    "Project Experience": "Experiência em projetos",
   } as Record<string, string>,
   currentlyBuilding:
     "Experimentando fluxos de desenvolvimento com IA, memória compartilhada entre agentes e ferramentas para desenvolvedores.",
@@ -100,12 +101,12 @@ export const ptProfile = {
     "Afinz / client Sem Parar": {
       title: "Engenheiro de Backend Sênior · Contrato / B2B",
       summary:
-        "Engenheiro de backend e líder técnico de uma squad de serviços financeiros no Sem Parar, plataforma com mais de 7 milhões de usuários ativos. Investiguei incidentes em produção, conduzi integrações de API com o time de produto e melhorei testes, documentação e onboarding.",
+        "Engenheiro de backend e referência técnica de uma squad de serviços financeiros no Sem Parar, plataforma com mais de 7 milhões de usuários ativos. Liderei e treinei engenheiros, coordenei investigações em produção, conduzi integrações de API com o time de produto e melhorei testes, documentação e onboarding.",
     },
     Sully: {
       title: "Engenheiro Full Stack Sênior · Consultoria / B2B",
       summary:
-        "Projeto curto em um produto de saúde dos Estados Unidos com fluxos de atendimento apoiados por IA. Construí uma biblioteca de mais de 50 componentes React documentada em Storybook a partir dos designs do Figma, integrei-a aos micro-frontends existentes e adaptei manifests de ArgoCD para novos serviços.",
+        "Projeto curto em um produto de saúde dos Estados Unidos com fluxos de atendimento apoiados por IA. Construí uma biblioteca de mais de 50 componentes React documentada em Storybook a partir dos designs do Figma, integrei-a aos micro-frontends existentes e adaptei manifests de deploy para novos serviços.",
       note: "Projeto via Tecla. Terminou quando o cliente decidiu não renovar o contrato por motivos comerciais ligados a prazo e custo.",
     },
     "ROIT GROUP": {
@@ -116,17 +117,17 @@ export const ptProfile = {
     "Voyager Portal": {
       title: "Engenheiro Full Stack Sênior",
       summary:
-        "Plataforma de logística marítima. Reescrevi um microsserviço de relatórios de Python para TypeScript para reduzir o uso de memória e acabar com falhas em tempo de execução, e construí interfaces Vue.js com estado para os times de operação.",
+        "Plataforma de logística marítima com APIs TypeScript e AdonisJS, interfaces Vue.js 2 com Vuetify e Vuex, MySQL e serviços AWS. Reescrevi um microsserviço de relatórios de Python para TypeScript para reduzir o uso de memória e acabar com falhas em tempo de execução, e construí interfaces para os times de operação.",
     },
     "Grupo Soma": {
-      title: "Engenheiro Full Stack e Tech Lead",
+      title: "Engenheiro Full Stack",
       summary:
         "Plataforma de live commerce no Google Cloud Run. Depois que um evento passou de 12.000 usuários simultâneos, trabalhei com o time de infraestrutura em testes de carga e ajustes de autoscaling até os testes sustentarem cerca de 20.000 dentro do orçamento. Depois, assumi responsabilidades de Tech Lead por um período, incluindo mentoria e padrões de code review.",
     },
     "Cria Studio": {
       title: "Engenheiro Full Stack",
       summary:
-        "Único engenheiro de um produto React 2D interativo, das decisões técnicas e de produto até o lançamento em produção.",
+        "Único engenheiro de um produto 2D interativo. O MVP começou em React e foi migrado para Next.js na versão de produção, das decisões técnicas e de produto até o lançamento.",
     },
     "Lorena Felicio": {
       title: "Engenheiro Full Stack",
@@ -205,7 +206,7 @@ export const ptProfile = {
       sections: {
         context: {
           heading: "Contexto",
-          body: "Uma plataforma de live commerce usada em lives de vendas de uma grande marca de moda brasileira. Os eventos costumavam chegar a cerca de 6.000 usuários simultâneos; um passou de 12.000. O backend rodava no Google Cloud Run depois de uma migração recente da AWS para o GCP, e a plataforma nunca tinha sido testada com essa carga.",
+          body: "Uma plataforma de live commerce usada em lives de vendas de uma grande marca de moda brasileira. Os eventos costumavam chegar a cerca de 6.000 usuários simultâneos; um passou de 12.000. O backend rodava no Google Cloud Run depois de uma migração recente da AWS para o Google Cloud Platform, e a plataforma nunca tinha sido testada com essa carga.",
         },
         "what-failed": {
           heading: "O que falhou",
@@ -311,6 +312,223 @@ export const ptProfile = {
     },
   } as Record<string, CaseText>,
   projects: {
+    "Ana Caroline Hipólito": {
+      status: "No ar",
+      description:
+        "Um site profissional para uma psicóloga, construído em torno de uma jornada ética de cuidado, busca local e um primeiro contato claro.",
+      byline:
+        "Um site em produção onde direção visual, SEO, privacidade e contato real fazem parte do mesmo produto.",
+      detail: {
+        tagline: "Um site profissional e encontrável para uma psicóloga em Maringá",
+        overview:
+          "Ana Caroline Hipólito é psicóloga e trabalha com adolescentes a partir de 13 anos e adultos, com Gestalt-terapia, presencialmente em Maringá e também online. Criei o site para dar ao trabalho dela uma presença profissional própria, além do Instagram e de canais de terceiros, deixando mais tranquila e clara a jornada entre descobrir o trabalho e iniciar uma conversa.",
+        features: [
+          "Páginas institucionais de início, sobre, psicoterapia, psicóloga em Maringá, atendimento online e contato.",
+          "Uma landing page local para pessoas que procuram psicóloga em Maringá.",
+          "Formulário de primeiro contato, caminhos para WhatsApp, página própria de links e rota de QR Code para materiais físicos.",
+          "Área administrativa protegida para organizar os contatos recebidos sem transformar o site em prontuário clínico.",
+          "Política de privacidade e conteúdo escritos dentro do contexto ético da Psicologia, sem promessas de resultado ou linguagem comercial agressiva.",
+        ],
+        motivation: [
+          "Antes do projeto, a presença digital da Ana estava principalmente no Instagram e em canais de terceiros. O site cria um espaço próprio, explica seu trabalho com mais contexto e oferece um próximo passo confiável para quem chega pela busca.",
+          "A experiência foi pensada em torno da jornada real de quem considera fazer psicoterapia: entender a abordagem, descobrir se o formato faz sentido e escolher WhatsApp ou formulário sem navegar por um site complexo.",
+        ],
+        engineering: [
+          "Construído com Next.js, React e TypeScript e publicado na Vercel sob o domínio anacarolinehipolito.com.br.",
+          "O Neon Postgres armazena os envios de primeiro contato, enquanto uma área administrativa protegida permite que Ana os organize.",
+          "PostHog e Vercel Analytics medem o comportamento sem transformar o formulário em fonte de dados clínicos sensíveis.",
+          "SEO técnico faz parte da implementação: sitemap, URLs canônicas, metadados Open Graph e dados estruturados apoiam a jornada de busca local.",
+          "As páginas responsivas e semânticas foram construídas para desktop e mobile, considerando performance e estrutura acessível desde o início.",
+        ],
+        callout: {
+          title: "Um resultado real além do lançamento.",
+          body: "O site já gerou o contato de uma paciente que se tornou um primeiro atendimento pago. Também há tráfego medido, interações nos canais de contato e envios registrados pelo formulário, embora os dados atuais ainda não permitam atribuir diretamente cada nova paciente ao site.",
+        },
+        limits: [
+          "O site não promete resultados terapêuticos nem usa linguagem comercial agressiva.",
+          "As métricas ficam separadas de informações clínicas sensíveis; o formulário serve para primeiro contato, não para prontuário.",
+          "O case usa resultados agregados de contato e tráfego, sem publicar detalhes privados de pacientes.",
+        ],
+        imageAlt:
+          "Página inicial do site da psicóloga Ana Caroline Hipólito, com layout editorial acolhedor e introdução com retrato.",
+        technologies: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "PostgreSQL",
+          "PostHog",
+          "Vercel",
+        ],
+      },
+    },
+    Bombinhas: {
+      status: "Beta",
+      description:
+        "Um planejador de viagem privado e mobile-first para seis amigos, reunindo roteiro, votações, gastos, compras e responsabilidades em um só lugar.",
+      byline:
+        "Um problema real de coordenação transformado em um pequeno produto com estado compartilhado e lógica financeira.",
+      stack: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
+      detail: {
+        tagline: "Um planejador privado para seis amigos viajando para Bombinhas",
+        overview:
+          "Bombinhas é um app privado para seis adultos planejando uma viagem para a praia. Antes dele, as decisões sobre roteiro, alimentação, compras, hospedagem e pagamentos ficavam espalhadas no grupo de mensagens. O app transforma essas conversas em um lugar compartilhado para planejar, votar, registrar despesas e acompanhar o que ainda precisa ser feito.",
+        features: [
+          "Roteiro diário com atividades e votações sobre o que o grupo deve fazer.",
+          "Despesas compartilhadas com o valor pago, a parte esperada e o saldo atual de cada pessoa.",
+          "Algoritmo planejado para reduzir o acerto final ao menor número prático de transferências.",
+          "Compras, planejamento de refeições e checklist do que cada pessoa deve levar.",
+          "Informações da hospedagem e custos compartilhados, com links do Google Maps para a casa e os locais do roteiro.",
+          "Navegação inferior e ações rápidas pensadas para celulares de 375–430px.",
+        ],
+        motivation: [
+          "A ideia não era criar mais um dashboard genérico de viagens. Era remover as perguntas repetidas e as contas manuais que tornam uma viagem em grupo mais difícil de organizar.",
+          "Por enquanto o app é privado para o grupo, com possibilidade de transformar o padrão em algo reutilizável para outras viagens depois do primeiro uso real.",
+        ],
+        engineering: [
+          "O app usa Next.js App Router, React, TypeScript, Server Actions, Tailwind CSS, shadcn/ui e Zod; frontend e backend ficam no próprio Next.js.",
+          "A primeira camada de persistência usa Vercel Blob porque o escopo inicial é pequeno e limitado a uma viagem privada; uma migração para Supabase ou Neon está planejada antes de um uso mais amplo, porque o modelo atual se aproxima do limite prático do Blob.",
+          "Cada participante escolhe um nome e usa um PIN de quatro dígitos. Os PINs são armazenados com hash, as sessões usam cookies assinados e HTTP-only e o app diferencia os papéis member e admin.",
+          "Os registros da viagem são separados em recursos independentes em vez de um único JSON compartilhado, reduzindo conflitos quando pessoas votam, adicionam gastos ou marcam itens simultaneamente.",
+          "Validações no servidor com Zod e testes financeiros cobrem divisões iguais, arredondamento de centavos, divisões personalizadas, saldos e simplificação de dívidas.",
+          "O deploy previsto é na Vercel, com credenciais de infraestrutura mantidas em variáveis de ambiente, fora do cliente.",
+        ],
+        callout: {
+          title: "Um produto antes de a viagem começar.",
+          body: "O case está na fase de especificação e construção. O valor esperado é gastar menos tempo procurando mensagens antigas, refazendo contas e perguntando quem vai levar ou pagar algo; o uso real e a economia ainda não foram medidos.",
+        },
+        limits: [
+          "O app ainda não foi validado pelo grupo completo durante uma viagem real.",
+          "Não há integração de pagamentos, clima, WhatsApp ou planilhas; o app organiza os dados, mas não movimenta dinheiro.",
+          "A estratégia de backup ainda precisa ser definida antes de transformar o app em produto reutilizável.",
+          "Os dados pessoais são limitados de propósito; CPF do proprietário e informações contratuais desnecessárias não aparecem na interface.",
+        ],
+        imageAlt:
+          "Interface do planejador de viagem Bombinhas, mostrando o roteiro compartilhado e ferramentas de coordenação para uma viagem de grupo à praia.",
+        technologies: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Tailwind CSS",
+        ],
+      },
+    },
+    Akaashi: {
+      status: "No ar",
+      description:
+        "Um estúdio independente de design e tecnologia que cria experiências digitais autorais para negócios que querem ser lembrados.",
+      byline:
+        "Sites personalizados e experiências digitais para negócios de Maringá e além.",
+      detail: {
+        tagline: "Um estúdio de design e tecnologia para produtos digitais que deixam uma marca",
+        overview:
+          "Akaashi é um estúdio independente de design e tecnologia que cria experiências digitais autorais para negócios que querem ser lembrados. O trabalho começa pela ideia central do negócio e transforma essa ideia em conceito visual, interação e experiência web, em vez de partir de um template genérico. O estúdio começa atendendo negócios locais e empresas de Maringá e região cuja qualidade real está à frente da própria presença digital.",
+        features: [
+          "Sites institucionais personalizados como principal serviço do estúdio.",
+          "Redesigns, landing pages e experiências digitais com direção visual própria.",
+          "Aplicação digital de identidades visuais existentes e materiais gráficos relacionados.",
+          "Um caminho claro do diagnóstico e conceito à proposta, desenvolvimento, publicação e suporte.",
+          "Sites responsivos com HTML semântico, metadata, SEO técnico e trabalho de performance.",
+          "Integrações com contato, WhatsApp, analytics, banco de dados e áreas administrativas quando o projeto precisa.",
+          "Trabalhos públicos e MVPs incluem Vercelli Pasticceria, Igreja Batista Vila 7, Amaral's Pizzaria, Colha, Fica Leve, The Kingdom e Special Guest For You.",
+        ],
+        motivation: [
+          "Muitos negócios bons têm uma presença digital genérica, desatualizada ou mais fraca que o negócio real por trás dela. O Akaashi existe para fechar essa distância.",
+          "Fica Leve e Special Guest For You representam bem a direção desejada: pegar uma característica central do negócio e transformá-la em uma experiência digital própria.",
+        ],
+        engineering: [
+          "Os projetos passam por contato ou indicação, diagnóstico, pesquisa, conceito ou MVP, validação comercial, proposta, desenvolvimento, revisão, ajustes, publicação e suporte.",
+          "Descoberta, estrutura de conteúdo, UX, UI, desenvolvimento, publicação e manutenção são tratados como um processo conectado.",
+          "A stack varia conforme o projeto: HTML, CSS e JavaScript leves para sites focados, ou React, Next.js, TypeScript, banco de dados e integrações para produtos mais complexos.",
+          "GSAP e Lenis entram quando o movimento ajuda o conceito, não apenas como decoração.",
+          "Os sites são responsivos e usam HTML semântico, estrutura de headings, metadata, assets otimizados, SEO técnico e verificações de performance; projetos próprios já chegaram perto de 100 no Lighthouse.",
+          "A publicação é feita principalmente pela Vercel, considerando domínio, DNS, infraestrutura existente e manutenção antes e depois do lançamento.",
+        ],
+        limits: [
+          "Os preços são negociados por projeto e não são públicos.",
+          "O estúdio hoje é focado em sites institucionais e experiências web, assumindo aplicações mais complexas quando o projeto pede.",
+          "Materiais de clientes e detalhes do processo comercial permanecem privados sem aprovação explícita para publicação.",
+        ],
+        callout: {
+          title: "Do conceito à entrega comercial.",
+          body: "Vercelli Pasticceria foi o primeiro projeto comercial aprovado e pago pelo estúdio. Outros trabalhos públicos e MVPs estão em diferentes estágios de validação e entrega.",
+        },
+        imageAlt:
+          "Página inicial do estúdio Akaashi com layout editorial em tom creme, logotipo grande, traço vermelho desenhado à mão e chamadas para iniciar um projeto ou ver o trabalho.",
+        technologies: [
+          "JavaScript",
+          "GSAP",
+          "React",
+          "Next.js",
+          "TypeScript",
+          "Vercel",
+        ],
+      },
+    },
+    "Koinon Games": {
+      status: "Beta",
+      description:
+        "Uma PWA mobile-first que transforma jogos de cartas e dedução social em salas compartilhadas que qualquer pessoa pode acessar pelo celular. Testada com mais de 50 pessoas em mais de 100 partidas.",
+      byline:
+        "Direção do produto e design dos jogos por mim; implementação acelerada com agentes de código em um monorepo privado.",
+      detail: {
+        tagline: "Jogos de mesa síncronos para grupos, células e amigos",
+        overview:
+          "O Koinon Games é uma plataforma digital de jogos de mesa para grupos que querem jogar juntos sem levar um baralho ou lembrar de trazer um jogo. O nome vem de koinon, comunhão: o produto existe para tornar simples começar uma atividade compartilhada. Qualquer pessoa com um celular pode entrar na sala por QR code ou ID e jogar pela internet. O público inicial eram igrejas e grupos de amigos, mas o produto serve para qualquer grupo. Os primeiros jogos são O Judas, em que discípulos identificam o traidor por palavras secretas, e Os Fofoqueiros, em que crentes protegem segredos enquanto sabotadores tentam atrapalhar as missões.",
+        features: [
+          "O Judas: um jogo de dedução social em que discípulos usam palavras secretas para identificar o traidor.",
+          "Os Fofoqueiros: um jogo de confiança e traição em que crentes protegem segredos e fofoqueiros sabotam missões.",
+          "Salas que podem ser acessadas pela tela inicial com QR code ou ID da sala.",
+          "Salas síncronas com atualizações em tempo real dos jogadores e do estado do jogo.",
+          "Interface PWA mobile-first pensada para uso durante um encontro presencial.",
+          "Temas cristãos e não cristãos, conforme a preferência do grupo.",
+          "Tipos TypeScript compartilhados para jogadores, salas, temas e eventos Socket.IO.",
+        ],
+        motivation: [
+          "O produto remove a fricção de levar um jogo físico: se todos têm celular e acesso à internet, o grupo pode começar a jogar em qualquer lugar.",
+          "O público inicial eram igrejas e grupos de amigos, mas o formato serve para qualquer grupo que queira jogar sem que uma pessoa precise carregar todo o material.",
+          "A direção do produto, o design dos jogos e as decisões sobre a experiência foram meus; agentes de código aceleraram a implementação dentro de um monorepo privado.",
+        ],
+        engineering: [
+          "O app web usa React, Vite e TypeScript, com Tailwind CSS e suporte a PWA para experiências capazes de funcionar offline.",
+          "O backend usa Node.js, Fastify e Socket.IO para endpoints HTTP e comunicação em tempo real.",
+          "Um monorepo com pnpm workspaces mantém app web, servidor e packages/shared juntos.",
+          "O pacote compartilhado define os contratos usados pelos dois lados, incluindo Player, Room, Theme e GameEventMap.",
+          "As salas ficam na memória do servidor e expiram depois de tempo suficiente sem atividade, evitando contas e persistência enquanto mantêm as partidas ativas simples.",
+          "Validações protegem contra eventos repetidos ou fora de ordem, enquanto uma tolerância de reconexão dá tempo para jogadores desconectados voltarem.",
+          "O trabalho técnico mais difícil foi lidar com condições diferentes de conexão e manter os controles utilizáveis em vários tamanhos de celular.",
+          "O frontend está publicado na Vercel e o backend roda na Railway, com CORS, segredos e a configuração de produção mantidos nas respectivas plataformas.",
+          "Ainda não há monitoramento ou health check porque o beta é pequeno; a prioridade atual é corrigir os casos de borda encontrados nos testes com pessoas.",
+        ],
+        callout: {
+          title: "Mais que um protótipo no papel.",
+          body: "Mais de 50 pessoas já jogaram em mais de 100 partidas. O produto ainda está em beta, mas o ciclo central — entrar numa sala, sincronizar o grupo e jogar pelo celular — já foi testado em encontros reais.",
+        },
+        technologies: [
+          "React",
+          "Vite",
+          "TypeScript",
+          "Node.js",
+          "Fastify",
+          "Socket.IO",
+          "Tailwind CSS",
+          "PWA",
+        ],
+        limits: [
+          "O repositório é privado.",
+          "O produto está em beta e continua recebendo correções, especialmente em conectividade e controles responsivos.",
+          "A primeira versão foca em O Judas e Os Fofoqueiros; o catálogo pode crescer depois.",
+          "A plataforma foi pensada para grupos síncronos, não para matchmaking assíncrono.",
+          "As salas ficam na memória do servidor e não há contas ou perfis persistentes; apenas o nome escolhido e preferências locais permanecem no dispositivo.",
+        ],
+        imageAlt:
+          "Interface do Koinon Games mostrando uma sala compartilhada mobile-first para jogos de dedução social.",
+      },
+    },
     iMemory: {
       status: "Público",
       description:
@@ -451,13 +669,13 @@ export const ptProfile = {
     },
   } as Record<string, ProjectText>,
   privacy: {
-    updated: "29 de setembro de 2026",
+    updated: "8 de outubro de 2026",
     intro:
       "Este é um portfólio pessoal. Não há contas, anúncios ou pagamentos, e nenhum dado é vendido ou compartilhado para marketing.",
     sections: {
       analytics: {
         title: "Analytics",
-        body: "O site usa o PostHog para entender como as páginas são usadas: páginas vistas, origem da visita, navegador e tipo de dispositivo, e uma localização aproximada derivada do endereço IP. O PostHog guarda um identificador anônimo em um cookie e no armazenamento local para que visitas repetidas sejam contadas uma vez. Visitantes nunca são identificados por nome ou e-mail.",
+        body: "O site usa o PostHog para entender como as páginas são usadas: páginas vistas, origem da visita, navegador e tipo de dispositivo, e uma localização aproximada derivada do endereço IP. O PostHog guarda um identificador anônimo em um cookie e no armazenamento local para que visitas repetidas sejam contadas uma vez. Visitantes nunca são identificados por nome ou e-mail. Você pode desativar novos analytics neste navegador usando o controle abaixo; a preferência fica somente neste navegador e não é enviada ao site.",
       },
       "contact-form": {
         title: "Formulário de contato",
@@ -465,7 +683,7 @@ export const ptProfile = {
       },
       "browser-storage": {
         title: "Guardado no seu navegador",
-        body: "Suas preferências de tema, idioma e animação ficam salvas no armazenamento local e em um cookie de idioma, e uma marcação de sessão impede que a animação de abertura se repita. Nada disso é enviado para lugar nenhum além deste site.",
+        body: "Suas preferências de tema, idioma, animação e analytics ficam salvas no armazenamento local e em um cookie de idioma, e uma marcação de sessão impede que a animação de abertura se repita. Nenhuma dessas preferências é enviada para lugar nenhum além deste site.",
       },
       hosting: {
         title: "Hospedagem e acesso por máquinas",
