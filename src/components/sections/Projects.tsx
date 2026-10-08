@@ -1,7 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Github } from "lucide-react";
 import { getContent } from "@/data/content";
-import { ProjectIcon } from "@/components/work/ProjectIcon";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
 import { ui } from "@/i18n/ui";
@@ -30,10 +30,32 @@ export function Projects({ locale }: { locale: Locale }) {
             project.href?.startsWith("http") && project.href !== project.repo
               ? project.href
               : undefined;
+          const preview = project.detail?.image;
+          const previewHref = site ?? page;
           return (
             <article className="project-card" key={project.name}>
+              {preview && previewHref && (
+                <a
+                  className="project-preview"
+                  href={previewHref}
+                  target={site ? "_blank" : undefined}
+                  rel={site ? "noopener noreferrer" : undefined}
+                  aria-label={`${project.name} — ${site ? t.liveSite : t.viewProject}`}
+                >
+                  <Image
+                    src={preview.src}
+                    alt={preview.alt}
+                    width={preview.width}
+                    height={preview.height}
+                    sizes="(max-width: 767px) 100vw, 50vw"
+                  />
+                  <span className="project-preview-label">
+                    {site ? t.liveSite : t.viewProject}
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </span>
+                </a>
+              )}
               <div className="project-meta">
-                <ProjectIcon name={project.name} />
                 <span className="project-status">{project.status}</span>
               </div>
               <h3>

@@ -9,7 +9,6 @@ import type { Locale } from "@/i18n/config";
 import { localeAlternates, ogLocale } from "@/i18n/metadata";
 import { localePath } from "@/i18n/paths";
 import { ui } from "@/i18n/ui";
-import { ProjectIcon } from "@/components/work/ProjectIcon";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK, FORWARD } from "@/lib/motion";
 export const dynamicParams = false;
@@ -20,6 +19,66 @@ export function generateStaticParams() {
 type Props = { params: Promise<{ lang: string; slug: string }> };
 const localized = (locale: Locale) =>
   getContent(locale).projects.filter((p) => p.slug && p.detail);
+
+type LayerKey = "interface" | "runtime" | "data" | "delivery";
+const layerRules: { key: LayerKey; technologies: string[] }[] = [
+  {
+    key: "interface",
+    technologies: [
+      "React",
+      "Next.js",
+      "Vite",
+      "Vue.js",
+      "Tailwind CSS",
+      "GSAP",
+    ],
+  },
+  {
+    key: "runtime",
+    technologies: [
+      "Node.js",
+      "Fastify",
+      "NestJS",
+      "Socket.IO",
+      "MCP",
+      "REST APIs",
+    ],
+  },
+  {
+    key: "data",
+    technologies: [
+      "PostgreSQL",
+      "Vercel Blob",
+      "DynamoDB",
+      "MongoDB",
+      "Redis",
+      "Firestore",
+      "PostHog",
+    ],
+  },
+  {
+    key: "delivery",
+    technologies: [
+      "Vercel",
+      "PWA",
+      "Service Worker",
+      "AWS",
+      "Google Cloud Platform",
+      "Docker",
+    ],
+  },
+];
+
+function technicalLayers(technologies: string[]) {
+  return layerRules
+    .map((layer) => ({
+      ...layer,
+      items: technologies.filter((technology) =>
+        layer.technologies.includes(technology),
+      ),
+    }))
+    .filter((layer) => layer.items.length > 0);
+}
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, slug } = await params;
   const locale = lang as Locale;
@@ -57,6 +116,7 @@ export default async function ProjectPage({ params }: Props) {
     project.href?.startsWith("http") && project.href !== project.repo
       ? project.href
       : undefined;
+  const layers = technicalLayers(detail.technologies);
   return (
     <PageTransition key={slug}>
       <main id="main-content" className="case-detail">
@@ -70,11 +130,6 @@ export default async function ProjectPage({ params }: Props) {
             {t.back}
           </Link>
           <header className="case-detail-header">
-            <ProjectIcon
-              name={project.name}
-              size={26}
-              className="project-detail-mark"
-            />
             <span className="eyebrow">
               {t.label} / {project.status}
             </span>
@@ -83,11 +138,20 @@ export default async function ProjectPage({ params }: Props) {
               <span className="accent">.</span>
             </h1>
             <p>{detail.tagline}.</p>
-            <ul className="tech-list" aria-label={ui(locale).casePage.technologies}>
-              {detail.technologies.map((tech) => (
-                <li key={tech}>{tech}</li>
-              ))}
-            </ul>
+            <div className="project-stack-block">
+              <div className="project-stack-heading">
+                <span>{t.stackLabel}</span>
+                <span>{t.technologiesCount(detail.technologies.length)}</span>
+              </div>
+              <ul className="project-tech-list" aria-label={ui(locale).casePage.technologies}>
+                {detail.technologies.map((tech, index) => (
+                  <li className={index < 3 ? "is-core" : undefined} key={tech}>
+                    <span className="project-tech-index">{String(index + 1).padStart(2, "0")}</span>
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="project-detail-links">
               {site && (
                 <a
@@ -112,16 +176,62 @@ export default async function ProjectPage({ params }: Props) {
             </div>
           </header>
           {detail.image && (
-            <figure className="project-shot">
-              <Image
-                src={detail.image.src}
-                alt={detail.image.alt}
-                width={detail.image.width}
-                height={detail.image.height}
-                sizes="(max-width: 1120px) 100vw, 1120px"
-                priority
-              />
+            <figure className={`project-shot ${site ? "project-shot-link" : ""}`}>
+              {site ? (
+                <a
+                  href={site}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} — ${t.visitSite}`}
+                >
+                  <Image
+                    src={detail.image.src}
+                    alt={detail.image.alt}
+                    width={detail.image.width}
+                    height={detail.image.height}
+                    sizes="(max-width: 1120px) 100vw, 1120px"
+                    priority
+                  />
+                  <span className="project-preview-label">
+                    {t.visitSite}
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </span>
+                </a>
+              ) : (
+                <Image
+                  src={detail.image.src}
+                  alt={detail.image.alt}
+                  width={detail.image.width}
+                  height={detail.image.height}
+                  sizes="(max-width: 1120px) 100vw, 1120px"
+                  priority
+                />
+              )}
             </figure>
+          )}
+          {layers.length > 0 && (
+            <section className="project-technical-map" aria-labelledby="technical-map-title">
+              <div className="technical-map-heading">
+                <div>
+                  <span className="eyebrow">{t.stackMap}</span>
+                  <h2 id="technical-map-title">{t.technicalMapTitle}</h2>
+                </div>
+                <p>{t.technicalMapBody}</p>
+              </div>
+              <div className="technical-map-grid">
+                {layers.map((layer, index) => (
+                  <article className="technical-layer" key={layer.key}>
+                    <span className="technical-layer-index">{String(index + 1).padStart(2, "0")}</span>
+                    <h3>{t.layers[layer.key]}</h3>
+                    <ul>
+                      {layer.items.map((technology) => (
+                        <li key={technology}>{technology}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </section>
           )}
           <div className="case-detail-grid">
             <aside className="case-index">
@@ -142,9 +252,12 @@ export default async function ProjectPage({ params }: Props) {
               </section>
               <section id="features">
                 <h2>{t.features}</h2>
-                <ul>
-                  {detail.features.map((point) => (
-                    <li key={point}>{point}</li>
+                <ul className="case-feature-list">
+                  {detail.features.map((point, index) => (
+                    <li key={point}>
+                      <span className="case-list-index">{String(index + 1).padStart(2, "0")}</span>
+                      <span>{point}</span>
+                    </li>
                   ))}
                 </ul>
               </section>
@@ -165,9 +278,12 @@ export default async function ProjectPage({ params }: Props) {
               <section id="engineering">
                 <h2>{t.engineering}</h2>
                 {detail.engineeringIntro && <p>{detail.engineeringIntro}</p>}
-                <ul>
-                  {detail.engineering.map((point) => (
-                    <li key={point}>{point}</li>
+                <ul className="case-engineering-list">
+                  {detail.engineering.map((point, index) => (
+                    <li key={point}>
+                      <span className="case-list-index">{String(index + 1).padStart(2, "0")}</span>
+                      <span>{point}</span>
+                    </li>
                   ))}
                 </ul>
                 {detail.engineeringNote && <p>{detail.engineeringNote}</p>}
