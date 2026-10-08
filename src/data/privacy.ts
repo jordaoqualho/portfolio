@@ -1,14 +1,14 @@
 import { profile } from "./profile";
 
 export const privacy = {
-  updated: "September 29, 2026",
+  updated: "October 8, 2026",
   intro:
     "This is a personal portfolio. There are no accounts, ads or payments, and no data is sold or shared for marketing.",
   sections: [
     {
       id: "analytics",
       title: "Analytics",
-      body: "The site uses PostHog to see how pages are used: pages viewed, referrer, browser and device type, and an approximate location derived from the IP address. PostHog keeps an anonymous identifier in a cookie and local storage so repeat visits are counted once. Visitors are never identified by name or email.",
+      body: "The site uses PostHog to see how pages are used: pages viewed, referrer, browser and device type, and an approximate location derived from the IP address. PostHog keeps an anonymous identifier in a cookie and local storage so repeat visits are counted once. Visitors are never identified by name or email. You can disable future analytics for this browser using the control below; the preference stays local to this browser and is not sent to the site.",
     },
     {
       id: "contact-form",
@@ -18,7 +18,7 @@ export const privacy = {
     {
       id: "browser-storage",
       title: "Stored in your browser",
-      body: "Your theme, language and motion preferences are saved in local storage and a language cookie, and a session flag stops the intro animation from replaying. None of it is sent anywhere beyond this site.",
+      body: "Your theme, language, motion and analytics preferences are saved in local storage and a language cookie, and a session flag stops the intro animation from replaying. None of these preferences is sent anywhere beyond this site.",
     },
     {
       id: "hosting",

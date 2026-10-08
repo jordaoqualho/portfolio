@@ -7,6 +7,7 @@ import { localeAlternates, ogLocale } from "@/i18n/metadata";
 import { localePath } from "@/i18n/paths";
 import { ui } from "@/i18n/ui";
 import { PageTransition } from "@/components/motion/PageTransition";
+import { AnalyticsPreference } from "@/components/privacy/AnalyticsPreference";
 import { BACK } from "@/lib/motion";
 const descriptions = {
   en: "What jordaoqualho.com collects: PostHog analytics, contact form messages, browser preferences and hosting logs. No accounts or ads.",
@@ -64,6 +65,7 @@ export default async function PrivacyPage({ params }: Props) {
                 <section key={section.id} id={section.id}>
                   <h2>{section.title}</h2>
                   <p>{section.body}</p>
+                  {section.id === "analytics" && <AnalyticsPreference />}
                 </section>
               ))}
             </article>
