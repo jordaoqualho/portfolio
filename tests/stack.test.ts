@@ -44,11 +44,18 @@ describe("stack evidence", () => {
     expect(find("Storybook").roles.map((r) => r.company)).toEqual(
       expect.arrayContaining(["Sully", "Grupo Soma"]),
     );
+    expect(find("AWS").roles.map((r) => r.company)).not.toContain("Sully");
+    expect(find("AWS").roles.map((r) => r.company)).not.toContain("ROIT GROUP");
+    expect(find("Google Cloud Platform").roles.map((r) => r.company)).toContain("Sully");
+    expect(find("Google Cloud Platform").roles.map((r) => r.company)).toContain("ROIT GROUP");
+    expect(find("PostgreSQL").roles.map((r) => r.company)).not.toContain("ROIT GROUP");
+    expect(find("Firestore").roles.map((r) => r.company)).toContain("ROIT GROUP");
     expect(find("AdonisJS").roles.map((r) => r.company)).toContain("Voyager Portal");
     expect(find("GitHub Actions").evidenceLabel).toBe("years");
     expect(find("Micro Frontends").evidenceLabel).toBe("years");
     expect(find("Automated Testing").evidenceLabel).toBe("years");
     expect(find("Next.js").evidenceLabel).toBe("years");
+    expect(find("Next.js").roles.map((r) => r.company)).toContain("Lorena Felicio");
   });
 
   it("maps the confirmed engineering practices to the right roles", () => {
@@ -79,18 +86,19 @@ describe("stack evidence", () => {
       expect.arrayContaining(["Grupo Soma", "Cria Studio", "Lorena Felicio"]),
     );
     expect(find("NestJS").roles.map((r) => r.company)).toEqual(
-      expect.arrayContaining(["Sully", "ROIT GROUP"]),
+      expect.arrayContaining(["Afinz / client Sem Parar", "Sully", "ROIT GROUP"]),
     );
     expect(find("Express.js").roles.map((r) => r.company)).toEqual(
       expect.arrayContaining([
-        "Afinz / client Sem Parar",
         "Grupo Soma",
         "Cria Studio",
         "Lorena Felicio",
       ]),
     );
-    expect(find("TypeScript").durationMonths).toBe(43);
+    expect(find("TypeScript").durationMonths).toBe(44);
     expect(find("JavaScript").durationMonths).toBe(34);
+    expect(find("NestJS").durationMonths).toBe(37);
+    expect(find("Express.js").durationMonths).toBe(34);
     expect(find("AdonisJS").roles.map((r) => r.company)).toEqual(["Voyager Portal"]);
   });
 

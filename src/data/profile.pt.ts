@@ -132,7 +132,7 @@ export const ptProfile = {
     "Lorena Felicio": {
       title: "Engenheiro Full Stack",
       summary:
-        "Construí um ERP do zero em React, Node.js, MongoDB e AWS S3, incluindo integrações fiscais e de emissão de notas brasileiras e fluxos automatizados de documentos.",
+        "Construí um ERP do zero com Next.js e React, Node.js, MongoDB e AWS S3, incluindo integrações fiscais e de emissão de notas brasileiras e fluxos automatizados de documentos.",
     },
   } as Record<string, RoleText>,
   cases: {

@@ -347,13 +347,13 @@ export const experience: Experience[] = [
   {
     company: "Afinz / client Sem Parar",
     title: "Senior Backend Engineer · Contract / B2B",
-    dates: "Dec 2023 – Aug 2026",
+    dates: "Dec 2023 – Sep 2026",
     summary:
       "Backend engineer and technical reference for a financial-services squad on Sem Parar, a platform with 7M+ active users. I led and trained engineers, coordinated production investigations, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
     technologies: [
       "Node.js",
       "TypeScript",
-      "Express.js",
+      "NestJS",
       "REST APIs",
       "Microservices",
       "Technical Leadership",
@@ -386,7 +386,6 @@ export const experience: Experience[] = [
       "Micro Frontends",
       "Distributed Systems",
       "MySQL",
-      "AWS",
       "Vite",
       "Firestore",
       "Google Cloud Platform",
@@ -410,11 +409,9 @@ export const experience: Experience[] = [
       "Caching Strategies",
       "Distributed Systems",
       "Google Cloud Platform",
-      "AWS",
       "Firestore",
       "Pub/Sub",
       "Event-Driven Architecture",
-      "PostgreSQL",
       "Automated Testing",
       "Jest",
     ],
@@ -496,8 +493,9 @@ export const experience: Experience[] = [
     title: "Full Stack Engineer",
     dates: "Jan 2020 – Aug 2021",
     summary:
-      "Built an ERP from scratch in React, Node.js, MongoDB and AWS S3, including Brazilian tax and invoicing integrations and automated document workflows.",
+      "Built an ERP from scratch with Next.js and React, Node.js, MongoDB and AWS S3, including Brazilian tax and invoicing integrations and automated document workflows.",
     technologies: [
+      "Next.js",
       "React",
       "JavaScript",
       "Redux",
