@@ -14,13 +14,13 @@ nos três cargos de JavaScript.
 
 ### Backend por empresa
 
-- Afinz: Node.js + Express.js
+- Afinz: Node.js + NestJS
 - Sully: NestJS
 - ROIT: NestJS
 - Voyager: AdonisJS
 - Grupo Soma: Node.js + Express.js
 - Cria Studio: Node.js + Express.js
-- Lorena Felicio: Node.js + Express.js
+- Lorena Felicio: Next.js + Node.js + Express.js
 
 Node.js continua representando a duração ampla do backend. Express.js e NestJS
 mostram suas durações individuais, mas nunca são somados entre si para calcular
@@ -38,12 +38,12 @@ um conflito entre frameworks usados ao mesmo tempo.
   React fica em Sully, ROIT, Grupo Soma e Lorena.
 - Sully pode ter React + Vite: Vite é ferramenta de build, não um segundo
   framework. Micro Frontends também é arquitetura, não framework concorrente.
-- MySQL + Firestore em Sully e PostgreSQL + Firestore em ROIT são possíveis,
-  pois podem atender serviços ou responsabilidades diferentes.
-- AWS foi confirmado ao longo da carreira, com uma exceção de aproximadamente
-  seis meses no Grupo Soma, que também usou Google Cloud Platform. Por isso o
-  Grupo Soma não aparece como evidência integral de AWS no cargo; a duração
-  continua manualmente confirmada como `5+ anos`.
+- MySQL + Firestore em Sully e Firestore como banco central na ROIT refletem os
+  bancos confirmados em cada experiência; PostgreSQL foi removido da ROIT.
+- AWS foi confirmado em parte da carreira, mas não na Sully, ROIT nem no Grupo
+  Soma: essas experiências usaram Google Cloud Platform na infraestrutura. Sully
+  e ROIT continuam com Firestore e GCP na evidência; AWS não aparece nesses
+  cargos.
 - Voyager tinha uma inconsistência entre Node.js, Express.js e AdonisJS. A
   correção mantém AdonisJS como o framework backend confirmado; Node.js e
   Express.js foram removidos desse cargo.
@@ -63,13 +63,13 @@ Com os cargos atuais e união de períodos:
 
 - TypeScript: `3+ anos`
 - JavaScript: `2 anos e 10 meses` pelos períodos registrados
-- Node.js e Express.js: `5 anos e 6 meses` com o mapa atual de cargos
-- NestJS: `5 meses` (Sully + ROIT), exibido como menos de um ano
+- Node.js: `5 anos e 6 meses` com o mapa atual de cargos
+- Express.js: `2 anos e 10 meses` (Grupo Soma + Cria Studio + Lorena Felicio)
+- NestJS: `3 anos` (Afinz + Sully + ROIT GROUP, com o período sobreposto da Sully contado uma vez)
 - AdonisJS: `7 meses` na Voyager, exibido como menos de um ano
 - Frontend: frameworks exibidos individualmente; total de seis anos depende da
   decisão sobre contar projetos independentes.
 
-Observação: para Node.js/Express.js chegarem a `6+ anos`, seria necessário
-confirmar mais seis meses em um cargo que hoje está marcado apenas como NestJS
-ou AdonisJS. Não fiz essa alteração automaticamente porque ela contradiz o
-mapa específico que você acabou de informar.
+Observação: Node.js, Express.js, NestJS e AdonisJS são contabilizados
+separadamente. Os períodos de frameworks diferentes não são somados para
+inflar o total de uma tecnologia específica.
