@@ -15,6 +15,7 @@ import { apiIndex } from "@/lib/openapi";
 import { CopyCommand } from "@/components/agents/CopyCommand";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK, FORWARD } from "@/lib/motion";
+import { siteUrl } from "@/lib/site";
 const title = "Developers: Jordão Qualho Profile API";
 const description =
   "Public, keyless JSON API and OpenAPI 3.1 spec for Jordão Qualho's engineering profile: cases, experience and job-fit matching. Also available over MCP.";
@@ -28,11 +29,62 @@ export const metadata: Metadata = {
   openGraph: { title, description, url: "/developers/" },
   twitter: { title, description, card: "summary_large_image" },
 };
+const developersSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebAPI",
+      "@id": `${siteUrl}/api/#webapi`,
+      name: "Jordão Qualho Profile API",
+      description,
+      url: `${siteUrl}/api`,
+      documentation: `${siteUrl}/developers/`,
+      termsOfService: `${siteUrl}/privacy/`,
+      provider: { "@id": `${siteUrl}/#person` },
+    },
+    {
+      "@type": "TechArticle",
+      "@id": `${siteUrl}/developers/#article`,
+      headline: title,
+      description,
+      url: `${siteUrl}/developers/`,
+      inLanguage: "en-US",
+      author: { "@id": `${siteUrl}/#person` },
+      publisher: { "@id": `${siteUrl}/#person` },
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@id": `${siteUrl}/api/#webapi` },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${siteUrl}/developers/#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Jordão Qualho",
+          item: `${siteUrl}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Developers",
+          item: `${siteUrl}/developers/`,
+        },
+      ],
+    },
+  ],
+};
 export default function DevelopersPage() {
   const { endpoints } = apiIndex();
   return (
     <PageTransition>
       <main id="main-content" className="case-detail">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(developersSchema).replace(/</g, "\\u003c"),
+          }}
+        />
         <div className="container">
           <Link href="/" className="back-link" transitionTypes={[BACK]}>
             <ArrowLeft size={16} />
@@ -154,6 +206,19 @@ export default function DevelopersPage() {
                 </dl>
               </section>
             </article>
+          </div>
+          <div className="case-next">
+            <div>
+              <span className="eyebrow">USING AN AI ASSISTANT?</span>
+              <Link href="/agents/" transitionTypes={[FORWARD]}>
+                For AI agents
+                <ArrowUpRight size={23} />
+              </Link>
+            </div>
+            <a className="text-link" href="/openapi.json">
+              Open openapi.json
+              <ArrowUpRight size={16} />
+            </a>
           </div>
         </div>
       </main>

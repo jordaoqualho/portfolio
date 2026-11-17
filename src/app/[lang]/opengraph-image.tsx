@@ -8,7 +8,27 @@ export const dynamic = "force-static";
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
-export default function Image() {
+const copy = {
+  en: {
+    eyebrow: "ENGINEERING PROFILE",
+    role: "Senior Software Engineer",
+    focus: "Full Stack · Backend depth",
+    location: "Brazil · Open to remote",
+  },
+  pt: {
+    eyebrow: "PERFIL DE ENGENHARIA",
+    role: "Engenheiro de Software Sênior",
+    focus: "Full Stack · Profundidade em backend",
+    location: "Brasil · Aberto a vagas remotas",
+  },
+} as const;
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const t = lang === "pt" ? copy.pt : copy.en;
   return new ImageResponse(
     <div
       style={{
@@ -31,18 +51,19 @@ export default function Image() {
         }}
       >
         <span>JORDÃO QUALHO</span>
-        <span>ENGINEERING PROFILE</span>
+        <span>{t.eyebrow}</span>
       </div>
       <div
         style={{
           display: "flex",
-          fontSize: 76,
+          fontSize: lang === "pt" ? 68 : 76,
           letterSpacing: "-4px",
           lineHeight: 1.05,
           marginTop: 65,
         }}
       >
-        Senior Software Engineer<span style={{ color: "#375eaa" }}>.</span>
+        {t.role}
+        <span style={{ color: "#375eaa" }}>.</span>
       </div>
       <div
         style={{
@@ -64,8 +85,8 @@ export default function Image() {
           fontSize: 25,
         }}
       >
-        <span>Full Stack · Backend depth</span>
-        <span>Brazil · Open to remote</span>
+        <span>{t.focus}</span>
+        <span>{t.location}</span>
       </div>
     </div>,
     size,

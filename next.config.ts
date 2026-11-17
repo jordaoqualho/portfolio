@@ -6,7 +6,10 @@ const config: NextConfig = {
   // src/proxy.ts adds the trailing slash to pages only, so /api/mcp answers
   // POSTs directly instead of 308-redirecting MCP clients.
   skipTrailingSlashRedirect: true,
-  images: { unoptimized: true },
+  images: {
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 85],
+  },
   devIndicators: false,
   agentRules: false,
   // The root layout sits under app/[lang], so unmatched URLs need a 404 that
@@ -33,6 +36,22 @@ const config: NextConfig = {
   // Pages answer in HTML or Markdown depending on Accept (see src/proxy.ts).
   async headers() {
     return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+        ],
+      },
       {
         source: "/((?!api(?:/|$)|_next/|\\.well-known/).*)",
         headers: [{ key: "Vary", value: "Accept" }],

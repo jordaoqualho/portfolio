@@ -11,7 +11,7 @@ import { isLocale, localeMeta, locales, type Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/provider";
 import { localeAlternates, ogLocale } from "@/i18n/metadata";
 import { ui } from "@/i18n/ui";
-import { workMenuItems } from "@/data/content";
+import { getContent, workMenuItems } from "@/data/content";
 import "../globals.css";
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -28,6 +28,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     metadataBase: new URL(siteUrl),
     title: { default: title, template: "%s · Jordão Qualho" },
     description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     verification: process.env.GOOGLE_SITE_VERIFICATION
       ? { google: process.env.GOOGLE_SITE_VERIFICATION }
       : undefined,
@@ -71,38 +81,47 @@ export default async function RootLayout({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const locale = lang;
-  const person = {
+  const content = getContent(locale);
+  const schemaGraph = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: profile.name,
-    jobTitle: profile.role,
-    description: siteCopy[locale].description,
-    url: siteUrl,
-    email: `mailto:${profile.email}`,
-    image: `${siteUrl}/portrait.webp`,
-    homeLocation: {
-      "@type": "Place",
-      address: { "@type": "PostalAddress", addressCountry: "BR" },
-    },
-    knowsLanguage: ["en", "pt-BR"],
-    sameAs: [profile.linkedin, profile.github],
-    knowsAbout: [
-      "Node.js",
-      "TypeScript",
-      "React",
-      "AWS",
-      "Google Cloud Platform",
-      "Backend Engineering",
-      "Production Reliability",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${siteUrl}/#person`,
+        name: profile.name,
+        jobTitle: content.profile.role,
+        description: siteCopy[locale].description,
+        url: siteUrl,
+        email: `mailto:${profile.email}`,
+        image: `${siteUrl}/working.png`,
+        homeLocation: {
+          "@type": "Place",
+          address: { "@type": "PostalAddress", addressCountry: "BR" },
+        },
+        knowsLanguage: ["en", "pt-BR"],
+        sameAs: [profile.linkedin, profile.github],
+        knowsAbout: [
+          "Node.js",
+          "TypeScript",
+          "React",
+          "Next.js",
+          "PostgreSQL",
+          "AWS",
+          "Google Cloud Platform",
+          "Model Context Protocol (MCP)",
+          "Backend Engineering",
+          "Production Reliability",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: "Jordão Qualho",
+        url: siteUrl,
+        inLanguage: ["en", "pt-BR"],
+        publisher: { "@id": `${siteUrl}/#person` },
+      },
     ],
-  };
-  const website = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Jordão Qualho",
-    url: siteUrl,
-    inLanguage: ["en", "pt-BR"],
-    publisher: { "@type": "Person", name: profile.name, url: siteUrl },
   };
   return (
     <html
@@ -141,7 +160,7 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify([person, website]).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(schemaGraph).replace(/</g, "\\u003c"),
           }}
         />
       </body>

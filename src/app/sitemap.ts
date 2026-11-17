@@ -12,6 +12,7 @@ function bilingual(path: string, priority: number, changeFrequency: Entry["chang
   const languages = {
     en: siteUrl + path,
     "pt-BR": siteUrl + localePath("pt", path),
+    "x-default": siteUrl + path,
   };
   return [path, localePath("pt", path)].map((url) => ({
     url: siteUrl + url,

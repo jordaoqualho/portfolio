@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { GET as llmsRoute } from "@/app/llms.txt/route";
+import { GET as llmsFullRoute } from "@/app/llms-full.txt/route";
 import { GET as mdRoute } from "@/app/md/[[...path]]/route";
-import { cases } from "@/data/profile";
-import { llmsTxt, markdownFor } from "@/lib/markdown";
+import { cases, projects } from "@/data/profile";
+import { llmsFullTxt, llmsTxt, markdownFor } from "@/lib/markdown";
 import { siteUrl } from "@/lib/site";
 import { params, request } from "./helpers";
 
@@ -13,6 +14,7 @@ describe("llms.txt", () => {
     const lines = text.split("\n");
     expect(lines[0]).toMatch(/^# Jordão Qualho/);
     expect(lines[2]).toMatch(/^> /);
+    expect(text).toMatch(/^## Projects$/m);
     expect(text).toMatch(/^## Optional$/m);
   });
 
@@ -24,15 +26,28 @@ describe("llms.txt", () => {
     expect(text).toContain(`${siteUrl}/api/mcp`);
   });
 
-  it("links only to the canonical domain", () => {
+  it("links only to the canonical domain and lists detailed projects", () => {
     expect(text).not.toContain("vercel.app");
     const links = [...text.matchAll(/\]\((https?:[^)]+)\)/g)].map((m) => m[1]);
-    expect(links.length).toBeGreaterThan(5);
+    expect(links.length).toBeGreaterThan(10);
     for (const link of links) expect(link.startsWith(siteUrl)).toBe(true);
+    for (const p of projects.filter((p) => p.slug && p.detail)) {
+      expect(text).toContain(`${siteUrl}/projects/${p.slug}.md`);
+    }
   });
 
-  it("is served as plain text", () => {
+  it("is served as plain text, and llms-full.txt includes cases, projects and docs", async () => {
     expect(llmsRoute().headers.get("content-type")).toBe("text/plain; charset=utf-8");
+    const fullRes = llmsFullRoute();
+    expect(fullRes.headers.get("content-type")).toBe("text/plain; charset=utf-8");
+    const fullText = llmsFullTxt();
+    expect(await fullRes.text()).toBe(fullText);
+    for (const c of cases) expect(fullText).toContain(`# ${c.title}`);
+    for (const p of projects.filter((p) => p.slug && p.detail)) {
+      expect(fullText).toContain(`# ${p.name}: ${p.detail!.tagline}`);
+    }
+    expect(fullText).toContain("# For AI agents");
+    expect(fullText).toContain("# Developers: Jordão Qualho Profile API");
   });
 });
 

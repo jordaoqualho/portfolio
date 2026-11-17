@@ -15,6 +15,7 @@ import { profile } from "@/data/profile";
 import { CopyCommand } from "@/components/agents/CopyCommand";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK } from "@/lib/motion";
+import { siteUrl } from "@/lib/site";
 const title = "For AI agents";
 const description =
   "Read Jordão Qualho's engineering profile with an AI assistant: llms.txt, Markdown pages and a remote MCP server with tools for cases, experience and job fit.";
@@ -28,10 +29,50 @@ export const metadata: Metadata = {
   openGraph: { title, description, url: "/agents/" },
   twitter: { title, description, card: "summary_large_image" },
 };
+const agentsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": `${siteUrl}/agents/#article`,
+      headline: title,
+      description,
+      url: `${siteUrl}/agents/`,
+      inLanguage: "en-US",
+      author: { "@id": `${siteUrl}/#person` },
+      publisher: { "@id": `${siteUrl}/#person` },
+      isPartOf: { "@id": `${siteUrl}/#website` },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${siteUrl}/agents/#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Jordão Qualho",
+          item: `${siteUrl}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: title,
+          item: `${siteUrl}/agents/`,
+        },
+      ],
+    },
+  ],
+};
 export default function AgentsPage() {
   return (
     <PageTransition>
       <main id="main-content" className="case-detail">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(agentsSchema).replace(/</g, "\\u003c"),
+          }}
+        />
         <div className="container">
           <Link href="/#agents" className="back-link" transitionTypes={[BACK]}>
             <ArrowLeft size={16} />

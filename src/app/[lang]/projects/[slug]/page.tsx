@@ -5,12 +5,13 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/profile";
 import { getContent } from "@/data/content";
-import type { Locale } from "@/i18n/config";
+import { localeMeta, type Locale } from "@/i18n/config";
 import { localeAlternates, ogLocale } from "@/i18n/metadata";
 import { localePath } from "@/i18n/paths";
 import { ui } from "@/i18n/ui";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK, FORWARD } from "@/lib/motion";
+import { siteUrl } from "@/lib/site";
 export const dynamicParams = false;
 const detailed = projects.filter((p) => p.slug && p.detail);
 export function generateStaticParams() {
@@ -84,7 +85,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = lang as Locale;
   const project = localized(locale).find((p) => p.slug === slug);
   if (!project) return {};
-  const title = `${project.name}: ${project.detail!.tagline}`;
+  const detail = project.detail!;
+  const title = `${project.name}: ${detail.tagline}`;
+  const images = detail.image
+    ? [
+        {
+          url: detail.image.src,
+          width: detail.image.width,
+          height: detail.image.height,
+          alt: detail.image.alt,
+        },
+      ]
+    : undefined;
   return {
     title,
     description: project.description,
@@ -95,11 +107,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: project.description,
       url: localePath(locale, `/projects/${slug}/`),
       type: "article",
+      images,
     },
     twitter: {
       title,
       description: project.description,
       card: "summary_large_image",
+      images: detail.image ? [detail.image.src] : undefined,
     },
   };
 }
@@ -117,9 +131,56 @@ export default async function ProjectPage({ params }: Props) {
       ? project.href
       : undefined;
   const layers = technicalLayers(detail.technologies);
+  const pageUrl = `${siteUrl}${localePath(locale, `/projects/${slug}/`)}`;
+  const homeUrl = `${siteUrl}${localePath(locale, "/")}`;
+  const projectSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": project.repo ? ["SoftwareApplication", "SoftwareSourceCode"] : "SoftwareApplication",
+        "@id": `${pageUrl}#software`,
+        name: project.name,
+        headline: `${project.name}: ${detail.tagline}`,
+        description: project.description,
+        url: site ?? pageUrl,
+        ...(project.repo ? { codeRepository: project.repo } : {}),
+        ...(detail.image ? { image: `${siteUrl}${detail.image.src}` } : {}),
+        applicationCategory: "WebApplication",
+        operatingSystem: "Web",
+        inLanguage: localeMeta[locale].lang,
+        author: { "@id": `${siteUrl}/#person` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        keywords: detail.technologies.join(", "),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Jordão Qualho",
+            item: homeUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: project.name,
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  };
   return (
     <PageTransition key={slug}>
       <main id="main-content" className="case-detail">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(projectSchema).replace(/</g, "\\u003c"),
+          }}
+        />
         <div className="container">
           <Link
             href={localePath(locale, "/#projects")}

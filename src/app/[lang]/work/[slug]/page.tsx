@@ -5,12 +5,13 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cases, profile } from "@/data/profile";
 import { getContent } from "@/data/content";
-import type { Locale } from "@/i18n/config";
+import { localeMeta, type Locale } from "@/i18n/config";
 import { localeAlternates, ogLocale } from "@/i18n/metadata";
 import { localePath } from "@/i18n/paths";
 import { ui } from "@/i18n/ui";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { BACK, FORWARD } from "@/lib/motion";
+import { siteUrl } from "@/lib/site";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return cases.map((item) => ({ slug: item.slug }));
@@ -47,9 +48,53 @@ export default async function CasePage({ params }: Props) {
   const item = localized.find((item) => item.slug === slug);
   if (!item) notFound();
   const nextCase = localized[(localized.indexOf(item) + 1) % localized.length];
+  const pageUrl = `${siteUrl}${localePath(locale, `/work/${slug}/`)}`;
+  const homeUrl = `${siteUrl}${localePath(locale, "/")}`;
+  const caseSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": `${pageUrl}#article`,
+        headline: item.title,
+        description: item.summary,
+        articleSection: item.category,
+        url: pageUrl,
+        inLanguage: localeMeta[locale].lang,
+        author: { "@id": `${siteUrl}/#person` },
+        publisher: { "@id": `${siteUrl}/#person` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        keywords: item.technologies.join(", "),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Jordão Qualho",
+            item: homeUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: item.title,
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  };
   return (
     <PageTransition key={slug}>
       <main id="main-content" className="case-detail">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(caseSchema).replace(/</g, "\\u003c"),
+          }}
+        />
         <div className="container">
           <Link
             href={localePath(locale, "/#work")}

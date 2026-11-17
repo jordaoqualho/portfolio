@@ -5,6 +5,7 @@ import {
   experience,
   principleStrings,
   profile,
+  projects,
   skills,
 } from "@/data/profile";
 
@@ -58,12 +59,13 @@ export function queryExperience({
 export function evaluateJobFit(jobDescription: string) {
   const jdLower = jobDescription.toLowerCase();
 
-  // Collect all verified technologies across skills and experiences
+  // Collect all verified technologies across skills, experiences, cases and projects
   const allVerifiedSkills = Array.from(
     new Set([
       ...skills.flatMap((s) => s.items),
       ...experience.flatMap((e) => e.technologies),
       ...cases.flatMap((c) => c.technologies),
+      ...projects.flatMap((p) => p.detail?.technologies ?? []),
     ]),
   );
 

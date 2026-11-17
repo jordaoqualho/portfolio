@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { getContent } from "@/data/content";
 import type { Locale } from "@/i18n/config";
 import { localeAlternates, ogLocale } from "@/i18n/metadata";
@@ -23,12 +23,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: localeAlternates(locale, "/privacy/", "/privacy.md"),
     openGraph: { ...ogLocale(locale), title, description, url: localePath(locale, "/privacy/") },
+    twitter: { title, description, card: "summary_large_image" },
   };
 }
 export default async function PrivacyPage({ params }: Props) {
   const locale = (await params).lang as Locale;
   const t = ui(locale).privacyPage;
-  const { privacy } = getContent(locale);
+  const { privacy, profile } = getContent(locale);
   return (
     <PageTransition>
       <main id="main-content" className="case-detail">
@@ -69,6 +70,19 @@ export default async function PrivacyPage({ params }: Props) {
                 </section>
               ))}
             </article>
+          </div>
+          <div className="case-next">
+            <div>
+              <span className="eyebrow">{t.back.toUpperCase()}</span>
+              <Link href={localePath(locale, "/#work")} transitionTypes={[BACK]}>
+                {locale === "pt" ? "Estudos de caso de engenharia" : "Engineering case studies"}
+                <ArrowUpRight size={23} />
+              </Link>
+            </div>
+            <a className="text-link" href={`mailto:${profile.email}`}>
+              {profile.email}
+              <ArrowUpRight size={16} />
+            </a>
           </div>
         </div>
       </main>

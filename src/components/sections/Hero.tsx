@@ -23,6 +23,7 @@ export function Hero({ locale }: { locale: Locale }) {
           <div className="hero-grid">
             <div className="hero-copy">
               <h1 id="hero-title" className="hero-title">
+                <span className="sr-only">{profile.name} — </span>
                 <span className="hero-line">
                   <span>{t.titleLines[0]}</span>
                 </span>{" "}
@@ -56,7 +57,7 @@ export function Hero({ locale }: { locale: Locale }) {
                   <Image
                     className={styles.portraitImage}
                     src="/working.png"
-                    alt="Jordão Qualho"
+                    alt={`${profile.name}, ${profile.role}`}
                     width={448}
                     height={500}
                     sizes="(max-width: 767px) 96px, (max-width: 1024px) 27vw, 336px"

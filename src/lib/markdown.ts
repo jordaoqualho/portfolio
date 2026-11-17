@@ -196,10 +196,18 @@ export function llmsTxt() {
           `- [${item.title}](${url(`/work/${item.slug}.md`)}): ${item.summary}`,
       )
       .join("\n"),
+    "## Projects",
+    projects
+      .filter((p) => p.slug && p.detail)
+      .map(
+        (p) =>
+          `- [${p.name}](${url(`/projects/${p.slug}.md`)}): ${p.description}`,
+      )
+      .join("\n"),
     "## Machine interfaces",
     list([
       `[Full context](${url("/llms-full.txt")}): the whole profile in one Markdown file.`,
-      `[Homepage as Markdown](${url("/index.md")}): same content as llms-full.txt, served at a page URL.`,
+      `[Homepage as Markdown](${url("/index.md")}): homepage content served at a page URL.`,
       `[MCP endpoint](${mcpUrl}): tools ${mcpTools.map((t) => `\`${t.name}\``).join(", ")}.`,
       `[Agent guide](${url("/agents.md")}): how to connect Claude Code, Cursor, Claude or curl.`,
       `[Developer docs](${url("/developers.md")}): REST API quickstart, endpoints and errors.`,
@@ -212,6 +220,17 @@ export function llmsTxt() {
       `[Resume PDF](${url(profile.resumePath)})`,
     ]),
   );
+}
+
+export function llmsFullTxt() {
+  const detailedProjects = projects.filter((p) => p.slug && p.detail);
+  return [
+    homeMarkdown().trimEnd(),
+    ...cases.map((c) => caseMarkdown(c).trimEnd()),
+    ...detailedProjects.map((p) => projectMarkdown(p).trimEnd()),
+    agentsMarkdown().trimEnd(),
+    developersMarkdown().trimEnd(),
+  ].join("\n\n---\n\n") + "\n";
 }
 
 export function agentsMarkdown() {
