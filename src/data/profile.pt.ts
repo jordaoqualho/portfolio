@@ -35,6 +35,8 @@ export type RoleText = {
   note?: string;
   employment?: string;
   location?: string;
+  // CV bullets, same count as the English ones.
+  highlights?: string[];
 };
 
 export const ptProfile = {
@@ -42,6 +44,12 @@ export const ptProfile = {
   availability: "Aberto a conversas sobre oportunidades selecionadas",
   location: "Brasil",
   languages: "Inglês C1 avançado · Português nativo",
+  resume: {
+    location: "Maringá, Paraná, Brasil",
+    summary:
+      "Engenheiro de Software Sênior com mais de 6 anos de experiência construindo e operando sistemas em produção com Node.js, TypeScript, React e plataformas de nuvem. Experiência full stack com forte atuação em backend: APIs REST, microsserviços, fluxos assíncronos, bancos SQL/NoSQL, cache e ambientes AWS/GCP. Experiência em troubleshooting em produção, investigação de incidentes, otimização de performance, sistemas de alta concorrência, testes automatizados e liderança técnica. Confortável em assumir funcionalidades da implementação ao suporte em produção.",
+    languages: ["Português (nativo)", "Inglês (C1 avançado)"],
+  },
   stats: [
     {
       label: "anos em produção",
@@ -109,15 +117,27 @@ export const ptProfile = {
       employment: "Tempo integral",
       location: "Maringá, Brasil · Híbrido",
       summary:
-        "Serviços de backend para plataformas financeiras internas: APIs REST em Node.js, TypeScript e Express, fluxos de análise de crédito e regras de negócio, além de contribuições em discussões de arquitetura, melhorias de escalabilidade e documentação técnica.",
-      note: "Contratado via Zallpy Digital.",
+        "O Sicredi Dexis é uma cooperativa de crédito com mais de 300 mil associados e 114 agências no Paraná e em São Paulo, parte do Sistema Sicredi e seus mais de 10 milhões de associados. Desenvolvo serviços de backend para suas plataformas financeiras internas: APIs REST em Node.js, TypeScript e Express, fluxos de análise de crédito e regras de negócio, além de discussões de arquitetura, melhorias de escalabilidade e documentação técnica.",
+      highlights: [
+        "Desenvolvimento e manutenção de serviços de backend para plataformas financeiras internas de uma cooperativa de crédito com mais de 300 mil associados e 114 agências, parte do Sistema Sicredi (mais de 10 milhões de associados).",
+        "Construção e evolução de APIs REST e serviços de backend com Node.js, TypeScript e Express.",
+        "Melhoria de fluxos financeiros, análise de crédito e regras de negócio.",
+        "Contribuição em discussões de arquitetura de backend, melhorias de escalabilidade e documentação técnica.",
+        "Trabalho com bancos de dados relacionais e NoSQL, cache, mensageria assíncrona, infraestrutura em nuvem e observabilidade.",
+      ],
     },
-    "Afinz / client Sem Parar": {
+    "Sem Parar": {
       title: "Engenheiro de Backend Sênior",
       employment: "Contrato · B2B",
       location: "Remoto",
       summary:
         "Engenheiro de backend e referência técnica de uma squad de serviços financeiros no Sem Parar, plataforma com mais de 7 milhões de usuários ativos. Liderei e treinei engenheiros, coordenei investigações em produção, conduzi integrações de API com o time de produto e melhorei testes, documentação e onboarding.",
+      highlights: [
+        "Atuei em serviços financeiros de alto volume do Sem Parar, plataforma com mais de 7 milhões de usuários ativos.",
+        "Fui a referência técnica do suporte de produção do Sem Parar, coordenando a investigação de incidentes críticos e fazendo mentoria de outro desenvolvedor.",
+        "Investiguei problemas em produção e depurei fluxos assíncronos (AWS SQS) entre microsserviços, incluindo o reprocessamento manual de mensagens durante incidentes críticos.",
+        "Mantive os workflows de deploy no GitHub Actions e melhorei a documentação técnica e o onboarding do time.",
+      ],
     },
     Sully: {
       title: "Engenheiro Full Stack Sênior",
@@ -125,32 +145,64 @@ export const ptProfile = {
       location: "Remoto",
       summary:
         "Projeto curto em um produto de saúde dos Estados Unidos com fluxos de atendimento apoiados por IA. Construí uma biblioteca de mais de 50 componentes React documentada em Storybook a partir dos designs do Figma, integrei-a aos micro-frontends existentes e adaptei manifests de deploy para novos serviços.",
-      note: "Projeto curto via Tecla, em paralelo ao contrato com a Afinz. Terminou quando o cliente decidiu não continuar por motivos comerciais ligados a prazo e custo.",
+      note: "Projeto curto via Tecla, em paralelo ao contrato com o Sem Parar. Terminou quando o cliente decidiu não continuar por motivos comerciais ligados a prazo e custo.",
+      highlights: [
+        "Construí micro-frontends React para uma plataforma de fluxos de saúde apoiados por IA, em colaboração com stakeholders dos Estados Unidos.",
+        "Construí um sistema de componentes React reutilizáveis com Storybook e Atomic Design dentro de um monorepo.",
+        "Integrei fluxos do frontend aos dados de saúde do backend, incluindo estruturas e fluxos relacionados ao FHIR.",
+        "Adaptei manifests ArgoCD e padrões de deploy existentes no monorepo para os novos componentes da aplicação.",
+      ],
     },
     "ROIT GROUP": {
       title: "Engenheiro Full Stack Sênior",
       summary:
         "Trabalhei em microsserviços NestJS para rotas analíticas do produto. Desenhei o cache e a invalidação com Redis e elevei a cobertura de testes automatizados para mais de 85% nos serviços principais.",
+      highlights: [
+        "Desenvolvi funcionalidades em micro-frontends React e microsserviços NestJS para uma plataforma de automação contábil baseada em IA.",
+        "Desenhei e implementei estratégias de cache e invalidação com Redis para fluxos analíticos de alto tráfego.",
+        "Mantive testes automatizados com Jest no backend, com mais de 85% de cobertura nas áreas principais.",
+      ],
     },
     "Voyager Portal": {
       title: "Engenheiro Full Stack Sênior",
       summary:
         "Plataforma de logística marítima com APIs TypeScript e AdonisJS, interfaces Vue.js 2 com Vuetify e Vuex, MySQL e serviços AWS. Reescrevi um microsserviço de relatórios de Python para TypeScript para reduzir o uso de memória e acabar com falhas em tempo de execução, e construí interfaces para os times de operação.",
+      highlights: [
+        "Migrei um serviço legado de relatórios de Python para TypeScript, reduzindo o consumo de memória e eliminando falhas em tempo de execução.",
+        "Construí componentes Vue.js complexos e com estado para fluxos globais de logística marítima, usando Vuex sobre APIs AdonisJS e fluxos REST com MySQL e serviços AWS.",
+        "Atuei no frontend e no backend com foco em renderização de baixa latência e serviços TypeScript fáceis de manter.",
+      ],
     },
     "Grupo Soma": {
       title: "Engenheiro Full Stack",
       summary:
         "Plataforma de live commerce no Google Cloud Run. Depois que um evento passou de 12.000 usuários simultâneos, trabalhei com o time de infraestrutura em testes de carga e ajustes de autoscaling até os testes sustentarem cerca de 20.000 dentro do orçamento. Depois, assumi responsabilidades de Tech Lead por um período, incluindo mentoria e padrões de code review.",
+      highlights: [
+        "Escalei serviços de backend Node.js e otimizei a infraestrutura no GCP Cloud Run para eventos de live commerce com mais de 12.000 usuários simultâneos e zero downtime.",
+        "Atuei como full stack com foco maior em frontend, usando React, Redux Toolkit e Node.js com Express.js.",
+        "Assumi responsabilidades de liderança técnica na segunda metade do projeto, com mentoria de engenheiros e onboarding do próximo tech lead antes da transição.",
+      ],
     },
     "Cria Studio": {
       title: "Engenheiro Full Stack",
       summary:
         "Único engenheiro de um produto 2D interativo. O MVP começou em React e foi migrado para Next.js na versão de produção, das decisões técnicas e de produto até o lançamento.",
+      highlights: [
+        "Construí uma aplicação React 2D interativa como engenheiro principal, com atualizações visuais arquitetônicas em tempo real e sobreposição de imagens.",
+        "Desenvolvi o backend com Node.js e Express.js, criando as APIs REST de que o frontend precisava.",
+        "Assumi as decisões técnicas e de produto necessárias para levar o projeto do conceito à produção em um prazo curto.",
+      ],
     },
     "Lorena Felicio": {
       title: "Engenheiro Full Stack",
       summary:
         "Construí um ERP do zero com Next.js e React, Node.js, MongoDB e AWS S3, incluindo integrações fiscais e de emissão de notas brasileiras e fluxos automatizados de documentos.",
+      highlights: [
+        "Construí do zero um sistema ERP com Next.js, Node.js, Express.js, MongoDB e AWS S3.",
+        "Desenhei e implementei APIs REST, controllers, services, autenticação JWT e schemas MongoDB usados durante todo o ciclo do projeto.",
+        "Construí o frontend em React com hooks, Context API e Redux Toolkit para gerenciamento de estado.",
+        "Integrei APIs de emissão de notas fiscais do governo brasileiro, com validação de XML e requisitos de autenticação.",
+      ],
     },
   } as Record<string, RoleText>,
   cases: {

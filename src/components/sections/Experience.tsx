@@ -40,6 +40,9 @@ export function Experience({ locale }: { locale: Locale }) {
                 <p className="role-title">{role.title}</p>
                 {meta && <p className="role-meta">{meta}</p>}
                 <p className="role-summary">{role.summary}</p>
+                {role.contractedThrough && (
+                  <p className="role-note">{t.contractedThrough(role.contractedThrough)}</p>
+                )}
                 {role.note && <p className="role-note">{role.note}</p>}
                 <TechTags
                   items={role.technologies}

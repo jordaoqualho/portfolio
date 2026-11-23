@@ -133,6 +133,7 @@ export function homeMarkdown() {
           .filter(Boolean)
           .join(" · "),
         "",
+        ...(role.contractedThrough ? [`Contracted through ${role.contractedThrough}.`, ""] : []),
         role.summary,
         ...(role.highlights?.length ? ["", ...role.highlights.map((point) => `- ${point}`)] : []),
         role.note ? `\nNote: ${role.note}` : "",

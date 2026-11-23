@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Download, Menu, X } from "lucide-react";
-import { navigation, profile } from "@/data/profile";
+import { navigation, resumeFiles } from "@/data/profile";
 import { BACK } from "@/lib/motion";
 import { localePath, stripLocale } from "@/i18n/paths";
 import { useLocale, useUi } from "@/i18n/provider";
@@ -110,8 +110,8 @@ export function Header({ menu }: { menu: WorkMenuItems }) {
         <div className="header-actions">
           <a
             className="header-resume header-cv"
-            href={profile.resumePath}
-            download="Jordao_Qualho_Senior_Software_Engineer_CV.pdf"
+            href={`/resume/${resumeFiles[locale]}`}
+            download={resumeFiles[locale]}
             target="_blank"
             rel="noopener noreferrer"
           >

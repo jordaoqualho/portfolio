@@ -121,6 +121,11 @@ const schemas = {
       },
       employment: { type: "string", examples: ["Full-time", "Contract · B2B"] },
       location: { type: "string", examples: ["Remote", "Maringá, Brazil · Hybrid"] },
+      contractedThrough: {
+        type: "string",
+        description: "Agency or consultancy holding the contract when the company is the client.",
+        examples: ["Zallpy Digital", "Afinz"],
+      },
       summary: { type: "string" },
       note: { type: "string" },
       highlights: { ...strings, description: "CV bullets, one achievement each." },

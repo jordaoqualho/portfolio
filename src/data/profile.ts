@@ -50,6 +50,8 @@ export type Experience = {
   // Engagement type and place, shown under the title when known.
   employment?: string;
   location?: string;
+  // Agency or consultancy that holds the contract when the company is the client.
+  contractedThrough?: string;
   summary: string;
   note?: string;
   // CV bullets, one achievement each. The generated CV PDF uses them (falling
@@ -59,6 +61,11 @@ export type Experience = {
   technologies: string[];
 };
 export type Capability = { title: string; description: string };
+// One CV per locale, generated at build time (src/app/resume/<file>/route.ts).
+export const resumeFiles = {
+  en: "Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
+  pt: "Jordao_Qualho_Engenheiro_de_Software_Senior_CV.pdf",
+} as const;
 export const profile = {
   name: "Jordão Qualho",
   role: "Senior Software Engineer",
@@ -74,7 +81,7 @@ export const profile = {
   core: ["Node.js", "TypeScript", "React", "AWS", "Google Cloud Platform"],
   intro:
     "6+ years building and operating production systems across fintech, e-commerce and SaaS, from React applications to backend services supporting millions of users.",
-  resumePath: "/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
+  resumePath: `/resume/${resumeFiles.en}` as string,
 };
 // Details only the CV needs. The PDF at profile.resumePath is generated from
 // this file (src/lib/resume.ts), so the CV and the site cannot drift apart.
@@ -368,10 +375,12 @@ export const experience: Experience[] = [
     employment: "Full-time",
     location: "Maringá, Brazil · Hybrid",
     summary:
-      "Backend services for internal financial platforms: REST APIs in Node.js, TypeScript and Express, credit-analysis workflows and business rules, and contributions to architecture discussions, scalability improvements and technical documentation.",
-    note: "Contracted through Zallpy Digital.",
+      "Sicredi Dexis is a credit cooperative with 300,000+ members and 114 branches in Paraná and São Paulo, part of the Sicredi system and its 10M+ members. I build backend services for its internal financial platforms: REST APIs in Node.js, TypeScript and Express, credit-analysis workflows and business rules, plus architecture discussions, scalability improvements and technical documentation.",
+    // Members and branches: sicredi.com.br/coop/dexis/sobre-cooperativa (2026);
+    // system total: Sicredi, 10.5M members in July 2026.
+    contractedThrough: "Zallpy Digital",
     highlights: [
-      "Developing and maintaining backend services for internal financial platforms, contracted through Zallpy Digital.",
+      "Developing and maintaining backend services for internal financial platforms at a credit cooperative with 300,000+ members and 114 branches, part of the Sicredi system (10M+ members).",
       "Building and evolving REST APIs and backend services using Node.js, TypeScript, and Express.",
       "Improving financial workflows, credit analysis, and business rules.",
       "Contributing to backend architecture discussions, scalability improvements, and technical documentation.",
@@ -386,13 +395,14 @@ export const experience: Experience[] = [
     ],
   },
   {
-    company: "Afinz / client Sem Parar",
+    company: "Sem Parar",
     title: "Senior Backend Engineer",
     dates: "Dec 2023 – Sep 2026",
     employment: "Contract · B2B",
     location: "Remote",
+    contractedThrough: "Afinz",
     summary:
-      "Backend engineer and technical reference for a financial-services squad on Sem Parar, a platform with 7M+ active users. I led and trained engineers, coordinated production investigations, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
+      "Backend engineer and technical reference for a financial-services squad at Sem Parar, a platform with 7M+ active users. I led and trained engineers, coordinated production investigations, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
     highlights: [
       "Worked on high-volume financial services within the Sem Parar ecosystem, supporting a platform serving 7M+ active users.",
       "Acted as the technical reference for Sem Parar production support, coordinating critical incident investigation and mentoring another developer.",
@@ -428,7 +438,7 @@ export const experience: Experience[] = [
     location: "Remote",
     summary:
       "Short engagement on a US healthcare product with AI-assisted care workflows. I built a Storybook-documented library of 50+ React components from the Figma designs, integrated it into existing micro-frontends, and adapted deployment manifests for new services.",
-    note: "Short engagement through Tecla, alongside the Afinz contract. It ended after the client chose not to continue for commercial reasons related to timeline and cost.",
+    note: "Short engagement through Tecla, alongside the Sem Parar contract. It ended after the client chose not to continue for commercial reasons related to timeline and cost.",
     highlights: [
       "Built React micro-frontends for an AI-assisted healthcare workflow platform in collaboration with US-based stakeholders.",
       "Built a reusable React component system with Storybook and Atomic Design patterns inside a monorepo.",

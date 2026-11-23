@@ -8,6 +8,7 @@ import {
   View,
   renderToBuffer,
 } from "@react-pdf/renderer";
+import type { Locale } from "@/i18n/config";
 import { buildResume, type Resume } from "./resume";
 
 // Break lines between words only: "Architecture" never becomes "Archi-tecture".
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 36,
     fontFamily: "Helvetica",
     fontSize: 10,
-    lineHeight: 1.3,
+    lineHeight: 1.25,
     color: ink,
   },
   name: {
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
   },
   roleHeading: { fontFamily: "Helvetica-Bold", flex: 1, paddingRight: 12 },
   roleDates: { fontFamily: "Helvetica-Bold" },
+  roleNote: { fontFamily: "Helvetica-Oblique", color: muted, marginBottom: 2 },
   point: { flexDirection: "row", paddingLeft: 10 },
   bullet: { width: 10 },
   pointText: { flex: 1 },
@@ -81,13 +83,13 @@ function Bullet({ children }: { children: string }) {
 export function ResumeDocument({ data }: { data: Resume }) {
   return (
     <Document
-      title={`${data.name} — ${data.role} CV`}
+      title={`${data.name} — ${data.role} ${data.labels.title}`}
       author={data.name}
-      subject={`${data.role} CV`}
+      subject={`${data.role} ${data.labels.title}`}
       keywords={data.skills.map((s) => s.items).join(", ")}
       creator={data.contact.at(-1)?.label}
       producer={data.contact.at(-1)?.label}
-      language="en"
+      language={data.labels.language}
     >
       <Page size="LETTER" style={styles.page}>
         <Text style={styles.name}>{data.name.toUpperCase()}</Text>
@@ -107,11 +109,11 @@ export function ResumeDocument({ data }: { data: Resume }) {
         </Text>
 
         <View style={styles.rule} />
-        <Text style={styles.sectionTitle}>SUMMARY</Text>
+        <Text style={styles.sectionTitle}>{data.labels.summary}</Text>
         <Text>{data.summary}</Text>
 
         <View style={styles.rule} />
-        <Text style={styles.sectionTitle}>WORK EXPERIENCE</Text>
+        <Text style={styles.sectionTitle}>{data.labels.experience}</Text>
         {data.roles.map((role) => (
           // A role never splits across pages; it moves whole to the next one.
           <View key={role.heading} style={styles.role} wrap={false}>
@@ -119,35 +121,50 @@ export function ResumeDocument({ data }: { data: Resume }) {
               <Text style={styles.roleHeading}>{role.heading}</Text>
               <Text style={styles.roleDates}>{role.dates}</Text>
             </View>
+            {role.note && <Text style={styles.roleNote}>{role.note}</Text>}
             {role.points.map((point) => (
               <Bullet key={point}>{point}</Bullet>
             ))}
             <Text>
-              <Text style={styles.bold}>Technologies</Text>: {role.technologies}
+              <Text style={styles.bold}>{data.labels.technologies}</Text>: {role.technologies}
             </Text>
           </View>
         ))}
 
         <View>
           <Text style={[styles.sectionTitle, { marginTop: 8 }]} minPresenceAhead={60}>
-            ADDITIONAL INFORMATION
+            {data.labels.additional}
           </Text>
           {data.skills.map((group) => (
             <Text key={group.group} style={styles.skillLine}>
               <Text style={styles.bold}>{group.group}:</Text> {group.items}
             </Text>
           ))}
-          <Text style={styles.languagesTitle}>Languages:</Text>
-          {data.languages.map((language) => (
-            <Bullet key={language}>{language}</Bullet>
-          ))}
+          <View wrap={false}>
+            <Text style={styles.languagesTitle}>{data.labels.languages}:</Text>
+            {data.languages.map((language) => (
+              <Bullet key={language}>{language}</Bullet>
+            ))}
+          </View>
         </View>
       </Page>
     </Document>
   );
 }
 
-// The CV PDF, generated from the site's content.
+// The CV PDF in one language, generated from the site's content.
 export function renderResumePdf(data: Resume = buildResume()) {
   return renderToBuffer(<ResumeDocument data={data} />);
+}
+
+// Response for the route handlers under src/app/resume/<file name>/.
+export async function resumePdfResponse(locale: Locale) {
+  const data = buildResume(locale);
+  const pdf = await renderResumePdf(data);
+  return new Response(new Uint8Array(pdf), {
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `inline; filename="${data.fileName}"`,
+    },
+  });
 }

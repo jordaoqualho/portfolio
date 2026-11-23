@@ -75,10 +75,10 @@ describe("stack evidence", () => {
     expect(companies("Jest")).toEqual(testedRoles);
     expect(companies("Automated Testing")).toEqual(testedRoles);
     expect(companies("Technical Leadership")).toEqual(
-      expect.arrayContaining(["Afinz / client Sem Parar", "Grupo Soma"]),
+      expect.arrayContaining(["Sem Parar", "Grupo Soma"]),
     );
     expect(companies("Caching Strategies")).toContain("Grupo Soma");
-    expect(companies("Event-Driven Architecture")).toContain("Afinz / client Sem Parar");
+    expect(companies("Event-Driven Architecture")).toContain("Sem Parar");
     expect(companies("Monolithic Architecture")).toEqual(
       expect.arrayContaining(["Grupo Soma", "Cria Studio", "Lorena Felicio"]),
     );
@@ -90,13 +90,13 @@ describe("stack evidence", () => {
 
   it("keeps language and backend framework assignments per role", () => {
     expect(find("TypeScript").roles.map((r) => r.company)).toEqual(
-      expect.arrayContaining(["Afinz / client Sem Parar", "Sully", "ROIT GROUP", "Voyager Portal"]),
+      expect.arrayContaining(["Sem Parar", "Sully", "ROIT GROUP", "Voyager Portal"]),
     );
     expect(find("JavaScript").roles.map((r) => r.company)).toEqual(
       expect.arrayContaining(["Grupo Soma", "Cria Studio", "Lorena Felicio"]),
     );
     expect(find("NestJS").roles.map((r) => r.company)).toEqual(
-      expect.arrayContaining(["Afinz / client Sem Parar", "Sully", "ROIT GROUP"]),
+      expect.arrayContaining(["Sem Parar", "Sully", "ROIT GROUP"]),
     );
     expect(find("Express.js").roles.map((r) => r.company)).toEqual(
       expect.arrayContaining([

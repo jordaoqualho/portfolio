@@ -84,6 +84,16 @@ export const en = {
     showMore: (n: number) => `Show ${n} more technologies`,
     showLess: "Show fewer technologies",
     less: "Less",
+    contractedThrough: (company: string) => `Contracted through ${company}.`,
+  },
+  cv: {
+    summary: "SUMMARY",
+    experience: "WORK EXPERIENCE",
+    additional: "ADDITIONAL INFORMATION",
+    technologies: "Technologies",
+    languages: "Languages",
+    title: "CV",
+    language: "en",
   },
   projects: {
     title: "What I’m building outside work",

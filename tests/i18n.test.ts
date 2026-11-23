@@ -26,6 +26,7 @@ describe("Portuguese content parity", () => {
       const pt = ptProfile.roles[role.company];
       expect(pt, role.company).toBeDefined();
       expect(Boolean(pt.note), `${role.company} note`).toBe(Boolean(role.note));
+      expect(pt.highlights?.length, `${role.company} highlights`).toBe(role.highlights?.length);
     }
     for (const project of projects) {
       const pt = ptProfile.projects[project.name];
