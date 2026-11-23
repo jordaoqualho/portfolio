@@ -1777,6 +1777,64 @@ h2 {
   margin: -4px 0 24px;
 }
 
+/* Role metadata: engagement and place under the title, duration or a
+   "current" marker under the dates. */
+.role-meta {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.experience-duration {
+  margin-top: 6px;
+  opacity: 0.75;
+}
+.role-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.role-current-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* "+N" toggle at the end of a role's tags. */
+.tech-list li.tech-toggle-item,
+.timeline[data-enhanced] .experience-row[data-current] .tech-list li.tech-toggle-item {
+  border: 0;
+  padding: 0;
+}
+.tech-toggle {
+  font: inherit;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding: 5px 9px;
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+.tech-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.tech-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .resume-link {
   position: relative;
   isolation: isolate;

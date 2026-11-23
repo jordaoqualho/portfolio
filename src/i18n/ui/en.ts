@@ -72,6 +72,18 @@ export const en = {
   experience: {
     title: "Where I’ve shipped",
     technologies: "Core technologies",
+    current: "Current",
+    duration: (months: number) => {
+      const years = Math.floor(months / 12);
+      const rest = months % 12;
+      const parts = [] as string[];
+      if (years) parts.push(`${years} ${years === 1 ? "yr" : "yrs"}`);
+      if (rest) parts.push(`${rest} ${rest === 1 ? "mo" : "mos"}`);
+      return parts.join(" ");
+    },
+    showMore: (n: number) => `Show ${n} more technologies`,
+    showLess: "Show fewer technologies",
+    less: "Less",
   },
   projects: {
     title: "What I’m building outside work",

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { experience, skills } from "@/data/profile";
 import { ui } from "@/i18n/ui";
 import { stackEvidence } from "@/lib/stack";
@@ -9,6 +9,13 @@ const find = (name: string) =>
     .find((item) => item.name === name)!;
 
 describe("stack evidence", () => {
+  // The current role runs to "Present", so durations depend on today's date.
+  beforeAll(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-11-21T12:00:00Z"));
+  });
+  afterAll(() => vi.useRealTimers());
+
   it("keeps every listed skill, in order", () => {
     expect(stackEvidence().map((g) => g.items.map((i) => i.name))).toEqual(
       skills.map((g) => g.items),
@@ -60,10 +67,13 @@ describe("stack evidence", () => {
 
   it("maps the confirmed engineering practices to the right roles", () => {
     const companies = (name: string) => find(name).roles.map((role) => role.company);
-    const allCompanies = experience.map((role) => role.company);
+    // The current role lists only what its public description states.
+    const testedRoles = experience
+      .map((role) => role.company)
+      .filter((company) => company !== "Sicredi Dexis");
 
-    expect(companies("Jest")).toEqual(allCompanies);
-    expect(companies("Automated Testing")).toEqual(allCompanies);
+    expect(companies("Jest")).toEqual(testedRoles);
+    expect(companies("Automated Testing")).toEqual(testedRoles);
     expect(companies("Technical Leadership")).toEqual(
       expect.arrayContaining(["Afinz / client Sem Parar", "Grupo Soma"]),
     );
@@ -90,15 +100,17 @@ describe("stack evidence", () => {
     );
     expect(find("Express.js").roles.map((r) => r.company)).toEqual(
       expect.arrayContaining([
+        "Sicredi Dexis",
         "Grupo Soma",
         "Cria Studio",
         "Lorena Felicio",
       ]),
     );
-    expect(find("TypeScript").durationMonths).toBe(44);
+    // Sicredi Dexis (Oct 2026 – Present) adds one month as of Nov 2026.
+    expect(find("TypeScript").durationMonths).toBe(45);
     expect(find("JavaScript").durationMonths).toBe(34);
     expect(find("NestJS").durationMonths).toBe(37);
-    expect(find("Express.js").durationMonths).toBe(34);
+    expect(find("Express.js").durationMonths).toBe(35);
     expect(find("AdonisJS").roles.map((r) => r.company)).toEqual(["Voyager Portal"]);
   });
 

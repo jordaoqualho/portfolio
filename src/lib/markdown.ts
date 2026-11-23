@@ -129,9 +129,12 @@ export function homeMarkdown() {
     ...experience.map((role) =>
       [
         `### ${role.company} — ${role.title}`,
-        `${role.dates} · ${role.technologies.join(", ")}`,
+        [role.dates, role.employment, role.location, role.technologies.join(", ")]
+          .filter(Boolean)
+          .join(" · "),
         "",
         role.summary,
+        ...(role.highlights?.length ? ["", ...role.highlights.map((point) => `- ${point}`)] : []),
         role.note ? `\nNote: ${role.note}` : "",
       ].join("\n"),
     ),

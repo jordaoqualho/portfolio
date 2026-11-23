@@ -72,6 +72,18 @@ export const pt = {
   experience: {
     title: "Onde já entreguei",
     technologies: "Principais tecnologias",
+    current: "Atual",
+    duration: (months: number) => {
+      const years = Math.floor(months / 12);
+      const rest = months % 12;
+      const parts = [] as string[];
+      if (years) parts.push(`${years} ${years === 1 ? "ano" : "anos"}`);
+      if (rest) parts.push(`${rest} ${rest === 1 ? "mês" : "meses"}`);
+      return parts.join(" e ");
+    },
+    showMore: (n: number) => `Mostrar mais ${n} tecnologias`,
+    showLess: "Mostrar menos tecnologias",
+    less: "Menos",
   },
   projects: {
     title: "O que construo fora do trabalho",

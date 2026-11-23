@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { cases, experience, projects, stats } from "@/data/profile";
 import { privacy } from "@/data/privacy";
 import { ptProfile } from "@/data/profile.pt";
-import { formatDates, getContent } from "@/data/content";
+import { formatDates, getContent, roleMonths } from "@/data/content";
+import { ui } from "@/i18n/ui";
 
 // Portuguese must cover every piece of English content, point for point,
 // so a new case, section or bullet cannot ship half-translated.
@@ -53,6 +54,15 @@ describe("Portuguese content parity", () => {
   it("formats dates for Portuguese readers", () => {
     expect(formatDates("Dec 2023 – Aug 2026", "en")).toBe("Dec 2023 – Aug 2026");
     expect(formatDates("Dec 2023 – Aug 2026", "pt")).toMatch(/^dez\.? 2023 – ago\.? 2026$/);
+    expect(formatDates("Oct 2026 – Present", "pt")).toMatch(/^out\.? 2026 – o momento$/);
+  });
+
+  it("counts role duration like LinkedIn and skips the current role", () => {
+    expect(roleMonths("Dec 2023 – Sep 2026")).toBe(34);
+    expect(roleMonths("Mar 2026 – Apr 2026")).toBe(2);
+    expect(roleMonths("Oct 2026 – Present")).toBeUndefined();
+    expect(ui("en").experience.duration(34)).toBe("2 yrs 10 mos");
+    expect(ui("pt").experience.duration(34)).toBe("2 anos e 10 meses");
   });
 
   it("uses a Portuguese cloud delivery label", () => {

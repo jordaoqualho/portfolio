@@ -114,9 +114,16 @@ const schemas = {
     properties: {
       company: { type: "string" },
       title: { type: "string" },
-      dates: { type: "string", examples: ["Dec 2023 – Aug 2026"] },
+      dates: {
+        type: "string",
+        description: "Start and end month; the current role ends in \"Present\".",
+        examples: ["Dec 2023 – Sep 2026", "Oct 2026 – Present"],
+      },
+      employment: { type: "string", examples: ["Full-time", "Contract · B2B"] },
+      location: { type: "string", examples: ["Remote", "Maringá, Brazil · Hybrid"] },
       summary: { type: "string" },
       note: { type: "string" },
+      highlights: { ...strings, description: "CV bullets, one achievement each." },
       technologies: strings,
     },
   },

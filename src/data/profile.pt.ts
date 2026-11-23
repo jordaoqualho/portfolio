@@ -29,11 +29,17 @@ export type ProjectText = {
     credit?: string;
   };
 };
-export type RoleText = { title: string; summary: string; note?: string };
+export type RoleText = {
+  title: string;
+  summary: string;
+  note?: string;
+  employment?: string;
+  location?: string;
+};
 
 export const ptProfile = {
   role: "Engenheiro de Software Sênior",
-  availability: "Aberto a oportunidades remotas internacionais selecionadas",
+  availability: "Aberto a conversas sobre oportunidades selecionadas",
   location: "Brasil",
   languages: "Inglês C1 avançado · Português nativo",
   stats: [
@@ -95,19 +101,31 @@ export const ptProfile = {
   contact: {
     title: "Procurando um Engenheiro de Software Sênior?",
     description:
-      "Aberto a oportunidades selecionadas de Backend e Full Stack Sênior com times remotos internacionais.",
+      "Aberto a conversar sobre oportunidades selecionadas de Backend e Full Stack Sênior, inclusive com times remotos internacionais.",
   },
   roles: {
+    "Sicredi Dexis": {
+      title: "Engenheiro de Backend Sênior",
+      employment: "Tempo integral",
+      location: "Maringá, Brasil · Híbrido",
+      summary:
+        "Serviços de backend para plataformas financeiras internas: APIs REST em Node.js, TypeScript e Express, fluxos de análise de crédito e regras de negócio, além de contribuições em discussões de arquitetura, melhorias de escalabilidade e documentação técnica.",
+      note: "Contratado via Zallpy Digital.",
+    },
     "Afinz / client Sem Parar": {
-      title: "Engenheiro de Backend Sênior · Contrato / B2B",
+      title: "Engenheiro de Backend Sênior",
+      employment: "Contrato · B2B",
+      location: "Remoto",
       summary:
         "Engenheiro de backend e referência técnica de uma squad de serviços financeiros no Sem Parar, plataforma com mais de 7 milhões de usuários ativos. Liderei e treinei engenheiros, coordenei investigações em produção, conduzi integrações de API com o time de produto e melhorei testes, documentação e onboarding.",
     },
     Sully: {
-      title: "Engenheiro Full Stack Sênior · Consultoria / B2B",
+      title: "Engenheiro Full Stack Sênior",
+      employment: "Consultoria · B2B · projeto paralelo",
+      location: "Remoto",
       summary:
         "Projeto curto em um produto de saúde dos Estados Unidos com fluxos de atendimento apoiados por IA. Construí uma biblioteca de mais de 50 componentes React documentada em Storybook a partir dos designs do Figma, integrei-a aos micro-frontends existentes e adaptei manifests de deploy para novos serviços.",
-      note: "Projeto via Tecla. Terminou quando o cliente decidiu não renovar o contrato por motivos comerciais ligados a prazo e custo.",
+      note: "Projeto curto via Tecla, em paralelo ao contrato com a Afinz. Terminou quando o cliente decidiu não continuar por motivos comerciais ligados a prazo e custo.",
     },
     "ROIT GROUP": {
       title: "Engenheiro Full Stack Sênior",

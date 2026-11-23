@@ -45,9 +45,17 @@ export function defineCase(
 export type Experience = {
   company: string;
   title: string;
+  // "Mon YYYY – Mon YYYY", or "Mon YYYY – Present" for the current role.
   dates: string;
+  // Engagement type and place, shown under the title when known.
+  employment?: string;
+  location?: string;
   summary: string;
   note?: string;
+  // CV bullets, one achievement each. The generated CV PDF uses them (falling
+  // back to the summary); the site shows the summary.
+  highlights?: string[];
+  // Ordered by relevance: the first few are shown, the rest behind a toggle.
   technologies: string[];
 };
 export type Capability = { title: string; description: string };
@@ -62,11 +70,20 @@ export const profile = {
   whatsapp: "554499700617",
   location: "Brazil",
   languages: "English C1 Advanced · Portuguese native",
-  availability: "Open to select remote international opportunities",
+  availability: "Open to conversations about select opportunities",
   core: ["Node.js", "TypeScript", "React", "AWS", "Google Cloud Platform"],
   intro:
     "6+ years building and operating production systems across fintech, e-commerce and SaaS, from React applications to backend services supporting millions of users.",
   resumePath: "/resume/Jordao_Qualho_Senior_Software_Engineer_CV.pdf",
+};
+// Details only the CV needs. The PDF at profile.resumePath is generated from
+// this file (src/lib/resume.ts), so the CV and the site cannot drift apart.
+export const resume = {
+  fullName: "Jordão Qualho da Silva",
+  location: "Maringá, Paraná, Brazil",
+  summary:
+    "Senior Software Engineer with 6+ years of experience building and operating production systems with Node.js, TypeScript, React, and cloud platforms. Full-stack background with strong backend experience across REST APIs, microservices, asynchronous workflows, SQL/NoSQL databases, caching, and AWS/GCP environments. Experienced in production troubleshooting, incident investigation, performance optimization, high-concurrency systems, automated testing, and technical leadership. Comfortable owning features from implementation through production support.",
+  languages: ["Portuguese (Native)", "English (C1 Advanced)"],
 };
 // Every homepage section, in the order visitors encounter it. The desktop
 // header uses a case-study menu for the first section; the mobile menu lists
@@ -345,11 +362,43 @@ export const cases: EngineeringCase[] = [
 ];
 export const experience: Experience[] = [
   {
+    company: "Sicredi Dexis",
+    title: "Senior Backend Engineer",
+    dates: "Oct 2026 – Present",
+    employment: "Full-time",
+    location: "Maringá, Brazil · Hybrid",
+    summary:
+      "Backend services for internal financial platforms: REST APIs in Node.js, TypeScript and Express, credit-analysis workflows and business rules, and contributions to architecture discussions, scalability improvements and technical documentation.",
+    note: "Contracted through Zallpy Digital.",
+    highlights: [
+      "Developing and maintaining backend services for internal financial platforms, contracted through Zallpy Digital.",
+      "Building and evolving REST APIs and backend services using Node.js, TypeScript, and Express.",
+      "Improving financial workflows, credit analysis, and business rules.",
+      "Contributing to backend architecture discussions, scalability improvements, and technical documentation.",
+      "Working with relational and NoSQL databases, caching, asynchronous messaging, cloud infrastructure, and observability.",
+    ],
+    technologies: [
+      "Node.js",
+      "TypeScript",
+      "Express.js",
+      "REST APIs",
+      "Caching Strategies",
+    ],
+  },
+  {
     company: "Afinz / client Sem Parar",
-    title: "Senior Backend Engineer · Contract / B2B",
+    title: "Senior Backend Engineer",
     dates: "Dec 2023 – Sep 2026",
+    employment: "Contract · B2B",
+    location: "Remote",
     summary:
       "Backend engineer and technical reference for a financial-services squad on Sem Parar, a platform with 7M+ active users. I led and trained engineers, coordinated production investigations, worked through API integrations with product stakeholders, and improved testing, documentation and onboarding.",
+    highlights: [
+      "Worked on high-volume financial services within the Sem Parar ecosystem, supporting a platform serving 7M+ active users.",
+      "Acted as the technical reference for Sem Parar production support, coordinating critical incident investigation and mentoring another developer.",
+      "Investigated production issues and troubleshot asynchronous workflows (AWS SQS) across microservices, including manual message reprocessing during critical incidents.",
+      "Maintained GitHub Actions deployment workflows and improved technical documentation and onboarding materials for the team.",
+    ],
     technologies: [
       "Node.js",
       "TypeScript",
@@ -373,11 +422,19 @@ export const experience: Experience[] = [
   },
   {
     company: "Sully",
-    title: "Senior Full Stack Engineer · Advisory / B2B",
+    title: "Senior Full Stack Engineer",
     dates: "Mar 2026 – Apr 2026",
+    employment: "Advisory · B2B · parallel engagement",
+    location: "Remote",
     summary:
       "Short engagement on a US healthcare product with AI-assisted care workflows. I built a Storybook-documented library of 50+ React components from the Figma designs, integrated it into existing micro-frontends, and adapted deployment manifests for new services.",
-    note: "Engagement through Tecla. It ended after the client chose not to continue the contract for commercial reasons related to timeline and cost.",
+    note: "Short engagement through Tecla, alongside the Afinz contract. It ended after the client chose not to continue for commercial reasons related to timeline and cost.",
+    highlights: [
+      "Built React micro-frontends for an AI-assisted healthcare workflow platform in collaboration with US-based stakeholders.",
+      "Built a reusable React component system with Storybook and Atomic Design patterns inside a monorepo.",
+      "Integrated frontend flows with healthcare data exposed by the backend, including FHIR-related structures and workflows.",
+      "Adapted existing ArgoCD manifests and deployment patterns from the monorepo for the new application components.",
+    ],
     technologies: [
       "React",
       "TypeScript",
@@ -399,6 +456,11 @@ export const experience: Experience[] = [
     dates: "Jul 2023 – Nov 2023",
     summary:
       "Worked on NestJS microservices for analytical product routes. I designed Redis caching and invalidation, and raised automated test coverage above 85% on the core services.",
+    highlights: [
+      "Developed features across React micro-frontends and NestJS microservices for an AI-driven accounting automation platform.",
+      "Designed and implemented Redis caching and invalidation strategies for high-traffic analytical flows.",
+      "Maintained automated tests with Jest across backend services, contributing to 85%+ coverage in core areas.",
+    ],
     technologies: [
       "React",
       "NestJS",
@@ -422,6 +484,11 @@ export const experience: Experience[] = [
     dates: "Nov 2022 – Jun 2023",
     summary:
       "Maritime logistics platform built with TypeScript and AdonisJS APIs, plus Vue.js 2, Vuetify and Vuex interfaces backed by MySQL and AWS services. I rebuilt a reporting microservice from Python to TypeScript to cut memory use and stop runtime failures, and built stateful interfaces for operations teams.",
+    highlights: [
+      "Migrated a legacy reporting service from Python to TypeScript, reducing memory consumption and eliminating runtime failures.",
+      "Built complex, stateful Vue.js components for global maritime logistics workflows, using Vuex for state management on AdonisJS APIs and REST workflows backed by MySQL and AWS services.",
+      "Worked across frontend and backend application logic with a focus on low-latency rendering and maintainable TypeScript services.",
+    ],
     technologies: [
       "TypeScript",
       "Vue.js",
@@ -445,14 +512,22 @@ export const experience: Experience[] = [
     dates: "Nov 2021 – Nov 2022",
     summary:
       "Live commerce platform on Google Cloud Run. After an event passed 12,000 concurrent users, I worked with the infrastructure team on load tests and autoscaling changes until tests sustained about 20,000 within budget. Later took on Tech Lead responsibilities for a period, including mentoring engineers and code review standards.",
+    highlights: [
+      "Scaled Node.js backend services and optimized GCP Cloud Run infrastructure to support live-commerce events with 12,000+ concurrent active users and zero downtime.",
+      "Worked full stack with a frontend-heavy focus using React, Redux Toolkit, Node.js with Express.js.",
+      "Took on technical leadership responsibilities during the second half of the engagement, mentoring engineers and onboarding the next technical lead before handoff.",
+    ],
     technologies: [
       "React",
+      "Node.js",
+      "Google Cloud Platform",
+      "High-Concurrency Systems",
+      "Performance Optimization",
+      "Technical Leadership",
       "JavaScript",
       "Redux",
-      "Node.js",
       "Express.js",
       "REST APIs",
-      "Google Cloud Platform",
       "PostgreSQL",
       "Storybook",
       "Material UI",
@@ -460,9 +535,6 @@ export const experience: Experience[] = [
       "Caching Strategies",
       "Pub/Sub",
       "Monolithic Architecture",
-      "High-Concurrency Systems",
-      "Performance Optimization",
-      "Technical Leadership",
       "Automated Testing",
       "Jest",
     ],
@@ -473,6 +545,11 @@ export const experience: Experience[] = [
     dates: "Aug 2021 – Nov 2021",
     summary:
       "Sole engineer on an interactive 2D product. The MVP started in React and moved to Next.js for the production version, from technical and product decisions through release.",
+    highlights: [
+      "Built an interactive 2D React application as the primary engineer, supporting real-time architectural visual updates and image overlays.",
+      "Developed the backend using Node.js and Express.js, creating REST APIs required by the frontend.",
+      "Owned technical and product decisions required to take the project from concept to production under a short delivery timeline.",
+    ],
     technologies: [
       "Next.js",
       "JavaScript",
@@ -494,6 +571,12 @@ export const experience: Experience[] = [
     dates: "Jan 2020 – Aug 2021",
     summary:
       "Built an ERP from scratch with Next.js and React, Node.js, MongoDB and AWS S3, including Brazilian tax and invoicing integrations and automated document workflows.",
+    highlights: [
+      "Built an ERP management system from scratch using Next.js, Node.js, Express.js, MongoDB, and AWS S3.",
+      "Designed and implemented REST APIs, controllers, services, JWT authentication, and MongoDB schemas used throughout the project lifecycle.",
+      "Built the frontend in React using hooks, Context API, and Redux Toolkit for state management.",
+      "Integrated Brazilian government tax and invoicing APIs, including XML validation and authentication requirements.",
+    ],
     technologies: [
       "Next.js",
       "React",
@@ -1102,5 +1185,5 @@ export const about = [
 export const contact = {
   title: "Looking for a Senior Software Engineer?",
   description:
-    "Open to select Senior Backend and Full Stack opportunities with international remote teams.",
+    "Happy to talk about select Senior Backend and Full Stack opportunities, including with international remote teams.",
 };

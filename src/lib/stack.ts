@@ -36,7 +36,12 @@ const confirmedYears: Record<string, number> = {
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // "Dec 2023" -> months since year 0, so ranges can be merged arithmetically.
+// "Present" is the current month.
 function toMonth(value: string) {
+  if (value.trim() === "Present") {
+    const now = new Date();
+    return now.getUTCFullYear() * 12 + now.getUTCMonth();
+  }
   const [month, year] = value.trim().split(" ");
   return Number(year) * 12 + months.indexOf(month);
 }
@@ -83,7 +88,9 @@ export type StackItem = {
 export type StackGroup = { group: string; items: StackItem[] };
 
 const yearSpan = (dates: string) => {
-  const [start, end] = dates.split("–").map((d) => d.trim().split(" ")[1]);
+  const [start, end] = dates
+    .split("–")
+    .map((d) => String(Math.floor(toMonth(d) / 12)));
   return start === end ? start : `${start}–${end}`;
 };
 

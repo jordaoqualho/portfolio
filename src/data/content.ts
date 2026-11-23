@@ -107,6 +107,8 @@ export const getContent = (locale: Locale) => byLocale[locale];
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+export const PRESENT = "Present";
+
 // "Dec 2023 – Aug 2026" in the reader's language: "dez. 2023 – ago. 2026".
 export function formatDates(dates: string, locale: Locale) {
   if (locale === "en") return dates;
@@ -114,12 +116,28 @@ export function formatDates(dates: string, locale: Locale) {
   return dates
     .split("–")
     .map((part) => {
+      if (part.trim() === PRESENT) return "o momento";
       const [month, year] = part.trim().split(" ");
       const index = monthNames.indexOf(month);
       if (index < 0) return part.trim();
       return format.format(new Date(Date.UTC(Number(year), index, 1))).replace(" de ", " ");
     })
     .join(" – ");
+}
+
+export const isCurrentRole = (dates: string) => dates.trim().endsWith(PRESENT);
+
+// Calendar months a finished role covers, counting both ends the way
+// LinkedIn does: "Dec 2023 – Sep 2026" is 34 months (2 yrs 10 mos). A
+// current role returns undefined, so a static build never shows a stale
+// duration.
+export function roleMonths(dates: string) {
+  if (isCurrentRole(dates)) return undefined;
+  const [start, end] = dates.split("–").map((part) => {
+    const [month, year] = part.trim().split(" ");
+    return Number(year) * 12 + monthNames.indexOf(month);
+  });
+  return end - start + 1;
 }
 
 // Header menu entries for a locale (serializable, passed to the client).
